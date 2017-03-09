@@ -1,5 +1,18 @@
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto">
 
+	<item
+		android:id="@+id/item_add_dir"
+		android:icon="@drawable/ic_unfold_more"
+		android:title="@string/action_expand_all"
+		app:showAsAction="always"/>
+	<item
+		android:id="@+id/item_add_ext"
+		android:icon="@drawable/ic_unfold_more"
+		android:title="@string/action_expand_all"
+		app:showAsAction="always"/>
+	
 	<item
 		android:id="@+id/action_preference"
 		android:title="@string/action_preference"

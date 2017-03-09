@@ -17,12 +17,17 @@ import ua.tohateam.aGrep.utils.*;
 
 import android.view.View.OnLongClickListener;
 
-public class TextViewerActivity extends Activity 
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+
+public class TextViewerActivity extends AppCompatActivity 
 implements AsyncResponse
 {	
     public static final String EXTRA_QUERY = "query";
     public static final String EXTRA_PATH = "path";
 
+	private Toolbar toolbar;
+	
 	private MyUtils mUtils;
     private Prefs mPrefs;
 	private Context mContext;
@@ -40,22 +45,14 @@ implements AsyncResponse
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.text_view_activity);
+        setContentView(R.layout.textview_activity);
 
 		mContext = this;
 		mUtils = new MyUtils();
 		mPrefs = Prefs.loadPrefes(this);
 
-		//mLineView = (TextView) findViewById(R.id.text_view_line);
-		mTextPreview = (TextView) findViewById(R.id.text_view_body);
-		registerForContextMenu(mTextPreview);
-
-        mRecentAdapter = new ArrayAdapter<String>(mContext, 
-												  android.R.layout.simple_dropdown_item_1line, 
-												  new ArrayList <String>());
-        Intent it = getIntent();
+		Intent it = getIntent();
         if (it != null) {
-
             Bundle extra = it.getExtras();
             if (extra != null) {
                 mPath = extra.getString(EXTRA_PATH);
@@ -63,6 +60,27 @@ implements AsyncResponse
 				startLoadFile(mQuery);
             }
 		}
+		
+		String title = getString(R.string.app_text_view) + " : " + mPath.substring(mPath.lastIndexOf("/")+1);
+		toolbar = (Toolbar) findViewById(R.id.toolbar);
+		if (toolbar != null) {
+			setSupportActionBar(toolbar);
+			if (getSupportActionBar() != null) {
+				getSupportActionBar().setTitle(title);
+				getSupportActionBar().setDisplayShowHomeEnabled(true);
+				getSupportActionBar().setLogo(R.drawable.ic_launcher);
+				getSupportActionBar().setDisplayUseLogoEnabled(true);
+				//toolbar.setNavigationIcon(R.drawable.ic_arrow_left);
+			}
+		}
+		
+		//mLineView = (TextView) findViewById(R.id.text_view_line);
+		mTextPreview = (TextView) findViewById(R.id.text_view_body);
+		registerForContextMenu(mTextPreview);
+
+        mRecentAdapter = new ArrayAdapter<String>(mContext, 
+												  android.R.layout.simple_dropdown_item_1line, 
+												  new ArrayList <String>());
 	}
 
 	private void startLoadFile(String query) {

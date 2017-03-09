@@ -15,9 +15,14 @@ import java.util.regex.*;
 import ua.tohateam.aGrep.model.*;
 import ua.tohateam.aGrep.utils.*;
 
-public class SearchResult extends Activity 
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+
+public class SearchResult extends AppCompatActivity 
 implements AsyncResponse
 {
+	private Toolbar toolbar;
+	
 	private MyUtils mUtils;
     private Prefs mPrefs;
 	private ExpandableListView mResultList;
@@ -38,11 +43,24 @@ implements AsyncResponse
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.search_result);
+        setContentView(R.layout.search_activity);
 
 		mContext = this;
 		mUtils = new MyUtils();
 		mPrefs = Prefs.loadPrefes(this);
+		
+		toolbar = (Toolbar) findViewById(R.id.toolbar);
+		if (toolbar != null) {
+			setSupportActionBar(toolbar);
+			if (getSupportActionBar() != null) {
+				getSupportActionBar().setTitle(getString(R.string.app_search_result));
+				getSupportActionBar().setDisplayShowHomeEnabled(true);
+				getSupportActionBar().setLogo(R.drawable.ic_launcher);
+				getSupportActionBar().setDisplayUseLogoEnabled(true);
+				//toolbar.setNavigationIcon(R.drawable.ic_arrow_left);
+			}
+		}
+		
         mRecentAdapter = new ArrayAdapter<String>(mContext, 
 												  android.R.layout.simple_dropdown_item_1line, 
 												  new ArrayList <String>());
@@ -62,6 +80,7 @@ implements AsyncResponse
 		if (it != null && Intent.ACTION_SEARCH.equals(it.getAction())) {
             Bundle extras = it.getExtras();
             mQuery = extras.getString(SearchManager.QUERY);
+			getSupportActionBar().setTitle(getString(R.string.app_search_result)+" : "+mQuery);
 
             if (mQuery != null && mQuery.length() > 0) {
                 mPrefs.addRecent(this, mQuery);
@@ -95,6 +114,20 @@ implements AsyncResponse
 		}
 	}
 
+	public void initToolBar() {
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle(R.string.app_search_result);
+        setSupportActionBar(toolbar);
+        toolbar.setNavigationIcon(R.drawable.ic_menu_preferences);
+        toolbar.setNavigationOnClickListener(
+		new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Toast.makeText(mContext, "clicking the toolbar!", Toast.LENGTH_SHORT).show();
+			}
+		});
+    }
+	
 	private void showResult() {
         mGroupModel = setListGroups();
         mAdapter = new SearchAdapter(this, mGroupModel);

@@ -10,11 +10,16 @@ import java.util.*;
 import ru.bartwell.exfilepicker.*;
 import ua.tohateam.aGrep.utils.*;
 
-public class MainActivity extends Activity 
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+
+public class MainActivity extends AppCompatActivity 
 {
 	private static final String TAG= "aGrep";
 	private static final int EX_FILE_PICKER_RESULT = 0;
 
+	private Toolbar toolbar;
+	
 	private ArrayAdapter<String> mRecentAdapter;
 	private Prefs mPrefs;
 	private LinearLayout mDirListView;
@@ -32,7 +37,17 @@ public class MainActivity extends Activity
 		mContext = this;
 		mPrefs = Prefs.loadPrefes(this);
 		
-        setContentView(R.layout.main);
+        setContentView(R.layout.main_activity);
+		
+		toolbar = (Toolbar) findViewById(R.id.toolbar);
+		if (toolbar != null) {
+			setSupportActionBar(toolbar);
+			if (getSupportActionBar() != null) {
+				getSupportActionBar().setTitle(getString(R.string.app_name));
+				getSupportActionBar().setLogo(R.drawable.ic_launcher);
+			}
+		}
+		
 		initSearch();
     } // end onCreate
 

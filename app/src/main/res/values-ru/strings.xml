@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_settings">Настройки</string>
-	<string name="app_search_result">Результаты поискп</string>
+	<string name="app_search_result">Результаты поиска</string>
+	<string name="app_text_view">Просмотр файла</string>
 	<string name="app_about">О программе</string>
 
 	<!--LABELS-->
-	<string name="label_search">Искать:</string>
+	<string name="label_search">Поиск:</string>
 	<string name="label_hint">Ключевое слово</string>
 	<string name="label_re">Регулярное выражение</string>
     <string name="label_ic">Игнорировать регистр</string>
