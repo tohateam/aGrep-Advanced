@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">aGrep Advanced</string>
+    <string name="app_settings">Settings</string>
+	<string name="app_search_result">Searching results</string>
+	<string name="app_about">About</string>
+    <string name="hello_world">Hello world!</string>
+
+	<!--LABELS-->
+	<string name="label_search">Search:</string>
+	<string name="label_hint">Search word</string>
+	<string name="label_re">Regular Expression</string>
+    <string name="label_ic">Ignore Case</string>
+	<string name="label_mw">Match word</string>
+	<string name="label_dir">Target Directories</string>
+    <string name="label_ext">Target Extensions</string>
+
+	<string name="title_label_adddir">Add Directory</string>
+	<string name="title_label_addext">Add Extension (* all)</string>
+	<string name="title_grep_spinner">Now searching…</string>
+	<string name="title_replace_spinner">Now replacing…</string>
+	
+	<string name="title_category_global">Global</string>
+	<string name="title_font_size">Font Size</string>
+	<string-array name="font_size_entries">
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+        <item>13</item>
+        <item>14</item>
+        <item>15</item>
+		<item>16</item>
+        <item>17</item>
+        <item>18</item>
+        <item>19</item>
+        <item>20</item>
+	</string-array>
+    <string-array name="font_size_values">
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+        <item>13</item>
+        <item>14</item>
+        <item>15</item>
+		<item>16</item>
+        <item>17</item>
+        <item>18</item>
+        <item>19</item>
+        <item>20</item>
+    </string-array>
+	
+	<string name="title_category_about">About</string>
+	<string name="title_application_version">Version</string>
+	
+	<string name="title_category_search">Search</string>
+	<string name="title_highlight_fg">Highlight Text Color</string>
+	<string name="title_highlight_bg">Highlight BG Color</string>
+	
+	<string name="title_search_hidden">Search in hidden files</string>
+	<string name="title_search_hidden_on">Search for text in hidden files and folders</string>
+	<string name="title_search_hidden_off">Exclude from Search hidden files and folders</string>
+	
+	<string name="title_create_backup">Create backup</string>
+	<string name="title_create_backup_on">Create backup file type "~"</string>
+	<string name="title_create_backup_off">Do not create a backup copy</string>
+	
+	<string name="title_remove_item">Remove item</string>
+    <string name="msg_remove_item">%s\nAre you sure?</string>
+	
+	<string name="title_replace">Replace</string>
+	
+	<!--ACTIONS-->
+	<string name="action_ok">Ok</string>
+	<string name="action_cancel">Cancel</string>
+	<string name="action_yes">Yes</string>
+	<string name="action_no">No</string>
+	
+	<string name="action_no_ext">No Extension</string>
+	<string name="action_add_ext">Add Extension</string>
+	<string name="action_add_dir">Add Directory</string>
+	
+	<string name="action_open">Open</string>
+	<string name="action_search">Search</string>
+	<string name="action_copy">Copy</string>
+	
+	<string name="action_select">Select</string>
+	<string name="action_select_all">Select all</string>
+	<string name="action_unselect_all">Unselect all</string>
+	<string name="action_select_invert">Invert selection</string>
+	
+	<string name="action_expand_all">Expand all</string>
+	<string name="action_collapse_all">Collapse all</string>
+	
+	<string name="action_replace">Replece</string>
+	<string name="action_replace_selected">Replece selected</string>
+	<string name="action_replace_all">Replece all</string>
+	
+	<string name="action_send">Send</string>
+	
+	<string name="action_next">Next Match</string>
+	<string name="action_clear">Clear Search</string>
+	<string name="action_options">Options</string>
+	<string name="action_preference">Preferences</string>
+	<string name="action_home">Home</string>
+	<string name="action_help">Help</string>
+	<string name="action_quit">Quit</string>
+	
+	<!--MESSEGE-->
+	<string name="msg_no_target_dir">There is no target directory.\nPlease set target directory.</string>
+	<string name="msg_no_search_query">Missing keywords.</string>
+	<string name="msg_progress">%1$s (in %2$d files)</string>
+	<string name="msg_grep_finished">Finished.</string>
+    <string name="msg_grep_canceled">Canceled.</string>
+	<string name="msg_replace">Replace %1$s on:</string>
+	<string name="msg_replace_ok">The replacement of <b>%1$s</b> with <b>%2$s</b> is complete.</string>
+	<string name="msg_replace_canceled">The replacement of <b>%1$s</b> with <b>%2$s</b> is canceled.</string>
+	<string name="msg_copied">Copied to clipboard</string>
+	
+	<!--Colorpicker-->
+	<string name="color_picker_input">Input Color code</string>
+	<string name="color_picker_hint">Enter 6-digit hexadecimal</string>
+
+	<string name="about_text">
+		Search and replace in text files. \n
+		The program is distributed <b>\"as is\"</b>. \n
+		The author is not responsible for lost or corrupted files.\n
+		The program was created for personal use, and since I am not a programmer, \n
+		the program code is written on the principle that <b>\"I know and I can do it\"</b>.\n
+		I will be glad to any help in improving the program. \n
+		Thank you.
+	</string>
+	<string name="about_library_title">Used libraries and projects</string>
+	<string name="about_library">
+		When creating the program, \n
+		freely distributed projects and libraries were used:\n
+		aGrep:\n
+		https://github.com/jiro-aqua/aGrep\n\n
+		ExFilePicker:\n
+		https://github.com/bartwell/ExFilePicker
+	</string>
+	
+	<string name="about_license_title">License</string>
+	<string name="about_google_license">
+		Copyright (C) 2005-2015 The Android Open Source Project
+		\n\nLicensed under the Apache License, Version 2.0 (the "License");
+		\nyou may not use this file except in compliance with the License.
+		\nYou may obtain a copy of the License at\n\nhttp://www.apache.org/licenses/LICENSE-2.0
+		\n\nUnless required by applicable law or agreed to in writing, software distributed under the
+		License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+		either express or implied. See the License for the specific language governing permissions
+		and limitations under the License.
+	</string>
+	
+</resources>

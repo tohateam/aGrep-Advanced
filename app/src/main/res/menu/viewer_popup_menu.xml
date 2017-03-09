@@ -1,0 +1,18 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    
+    <item
+        android:id="@+id/item_copy"
+		android:icon="@drawable/ic_copy"
+        android:title="@string/action_copy"
+		android:showAsAction="always"/>
+	<item
+		android:id="@+id/item_replace"
+		android:icon="@drawable/ic_reply"
+		android:title="@string/action_replace"
+		android:showAsAction="always"/>
+
+	<item
+		android:id="@+id/item_send"
+		android:title="@string/action_send"/>
+	
+</menu>

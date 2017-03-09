@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView
+	xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@android:id/title"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:textColor="#DE0EB0E6"
+    android:textStyle="bold"
+    android:textIsSelectable="false"
+    android:textAllCaps="true"
+    android:layout_marginTop="0dp"
+    android:paddingLeft="20dp"/>
+    <!--android:background="@drawable/btn_galaxy_feedback_background" />-->
+

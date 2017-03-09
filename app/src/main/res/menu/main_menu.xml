@@ -1,0 +1,24 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+	<item
+		android:id="@+id/action_preference"
+		android:title="@string/action_preference"
+		android:enabled="true">
+	</item>
+	<item
+		android:id="@+id/help_menu"
+		android:title="@string/action_help"
+		android:enabled="true">
+	</item>
+	<item
+		android:id="@+id/action_about"
+		android:title="@string/app_about"
+		android:enabled="true">
+	</item>
+	
+	<item
+		android:id="@+id/quit_menu"
+		android:title="@string/action_quit"
+		android:enabled="true">
+	</item>	
+</menu>

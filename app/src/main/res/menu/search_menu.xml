@@ -1,0 +1,47 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+	<item
+		android:id="@+id/item_expand_all"
+		android:icon="@drawable/ic_unfold_more"
+		android:title="@string/action_expand_all"
+		android:showAsAction="always"/>
+   	<item
+		android:id="@+id/item_collapse_all"
+		android:icon="@drawable/ic_unfold_less"
+		android:title="@string/action_collapse_all"
+		android:showAsAction="always"/>
+
+	<item
+		android:id="@+id/item_select"
+		android:icon="@drawable/ic_select_all"
+		android:title="@string/action_select"
+		android:showAsAction="always">
+		<menu>
+			<item
+				android:id="@+id/item_select_all"
+				android:title="@string/action_select_all"/>
+			<item
+				android:id="@+id/item_unselect_all"
+				android:title="@string/action_unselect_all"/>
+			<item
+				android:id="@+id/item_select_invert"
+				android:title="@string/action_select_invert"/>
+		</menu>
+	</item>
+
+	<item
+		android:id="@+id/item_replace"
+		android:icon="@drawable/ic_reply"
+		android:title="@string/action_replace"
+		android:showAsAction="always">
+		<menu>
+			<item
+				android:id="@+id/item_replace_selected"
+				android:title="@string/action_replace_selected"/>
+
+			<item
+				android:id="@+id/item_replace_all"
+				android:title="@string/action_replace_all"/>
+		</menu>
+	</item>
+</menu>
