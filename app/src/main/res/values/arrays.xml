@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<!--Размер шрифта-->
+	<string-array name="font_size_entries">
+        <item>10 sp</item>
+        <item>11 sp</item>
+        <item>12 sp</item>
+        <item>13 sp</item>
+        <item>14 sp</item>
+        <item>15 sp</item>
+		<item>16 sp</item>
+        <item>17 sp</item>
+        <item>18 sp</item>
+        <item>19 sp</item>
+        <item>20 sp</item>
+	</string-array>
+    <string-array name="font_size_values">
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+        <item>13</item>
+        <item>14</item>
+        <item>15</item>
+		<item>16</item>
+        <item>17</item>
+        <item>18</item>
+        <item>19</item>
+        <item>20</item>
+    </string-array>
+	
+</resources>

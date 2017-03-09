@@ -5,11 +5,13 @@
 		android:title="@string/action_preference"
 		android:enabled="true">
 	</item>
+	
 	<item
 		android:id="@+id/help_menu"
 		android:title="@string/action_help"
 		android:enabled="true">
 	</item>
+	
 	<item
 		android:id="@+id/action_about"
 		android:title="@string/app_about"

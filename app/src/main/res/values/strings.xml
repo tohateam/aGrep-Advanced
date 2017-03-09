@@ -23,32 +23,6 @@
 	
 	<string name="title_category_global">Global</string>
 	<string name="title_font_size">Font Size</string>
-	<string-array name="font_size_entries">
-        <item>10</item>
-        <item>11</item>
-        <item>12</item>
-        <item>13</item>
-        <item>14</item>
-        <item>15</item>
-		<item>16</item>
-        <item>17</item>
-        <item>18</item>
-        <item>19</item>
-        <item>20</item>
-	</string-array>
-    <string-array name="font_size_values">
-        <item>10</item>
-        <item>11</item>
-        <item>12</item>
-        <item>13</item>
-        <item>14</item>
-        <item>15</item>
-		<item>16</item>
-        <item>17</item>
-        <item>18</item>
-        <item>19</item>
-        <item>20</item>
-    </string-array>
 	
 	<string name="title_category_about">About</string>
 	<string name="title_application_version">Version</string>
@@ -98,11 +72,7 @@
 	
 	<string name="action_send">Send</string>
 	
-	<string name="action_next">Next Match</string>
-	<string name="action_clear">Clear Search</string>
-	<string name="action_options">Options</string>
 	<string name="action_preference">Preferences</string>
-	<string name="action_home">Home</string>
 	<string name="action_help">Help</string>
 	<string name="action_quit">Quit</string>
 	
@@ -123,6 +93,7 @@
 
 	<string name="about_text">
 		Search and replace in text files. \n
+		Site: https://github.com/tohateam/aGrep-Advanced\n\n
 		The program is distributed <b>\"as is\"</b>. \n
 		The author is not responsible for lost or corrupted files.\n
 		The program was created for personal use, and since I am not a programmer, \n
@@ -146,10 +117,11 @@
 		\n\nLicensed under the Apache License, Version 2.0 (the "License");
 		\nyou may not use this file except in compliance with the License.
 		\nYou may obtain a copy of the License at\n\nhttp://www.apache.org/licenses/LICENSE-2.0
-		\n\nUnless required by applicable law or agreed to in writing, software distributed under the
-		License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
-		either express or implied. See the License for the specific language governing permissions
-		and limitations under the License.
+		\n\nUnless required by applicable law or agreed to in writing, 
+		\nsoftware distributed under the License is distributed on an "AS IS" BASIS, 
+		\nWITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
+		\nSee the License for the specific language governing permissions
+		\nand limitations under the License.
 	</string>
 	
 </resources>
