@@ -33,10 +33,6 @@ public class MainActivity extends Activity
 		mPrefs = Prefs.loadPrefes(this);
 		
         setContentView(R.layout.main);
-		// Адаптер истории поисковых фраз
-//		mRecentAdapter = new ArrayAdapter<String>(this, 
-//												  android.R.layout.simple_dropdown_item_1line, 
-//												  new ArrayList<String>());		
 		initSearch();
     } // end onCreate
 
@@ -113,6 +109,7 @@ public class MainActivity extends Activity
 					intent.putExtra(ExFilePicker.ENABLE_QUIT_BUTTON, true);
 					intent.putExtra(ExFilePicker.DISABLE_SORT_BUTTON, false);
 					intent.putExtra(ExFilePicker.DISABLE_NEW_FOLDER_BUTTON, true);
+					//intent.putExtra(ExFilePicker.SET_FILTER_EXCLUDE, new String[]{"png", "jpg", "apk", "raw", "zip", "rar", "tar"});
 					startActivityForResult(intent, EX_FILE_PICKER_RESULT);
 				}
 			});
@@ -130,11 +127,8 @@ public class MainActivity extends Activity
 						.setView(edtInput)
 						.setPositiveButton(R.string.action_ok, new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int whichButton) {
-								/* OKボタンをクリックした時の処理 */
-
 								String ext = edtInput.getText().toString();
 								if (ext != null && ext.length() > 0) {
-									// 二重チェック
 									for (CheckedString t: mPrefs.mExtList) {
 										if (t.string.equalsIgnoreCase(ext)) {
 											return;

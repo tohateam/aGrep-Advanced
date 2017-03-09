@@ -5,6 +5,7 @@ import android.content.*;
 import android.net.*;
 import android.os.*;
 import android.view.*;
+import android.view.ContextMenu.*;
 import android.view.View.*;
 import android.widget.*;
 import android.widget.PopupMenu.*;
@@ -15,7 +16,7 @@ import ua.tohateam.aGrep.model.*;
 import ua.tohateam.aGrep.utils.*;
 
 public class SearchResult extends Activity 
-implements AsyncResponse, OnMenuItemClickListener
+implements AsyncResponse
 {
 	private MyUtils mUtils;
     private Prefs mPrefs;
@@ -54,6 +55,7 @@ implements AsyncResponse, OnMenuItemClickListener
         }
 
 		mResultList = (ExpandableListView) findViewById(R.id.search_result_list);
+		registerForContextMenu(mResultList);
 		mData = new ArrayList<SearchModel>();
 
         Intent it = getIntent();
@@ -118,11 +120,6 @@ implements AsyncResponse, OnMenuItemClickListener
 					if (ExpandableListView.getPackedPositionType(id) == ExpandableListView.PACKED_POSITION_TYPE_CHILD) {
 						mCurentGroup = ExpandableListView.getPackedPositionGroup(id);
 						mCurentChild = ExpandableListView.getPackedPositionChild(id);
-						PopupMenu popupMenu = new PopupMenu(mContext, view);
-						popupMenu.setOnMenuItemClickListener(SearchResult.this);
-						popupMenu.inflate(R.menu.search_popup_menu);
-						popupMenu.show();
-
 						return true;
 					}
 					return false;
@@ -130,6 +127,36 @@ implements AsyncResponse, OnMenuItemClickListener
 			});
 	}
 
+	/*
+	 *	Контекстное меню
+	 */
+	@Override
+	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
+		super.onCreateContextMenu(menu, v, menuInfo);
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.search_popup_menu, menu);
+	}
+	@Override
+	public boolean onContextItemSelected(MenuItem item) {
+		//AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
+		switch (item.getItemId()) {
+			case R.id.item_replace_group:
+				mGroupModel.get(mCurentGroup).setSelected(true);
+				showReplaceDialog(true);
+				return true;
+			case R.id.item_send:
+				Intent intent = new Intent();
+				intent.setAction(Intent.ACTION_VIEW);
+				intent.setDataAndType(Uri.parse("file://" + mGroupModel.get(mCurentGroup).getPath().getAbsolutePath()), "text/plain");
+				startActivity(intent);
+				return true;
+			default:
+				return super.onContextItemSelected(item);
+		}
+	}
+	
+	
+	
     public ArrayList<GroupModel> setListGroups() {
         ArrayList<GroupModel> group_list = new ArrayList<GroupModel>();
         ArrayList<ChildModel> child_list = null;
@@ -219,26 +246,7 @@ implements AsyncResponse, OnMenuItemClickListener
 
 		alertDialog.show();
 	}
-	
-	/*********************************************************************
-	 * Всплывающее меню списка
-	 *********************************************************************/
-	@Override
-	public boolean onMenuItemClick(MenuItem item) {
-		switch (item.getItemId()) {
-			case R.id.item_replace_group:
-				mGroupModel.get(mCurentGroup).setSelected(true);
-				showReplaceDialog(true);
-				break;
-			case R.id.item_send:
-				Intent intent = new Intent();
-				intent.setAction(Intent.ACTION_VIEW);
-				intent.setDataAndType(Uri.parse("file://" + mGroupModel.get(mCurentGroup).getPath().getAbsolutePath()), "text/plain");
-				startActivity(intent);
-				break;
-		}
-		return true;
-	}
+
 
 	@Override
     public boolean onCreateOptionsMenu(Menu menu) {
