@@ -43,6 +43,10 @@
 
 	<string name="title_replace">Замена</string>
 
+	<string name="title_save_file">Сохранение файла</string>
+	<string name="msg_save_file">Файл %1$s изменен, сохранить изменения?</string>
+	<string name="msg_saved_file">Файл %1$s сохранён.</string>
+	
 	<!--ACTIONS-->
 	<string name="action_ok">Ok</string>
 	<string name="action_cancel">Отменить</string>
@@ -70,6 +74,7 @@
 	<string name="action_replace_all">Заменить во всех</string>
 
 	<string name="action_view_tools">Инструменты</string>
+	<string name="action_view_save">Сохранить</string>
 	<string name="action_send">Отправить</string>
 	<string name="action_mode_view">Просмотр</string>
 	<string name="action_mode_edit">Редактирование</string>

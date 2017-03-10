@@ -8,6 +8,12 @@
 		app:showAsAction="always"/>
 	
 	<item
+		android:id="@+id/item_view_save"
+		android:icon="@drawable/ic_content_save"
+		android:title="@string/action_view_save"
+		android:visible="false"
+		app:showAsAction="always"/>
+	<item
 		android:id="@+id/item_view_font_size"
 		android:icon="@drawable/ic_format_size"
 		android:title="@string/title_font_size"

@@ -7,18 +7,27 @@
 	<LinearLayout
 		android:layout_height="wrap_content"
 		android:layout_width="match_parent"
-		android:orientation="horizontal"
+		android:orientation="vertical"
 		android:paddingLeft="10dp"
 		android:paddingRight="10dp">
 
 		<TextView
 			android:layout_height="match_parent"
 			android:layout_width="match_parent"
-			android:text="Text"
 			android:id="@+id/text_view_body"
 			android:layout_weight="1.0"
 			android:layout_marginLeft="10dp"
 			android:gravity="top|left"/>
+
+		<EditText
+			android:layout_height="match_parent"
+			android:layout_width="match_parent"
+			android:ems="10"
+			android:layout_marginLeft="10dp"
+			android:id="@+id/text_view_edit"
+			android:gravity="top|left"
+			android:layout_weight="1.0"
+			android:visibility="gone"/>
 
 	</LinearLayout>
 

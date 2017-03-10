@@ -46,6 +46,10 @@
 	
 	<string name="title_replace">Replace</string>
 	
+	<string name="title_save_file">Save file</string>
+	<string name="msg_save_file">The file %1$s is changed, save the changes?</string>
+	<string name="msg_saved_file">The file %1$s is saved</string>
+	
 	<!--ACTIONS-->
 	<string name="action_ok">Ok</string>
 	<string name="action_cancel">Cancel</string>
@@ -73,6 +77,7 @@
 	<string name="action_replace_all">Replece all</string>
 	
 	<string name="action_view_tools">Tools</string>
+	<string name="action_view_save">Save</string>
 	<string name="action_send">Send</string>
 	<string name="action_mode_view">View</string>
 	<string name="action_mode_edit">Edit</string>

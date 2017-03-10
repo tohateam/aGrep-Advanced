@@ -5,8 +5,10 @@ import android.content.*;
 import android.content.res.*;
 import android.net.*;
 import android.os.*;
+import android.support.v4.app.*;
 import android.support.v7.app.*;
 import android.support.v7.widget.*;
+import android.text.*;
 import android.view.*;
 import android.view.View.*;
 import android.widget.*;
@@ -16,6 +18,7 @@ import java.util.regex.*;
 import ua.tohateam.aGrep.utils.*;
 
 import android.app.AlertDialog;
+import android.content.ClipboardManager;
 import android.support.v7.widget.Toolbar;
 
 public class TextViewerActivity extends AppCompatActivity 
@@ -26,7 +29,7 @@ implements AsyncResponse
 
 	private Toolbar toolbar;
 	ActionMode mActionMode;
-	
+
 	private MyUtils mUtils;
     private Prefs mPrefs;
 	private Context mContext;
@@ -35,13 +38,16 @@ implements AsyncResponse
 
 	private ArrayAdapter<String> mRecentAdapter;
 	private TextView mTextPreview;
+	private EditText mEditText;
 	private StringBuilder mLoadText = null;
 
 	private String mPath;
 	private String mQuery;
 	private String mReplaceQuery;
+	private String mTitle;
 
 	private int mFontSize;
+	private boolean mTextChanged = false;
 
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,13 +69,13 @@ implements AsyncResponse
             }
 		}
 
-		String title = getString(R.string.app_text_view) + " : " + mPath.substring(mPath.lastIndexOf("/") + 1);
+		mTitle = getString(R.string.app_text_view) + " : " + mPath.substring(mPath.lastIndexOf("/") + 1);
 
 		toolbar = (Toolbar) findViewById(R.id.toolbar);
 		if (toolbar != null) {
 			setSupportActionBar(toolbar);
 			if (getSupportActionBar() != null) {
-				getSupportActionBar().setTitle(title);
+				getSupportActionBar().setTitle(mTitle);
 				getSupportActionBar().setDisplayShowTitleEnabled(true);
 				getSupportActionBar().setHomeButtonEnabled(true);
 				getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -92,7 +98,28 @@ implements AsyncResponse
         mRecentAdapter = new ArrayAdapter<String>(mContext, 
 												  android.R.layout.simple_dropdown_item_1line, 
 												  new ArrayList <String>());
+
+		mEditText = (EditText) findViewById(R.id.text_view_edit);
+		mEditText.setTextSize(mFontSize);
+		mEditText.addTextChangedListener(textWatcher);
 	}
+
+	// Определение изменения файла
+	private TextWatcher textWatcher = new TextWatcher() {
+		public void afterTextChanged(Editable s) {
+		}
+
+		public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+			if (after == 1 || count == 1) {
+				mTextChanged = true;
+				getSupportActionBar().setTitle(mTitle + " *");
+			}
+		}
+
+		public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+		}
+	};
 
 	private ActionMode.Callback mActionModeCallback = new ActionMode.Callback() {
 		@Override
@@ -169,15 +196,42 @@ implements AsyncResponse
 		Resources res = getResources();
 
 		switch (item.getItemId()) {
+			case android.R.id.home:
+				if (mTextChanged)
+					dialogSave();
+				else
+					NavUtils.navigateUpFromSameTask(this);
+				return true;
+			case R.id.item_view_mode:
+				// 0-visiable, 4- invisiable, 8- gone
+				if (mTextPreview.getVisibility() == 0) {
+					mTextPreview.setVisibility(8);
+					mEditText.setVisibility(0);
+					mEditText.setText(mTextPreview.getText());
+					mTextPreview.setText("");
+				} else {
+					mTextPreview.setVisibility(0);
+					mEditText.setVisibility(8);
+					mTextPreview.setText(mEditText.getText());
+					mEditText.setText("");
+				}
+				invalidateOptionsMenu();
+				return true;
+			case R.id.item_view_save:
+				saveFile(false);
+				return true;
+
 			case R.id.item_view_font_up:
 				if (mFontSize < res.getInteger(R.integer.max_font_size))
 					mFontSize = mFontSize + 1;
 				mTextPreview.setTextSize(mFontSize);
+				mEditText.setTextSize(mFontSize);
 				return true;
 			case R.id.item_view_font_down:
 				if (mFontSize > res.getInteger(R.integer.min_font_size))
 					mFontSize = mFontSize - 1;
 				mTextPreview.setTextSize(mFontSize);
+				mEditText.setTextSize(mFontSize);
 				return true;
 			case R.id.item_view_font_default:
 				mFontSize = mPrefs.mFontSize;
@@ -186,6 +240,24 @@ implements AsyncResponse
 		}
         return super.onOptionsItemSelected(item);
 	}
+	@Override
+	public boolean onPrepareOptionsMenu(Menu menu) {
+		MenuItem item_view = menu.findItem(R.id.item_view_mode);
+		MenuItem item_save = menu.findItem(R.id.item_view_save);
+		if (mTextPreview.getVisibility() == 0) {
+			item_view.setIcon(R.drawable.ic_eye);
+			if (mTextChanged)
+				item_save.setVisible(true);
+			else
+				item_save.setVisible(false);
+		} else {
+			item_view.setIcon(R.drawable.ic_pencil);
+			item_save.setVisible(true);
+		}
+		//menu.findItem(R.id.item_file).getSubMenu().setGroupEnabled(R.id.group_file, true);
+		return super.onPrepareOptionsMenu(menu);
+	}
+
 
 	private void showReplaceDialog() {
 		AlertDialog.Builder alertDialog = new AlertDialog.Builder(mContext);
@@ -240,6 +312,62 @@ implements AsyncResponse
 		startLoadFile(mReplaceQuery);
 	}
 
+	private void dialogSave() {
+		AlertDialog.Builder builderSingle = new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.AppCompatAlertDialogStyle));
+		builderSingle.setIcon(R.drawable.ic_content_save);
+		builderSingle.setTitle(getString(R.string.title_save_file));
+		builderSingle.setMessage(getString(R.string.msg_save_file, mQuery));
+
+		builderSingle.setNegativeButton(getString(R.string.action_cancel), new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					dialog.dismiss();
+				}
+			});
+		builderSingle.setPositiveButton(R.string.action_yes,
+			new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int which) {
+					saveFile(true);
+				}
+			});
+		builderSingle.setNeutralButton(R.string.action_no,
+			new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int which) {
+					NavUtils.navigateUpFromSameTask(TextViewerActivity.this);
+				}
+			});
+
+		builderSingle.show();
+	}
+
+	private void saveFile(boolean exit) {
+		if (mPrefs.mCreateBackup) {
+			// создать резервную копию
+			try {
+				mUtils.copyFile(new File(mPath), new File(mPath + "~"));
+			} catch (IOException e) {}
+		}
+		
+		String text = null;
+		if (mTextPreview.getVisibility() == 0) {
+			text = mTextPreview.getText().toString();
+		} else {
+			text = mEditText.getText().toString();
+		}
+		mUtils.saveFile(new File(mPath), text);
+
+		if (exit)
+			NavUtils.navigateUpFromSameTask(this);
+		else {
+			mTextChanged = false;
+			getSupportActionBar().setTitle(mTitle);
+		}
+		String msg = getString(R.string.msg_saved_file, mPath.substring(mPath.lastIndexOf("/") + 1));
+		Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
+	}
+
+
+	/********************************************************************************/
 	/***** Замена в файлах *****/
     class ReplaceTask extends AsyncTask<String, Void, Boolean>
     {
