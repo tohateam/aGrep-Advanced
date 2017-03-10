@@ -2,27 +2,32 @@ package ua.tohateam.aGrep;
 
 import android.app.*;
 import android.content.*;
+import android.graphics.drawable.*;
 import android.net.*;
 import android.os.*;
+import android.support.v4.app.*;
+import android.support.v7.app.*;
+import android.support.v7.widget.*;
 import android.view.*;
-import android.view.ContextMenu.*;
 import android.view.View.*;
 import android.widget.*;
-import android.widget.PopupMenu.*;
+import android.widget.ExpandableListView.*;
 import java.io.*;
 import java.util.*;
 import java.util.regex.*;
 import ua.tohateam.aGrep.model.*;
 import ua.tohateam.aGrep.utils.*;
 
-import android.support.v7.app.AppCompatActivity;
+import android.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
+import android.view.View.OnClickListener;
 
 public class SearchResult extends AppCompatActivity 
 implements AsyncResponse
 {
+
 	private Toolbar toolbar;
-	
+
 	private MyUtils mUtils;
     private Prefs mPrefs;
 	private ExpandableListView mResultList;
@@ -33,7 +38,7 @@ implements AsyncResponse
 
 	private String mQuery;
 	private String mReplaceQuery;
-	
+
 	private ArrayList<SearchModel> mData;
 	private ArrayList<GroupModel> mGroupModel;
 	private ArrayAdapter<String> mRecentAdapter;
@@ -48,23 +53,22 @@ implements AsyncResponse
 		mContext = this;
 		mUtils = new MyUtils();
 		mPrefs = Prefs.loadPrefes(this);
-		
+
 		toolbar = (Toolbar) findViewById(R.id.toolbar);
 		if (toolbar != null) {
 			setSupportActionBar(toolbar);
 			if (getSupportActionBar() != null) {
 				getSupportActionBar().setTitle(getString(R.string.app_search_result));
-				getSupportActionBar().setDisplayShowHomeEnabled(true);
-				getSupportActionBar().setLogo(R.drawable.ic_launcher);
-				getSupportActionBar().setDisplayUseLogoEnabled(true);
-				//toolbar.setNavigationIcon(R.drawable.ic_arrow_left);
+				getSupportActionBar().setDisplayShowTitleEnabled(true);
+				getSupportActionBar().setHomeButtonEnabled(true);
+				getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 			}
 		}
-		
+
         mRecentAdapter = new ArrayAdapter<String>(mContext, 
 												  android.R.layout.simple_dropdown_item_1line, 
 												  new ArrayList <String>());
-		
+
 		// Если не указаны директории поиска то выходим
 		if (mPrefs.mDirList.size() == 0) {
             Toast.makeText(getApplicationContext(), R.string.msg_no_target_dir, Toast.LENGTH_LONG).show();
@@ -73,14 +77,13 @@ implements AsyncResponse
         }
 
 		mResultList = (ExpandableListView) findViewById(R.id.search_result_list);
-		registerForContextMenu(mResultList);
 		mData = new ArrayList<SearchModel>();
 
         Intent it = getIntent();
 		if (it != null && Intent.ACTION_SEARCH.equals(it.getAction())) {
             Bundle extras = it.getExtras();
             mQuery = extras.getString(SearchManager.QUERY);
-			getSupportActionBar().setTitle(getString(R.string.app_search_result)+" : "+mQuery);
+			getSupportActionBar().setTitle(getString(R.string.app_search_result) + " : " + mQuery);
 
             if (mQuery != null && mQuery.length() > 0) {
                 mPrefs.addRecent(this, mQuery);
@@ -114,20 +117,7 @@ implements AsyncResponse
 		}
 	}
 
-	public void initToolBar() {
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle(R.string.app_search_result);
-        setSupportActionBar(toolbar);
-        toolbar.setNavigationIcon(R.drawable.ic_menu_preferences);
-        toolbar.setNavigationOnClickListener(
-		new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				Toast.makeText(mContext, "clicking the toolbar!", Toast.LENGTH_SHORT).show();
-			}
-		});
-    }
-	
+
 	private void showResult() {
         mGroupModel = setListGroups();
         mAdapter = new SearchAdapter(this, mGroupModel);
@@ -153,43 +143,25 @@ implements AsyncResponse
 					if (ExpandableListView.getPackedPositionType(id) == ExpandableListView.PACKED_POSITION_TYPE_CHILD) {
 						mCurentGroup = ExpandableListView.getPackedPositionGroup(id);
 						mCurentChild = ExpandableListView.getPackedPositionChild(id);
+						dialogMenu();
 						return true;
 					}
 					return false;
 				}
 			});
+			
+		mResultList.setOnGroupClickListener(new OnGroupClickListener() {
+            @Override
+            public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
+				if(mGroupModel.get(groupPosition).isSelected()) {
+					invalidateOptionsMenu();
+				}
+                return false;
+            }
+        });
 	}
 
-	/*
-	 *	Контекстное меню
-	 */
-	@Override
-	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
-		super.onCreateContextMenu(menu, v, menuInfo);
-		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.search_popup_menu, menu);
-	}
-	@Override
-	public boolean onContextItemSelected(MenuItem item) {
-		//AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
-		switch (item.getItemId()) {
-			case R.id.item_replace_group:
-				mGroupModel.get(mCurentGroup).setSelected(true);
-				showReplaceDialog(true);
-				return true;
-			case R.id.item_send:
-				Intent intent = new Intent();
-				intent.setAction(Intent.ACTION_VIEW);
-				intent.setDataAndType(Uri.parse("file://" + mGroupModel.get(mCurentGroup).getPath().getAbsolutePath()), "text/plain");
-				startActivity(intent);
-				return true;
-			default:
-				return super.onContextItemSelected(item);
-		}
-	}
-	
-	
-	
+	// Заполняем список
     public ArrayList<GroupModel> setListGroups() {
         ArrayList<GroupModel> group_list = new ArrayList<GroupModel>();
         ArrayList<ChildModel> child_list = null;
@@ -243,11 +215,10 @@ implements AsyncResponse
 		return group_list;
     }
 
-	//Прлучаем результаты поиска
+	// Уведомляем о результах поиска/замены
 	@Override
 	public void onProcessFinish(boolean result, int id) {
-		// TODO: Implement this method
-		if (result) {
+		if (result && mData.size() != 0) {
 			if (id == 0) { // поиск
 				// Сортируем по пути
 				Collections.sort(mData, new Comparator<SearchModel>() {
@@ -259,15 +230,32 @@ implements AsyncResponse
 				showResult();
 			} else if (id == 1) { // замена
 				String msg = result ? getString(R.string.msg_replace_ok, mQuery, mReplaceQuery) : getString(R.string.msg_replace_canceled, mQuery, mReplaceQuery);
-				showResultDialog(msg);
+				showResultDialog(msg, true);
 			}
+		} else {
+			showResultDialog(getString(R.string.msg_replace_no, mQuery), false);
 		}
 	}
 
-	private void showResultDialog(String msg_result) {
-		AlertDialog.Builder alertDialog = new AlertDialog.Builder(SearchResult.this);
-		alertDialog.setIcon(R.drawable.ic_alert_info);
-		alertDialog.setTitle(getString(R.string.title_replace));
+	/*
+	 * Диалог завершения поиска/замены
+	 * msg_result - текст сообщения
+	 * type - true/false замена/поиск
+	 */
+	private void showResultDialog(String msg_result, boolean type) {
+		AlertDialog.Builder alertDialog = new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.AppCompatAlertDialogStyle));
+
+		Drawable micon = null;
+		String mtitile = null;
+		if(type) {
+			micon = getDrawable(R.drawable.ic_alert_box);
+			mtitile = getString(R.string.title_replace);
+		} else {
+			micon = getDrawable(R.drawable.ic_alert);
+			mtitile = getString(R.string.title_search);
+		}
+		alertDialog.setIcon(micon);
+		alertDialog.setTitle(mtitile);
 		alertDialog.setMessage(msg_result);
 
 		alertDialog.setPositiveButton(R.string.action_ok,
@@ -291,6 +279,9 @@ implements AsyncResponse
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
+			case android.R.id.home:
+				NavUtils.navigateUpFromSameTask(this);
+				return true;
 			case R.id.item_expand_all:
 				expandAll();
 				return true;
@@ -302,18 +293,21 @@ implements AsyncResponse
 					mGroupModel.get(i).setSelected(true);
 				}
 				mAdapter.notifyDataSetChanged();
+				invalidateOptionsMenu();
 				break;
 			case R.id.item_unselect_all:
 				for (int i=0; i < mGroupModel.size(); i++) {
 					mGroupModel.get(i).setSelected(false);
 				}
 				mAdapter.notifyDataSetChanged();
+				invalidateOptionsMenu();
 				break;
 			case R.id.item_select_invert:
 				for (int i=0; i < mGroupModel.size(); i++) {
 					mGroupModel.get(i).setSelected(!mGroupModel.get(i).isSelected());
 				}
 				mAdapter.notifyDataSetChanged();
+				invalidateOptionsMenu();
 				break;
 			case R.id.item_replace_selected:
 				showReplaceDialog(true);
@@ -327,6 +321,22 @@ implements AsyncResponse
         }
         return super.onOptionsItemSelected(item);
     }
+	@Override
+	public boolean onPrepareOptionsMenu(Menu menu) {
+		if (mAdapter != null) {
+			MenuItem item_unselect = menu.findItem(R.id.item_unselect_all);
+			MenuItem item_replace = menu.findItem(R.id.item_replace_selected);
+			if (mAdapter.countGroupSelected() != 0) {
+				item_unselect.setEnabled(true);
+				item_replace.setEnabled(true);
+			} else {
+				item_unselect.setEnabled(false);
+				item_replace.setEnabled(false);
+			}
+		}
+		//menu.findItem(R.id.item_file).getSubMenu().setGroupEnabled(R.id.group_file, true);
+		return super.onPrepareOptionsMenu(menu);
+	}
 
 	//method to expand all groups
 	private void expandAll() {
@@ -343,15 +353,14 @@ implements AsyncResponse
 			mResultList.collapseGroup(i);
 		}
 	}
-	
+
 	private void showReplaceDialog(final boolean replaceGroup) {
-		AlertDialog.Builder alertDialog = new AlertDialog.Builder(SearchResult.this);
+		AlertDialog.Builder alertDialog = new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.AppCompatAlertDialogStyle));
 		alertDialog.setIcon(R.drawable.ic_reply);
 		alertDialog.setTitle(getString(R.string.title_replace));
 		alertDialog.setMessage(getString(R.string.msg_replace, mQuery));
-		
+
 		LinearLayout view = (LinearLayout) getLayoutInflater().inflate(R.layout.replace_dialog, null);
-		// устанавливаем ее, как содержимое тела диалога
 		alertDialog.setView(view);
 		final AutoCompleteTextView edittext = (AutoCompleteTextView) view.findViewById(R.id.replace_text);
         edittext.setAdapter(mRecentAdapter);
@@ -369,7 +378,7 @@ implements AsyncResponse
 					edittext.showDropDown();
 				}
 			});
-		
+
 		alertDialog.setPositiveButton(R.string.action_ok,
 			new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int which) {
@@ -385,6 +394,7 @@ implements AsyncResponse
 		alertDialog.setNegativeButton(R.string.action_cancel,
 			new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int which) {
+					mGroupModel.get(mCurentGroup).setSelected(false);
 					dialog.cancel();
 				}
 			});
@@ -395,11 +405,53 @@ implements AsyncResponse
 	@Override
 	protected void onResume() {
 		super.onResume();
+		invalidateOptionsMenu();
 		final List<String> recent = mPrefs.getRecent(this);
 		mRecentAdapter.clear();
 		mRecentAdapter.addAll(recent);
 		mRecentAdapter.notifyDataSetChanged();
 	}
+
+	/**
+	  * Меню при долгом тапе на строке
+	 **/
+	private void dialogMenu() {
+		AlertDialog.Builder builderSingle = new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.AppCompatAlertDialogStyle));
+		builderSingle.setIcon(R.drawable.ic_launcher);
+		builderSingle.setTitle(getString(R.string.title_select_action));
+
+		final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.select_dialog_item);
+		arrayAdapter.add(getString(R.string.action_replace));
+		arrayAdapter.add(getString(R.string.action_send));
+		
+		builderSingle.setNegativeButton(getString(R.string.action_cancel), new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					dialog.dismiss();
+				}
+			});
+
+		builderSingle.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					switch(which) {
+						case 0:
+							mGroupModel.get(mCurentGroup).setSelected(true);
+							showReplaceDialog(true);
+							break;
+						case 1:
+							Intent intent = new Intent();
+							intent.setAction(Intent.ACTION_VIEW);
+							intent.setDataAndType(Uri.parse("file://" + mGroupModel.get(mCurentGroup).getPath().getAbsolutePath()), "text/plain");
+							startActivity(intent);
+							break;
+					}					
+				}
+			});
+		builderSingle.show();
+	}
+	
+	
 	
 	/***** Поиск в файлах *****/
     class GrepTask extends AsyncTask<String, SearchModel, Boolean>
@@ -419,8 +471,9 @@ implements AsyncResponse
         @Override
         protected void onPreExecute() {
             mCancelled = false;
-            mProgressDialog = new ProgressDialog(SearchResult.this);
+            mProgressDialog = new ProgressDialog(new ContextThemeWrapper(SearchResult.this, R.style.AppCompatAlertDialogStyle));
             mProgressDialog.setTitle(R.string.title_grep_spinner);
+			mProgressDialog.setIcon(R.drawable.ic_file_find);
             mProgressDialog.setMessage(mQuery);
             mProgressDialog.setIndeterminate(true);
             mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
@@ -631,7 +684,7 @@ implements AsyncResponse
 			String label;
 			int totalSize;
 		}
-		
+
 		public ReplaceTask(int id, boolean group) {
 			this.mResultId = id;
 			this.replaceGroup = group;
@@ -640,7 +693,7 @@ implements AsyncResponse
         @Override
         protected void onPreExecute() {
             mCancelled = false;
-            mProgressDialog = new ProgressDialog(SearchResult.this);
+            mProgressDialog = new ProgressDialog(new ContextThemeWrapper(SearchResult.this, R.style.AppCompatAlertDialogStyle));
             mProgressDialog.setTitle(R.string.title_replace_spinner);
             mProgressDialog.setMessage(mQuery);
             mProgressDialog.setIndeterminate(true);
@@ -661,24 +714,24 @@ implements AsyncResponse
 			boolean res = false;
 			Progress progress = new Progress();
 			progress.totalSize = mGroupModel.size();
-			
+
 			for (int i=0; i < mGroupModel.size(); i++) {
 				progress.label = mGroupModel.get(i).getName();
 				publishProgress(progress);
-				
-				if(replaceGroup && !mGroupModel.get(i).isSelected()) {
+
+				if (replaceGroup && !mGroupModel.get(i).isSelected()) {
 					continue;
 				}
-				
+
 				buffer = mUtils.replaceFile(mGroupModel.get(i).getPath(), params[1], mPattern);
 				if (buffer != null) {
-					if(mPrefs.mCreateBackup) {
+					if (mPrefs.mCreateBackup) {
 						// создать резервную копию
 						try {
 							mUtils.copyFile(mGroupModel.get(i).getPath(), new File(mGroupModel.get(i).getPath().toString() + "~"));
 						} catch (IOException e) {}
 					}
-					
+
 					mUtils.saveFile(mGroupModel.get(i).getPath(), buffer.toString());
 					res = true;
 				}
@@ -692,8 +745,8 @@ implements AsyncResponse
             mProgressDialog = null;
 
             Toast.makeText(getApplicationContext(), 
-					result ?R.string.msg_grep_finished: R.string.msg_grep_canceled, 
-					Toast.LENGTH_LONG).show();
+						   result ?R.string.msg_grep_finished: R.string.msg_grep_canceled, 
+						   Toast.LENGTH_LONG).show();
             mTask = null;
 			delegate.onProcessFinish(result, mResultId);
         }

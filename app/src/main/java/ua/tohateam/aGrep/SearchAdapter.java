@@ -161,11 +161,10 @@ public class SearchAdapter extends BaseExpandableListAdapter
         super.onGroupExpanded(groupPosition);
     }
 
-	private int countSelected(int groupPosition) {
+	public int countGroupSelected() {
 		int count = 0;
-		ArrayList<ChildModel> chList = groups.get(groupPosition).getItems();
-		for (int i=0; i < chList.size(); i++) {
-			if (chList.get(i).isSelected()) {
+		for (int i=0; i < groups.size(); i++) {
+			if (groups.get(i).isSelected()) {
 				count++;
 			}
 		}

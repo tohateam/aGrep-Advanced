@@ -7,7 +7,6 @@
 	</style>
 
 	<style name="AppTheme.Base" parent="Theme.AppCompat.NoActionBar">
-
 		<item name="colorPrimaryDark">@color/colorPrimaryDark</item>
 		<item name="colorPrimary">@color/colorPrimary</item>
 		<item name="colorAccent">@color/colorAccent</item>
@@ -25,9 +24,14 @@
 		<item name="alertDialogTheme">@style/AppCompatAlertDialogStyle</item>
 
 		<item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
+		<item name="windowActionModeOverlay">true</item>
+		<item name="actionModeStyle">@style/MyActionMode</item>
+		<!--- Иконка в режиме ActionBar -->
+		<!--<item name="actionModeCloseDrawable">@drawable/ic_back</item>-->
 
 	</style>
 
+	<!--Стиль бокового меню-->
 	<style name="DrawerArrowStyle" parent="Widget.AppCompat.DrawerArrowToggle">
 		<item name="spinBars">true</item>
 		<item name="color">@color/icons</item>
@@ -38,7 +42,16 @@
 		<item name="colorAccent">@color/colorAccent</item>
 		<item name="android:textColorPrimary">@color/textColorPrimary</item>
 		<item name="android:background">@color/rowBackground</item>
+		<item name="android:textColor">@color/textColorPrimary</item>
+		<!--<item name="android:windowTitleStyle">...</item>-->
+		<!--<item name="android:textAppearanceMedium">...</item>-->
+		<!--<item name="android:borderlessButtonStyle">...</item>-->
+		<!--<item name="android:buttonBarStyle">...</item>-->
 	</style>
 
+	<!--Стиль ActionBar-->
+	<style name="MyActionMode" parent="@style/Widget.AppCompat.ActionMode">
+		<item name="background">@color/colorPrimary</item>
+	</style>
 </resources>
 

@@ -24,7 +24,8 @@
 
 	<string name="title_category_about">О программе</string>
 	<string name="title_application_version">Версия</string>
-
+	<string name="title_select_action">Выберите действие</string>
+	
 	<string name="title_category_search">Поиск</string>
 	<string name="title_highlight_fg">Цвет найденого текста</string>
 	<string name="title_highlight_bg">Цвет фона найденного текста</string>
@@ -68,8 +69,14 @@
 	<string name="action_replace_selected">Заменить в выделенных</string>
 	<string name="action_replace_all">Заменить во всех</string>
 
+	<string name="action_view_tools">Инструменты</string>
 	<string name="action_send">Отправить</string>
-
+	<string name="action_mode_view">Просмотр</string>
+	<string name="action_mode_edit">Редактирование</string>
+	<string name="action_font_up">Шрифт +</string>
+	<string name="action_font_down">Шрифт -</string>
+	<string name="action_font_default">По умолчанию</string>
+	
 	<string name="action_preference">Настройки</string>
 	<string name="action_help">Справка</string>
 	<string name="action_quit">Выход</string>
@@ -80,9 +87,10 @@
 	<string name="msg_progress">%1$s (в %2$d файлах)</string>
 	<string name="msg_grep_finished">Завершено.</string>
     <string name="msg_grep_canceled">Отменено.</string>
-	<string name="msg_replace">Заменить %1$s на:</string>
+	<string name="msg_replace">Заменить <b>%1$s</b> на:</string>
 	<string name="msg_replace_ok">Замена <b>%1$s</b> на <b>%2$s</b> завершена.</string>
 	<string name="msg_replace_canceled">Замена <b>%1$s</b> на <b>%2$s</b> отменена.</string>
+	<string name="msg_replace_no">По Вашему запросу <b>%1$s</b> ни чего не найдено.</string>
 	<string name="msg_copied">Скопировано в буфер обмена</string>
 
 	<!--Colorpicker-->

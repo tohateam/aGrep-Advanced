@@ -23,12 +23,13 @@
 	<string name="title_replace_spinner">Now replacing…</string>
 	
 	<string name="title_category_global">Global</string>
-	<string name="title_font_size">Font Size</string>
+	<string name="title_font_size">Font size</string>
 	
 	<string name="title_category_about">About</string>
 	<string name="title_application_version">Version</string>
+	<string name="title_select_action">Select an action</string>
 	
-	<string name="title_category_search">Search</string>
+	<string name="title_search">Search</string>
 	<string name="title_highlight_fg">Highlight Text Color</string>
 	<string name="title_highlight_bg">Highlight BG Color</string>
 	
@@ -71,7 +72,13 @@
 	<string name="action_replace_selected">Replece selected</string>
 	<string name="action_replace_all">Replece all</string>
 	
+	<string name="action_view_tools">Tools</string>
 	<string name="action_send">Send</string>
+	<string name="action_mode_view">View</string>
+	<string name="action_mode_edit">Edit</string>
+	<string name="action_font_up">Font +</string>
+	<string name="action_font_down">Font -</string>
+	<string name="action_font_default">Default size</string>
 	
 	<string name="action_preference">Preferences</string>
 	<string name="action_help">Help</string>
@@ -83,9 +90,10 @@
 	<string name="msg_progress">%1$s (in %2$d files)</string>
 	<string name="msg_grep_finished">Finished.</string>
     <string name="msg_grep_canceled">Canceled.</string>
-	<string name="msg_replace">Replace %1$s on:</string>
+	<string name="msg_replace">Replace <b>%1$s</b> on:</string>
 	<string name="msg_replace_ok">The replacement of <b>%1$s</b> with <b>%2$s</b> is complete.</string>
 	<string name="msg_replace_canceled">The replacement of <b>%1$s</b> with <b>%2$s</b> is canceled.</string>
+	<string name="msg_replace_no">Your search <b>%1$s</b> did not match any documents.</string>
 	<string name="msg_copied">Copied to clipboard</string>
 	
 	<!--Colorpicker-->

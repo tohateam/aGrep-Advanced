@@ -3,36 +3,40 @@
 	xmlns:app="http://schemas.android.com/apk/res-auto">
 
 	<item
-		android:id="@+id/item_add_dir"
-		android:icon="@drawable/ic_unfold_more"
+		android:id="@+id/item_add_ext"
+		android:icon="@drawable/ic_library_plus"
 		android:title="@string/action_expand_all"
 		app:showAsAction="always"/>
 	<item
-		android:id="@+id/item_add_ext"
-		android:icon="@drawable/ic_unfold_more"
+		android:id="@+id/item_add_dir"
+		android:icon="@drawable/ic_folder_plus"
 		android:title="@string/action_expand_all"
 		app:showAsAction="always"/>
 	
 	<item
 		android:id="@+id/action_preference"
+		android:icon="@drawable/ic_cog"
 		android:title="@string/action_preference"
 		android:enabled="true">
 	</item>
 	
 	<item
 		android:id="@+id/help_menu"
+		android:icon="@drawable/ic_help_circle"
 		android:title="@string/action_help"
 		android:enabled="true">
 	</item>
 	
 	<item
 		android:id="@+id/action_about"
+		android:icon="@drawable/ic_information"
 		android:title="@string/app_about"
 		android:enabled="true">
 	</item>
 	
 	<item
-		android:id="@+id/quit_menu"
+		android:id="@+id/item_exit"
+		android:icon="@drawable/ic_exit_to_app"
 		android:title="@string/action_quit"
 		android:enabled="true">
 	</item>	

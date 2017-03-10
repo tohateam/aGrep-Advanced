@@ -1,0 +1,28 @@
+<menu
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto">
+	<item
+		android:id="@+id/item_view_mode"
+		android:icon="@drawable/ic_eye"
+		android:title="@string/action_mode_view"
+		app:showAsAction="always"/>
+	
+	<item
+		android:id="@+id/item_view_font_size"
+		android:icon="@drawable/ic_format_size"
+		android:title="@string/title_font_size"
+		app:showAsAction="ifRoom">
+		<menu>
+			<item
+				android:id="@+id/item_view_font_up"
+				android:title="@string/action_font_up" />
+			<item
+				android:id="@+id/item_view_font_down"
+				android:title="@string/action_font_down" />
+			<item
+				android:id="@+id/item_view_font_default"
+				android:title="@string/action_font_default" />
+		</menu>
+	</item>
+	
+</menu>

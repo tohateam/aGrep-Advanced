@@ -17,6 +17,7 @@
 		-->
 
 		<item name="android:alertDialogTheme">@style/AppCompatAlertDialogStyle</item>
+		<item name="windowActionModeOverlay">true</item>
 
 	</style>
 

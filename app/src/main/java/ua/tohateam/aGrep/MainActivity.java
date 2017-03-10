@@ -19,7 +19,7 @@ public class MainActivity extends AppCompatActivity
 	private static final int EX_FILE_PICKER_RESULT = 0;
 
 	private Toolbar toolbar;
-	
+
 	private ArrayAdapter<String> mRecentAdapter;
 	private Prefs mPrefs;
 	private LinearLayout mDirListView;
@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity
     private View.OnLongClickListener mExtListener;
 	private CompoundButton.OnCheckedChangeListener mCheckListener;
 	private AutoCompleteTextView edittext;
-	
+
 	private Context mContext;
 
     @Override
@@ -36,9 +36,9 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
 		mContext = this;
 		mPrefs = Prefs.loadPrefes(this);
-		
+
         setContentView(R.layout.main_activity);
-		
+
 		toolbar = (Toolbar) findViewById(R.id.toolbar);
 		if (toolbar != null) {
 			setSupportActionBar(toolbar);
@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity
 				getSupportActionBar().setLogo(R.drawable.ic_launcher);
 			}
 		}
-		
+
 		initSearch();
     } // end onCreate
 
@@ -111,70 +111,24 @@ public class MainActivity extends AppCompatActivity
 
         refreshDirList();
         refreshExtList();
-
+/*
         Button btnAddDir = (Button) findViewById(R.id.btn_add_dir);
         Button btnAddExt = (Button) findViewById(R.id.btn_add_ext);
 
         btnAddDir.setOnClickListener(new View.OnClickListener() {
-
 				@Override
 				public void onClick(View v) {
-					Intent intent = new Intent(getApplicationContext(), ru.bartwell.exfilepicker.ExFilePickerActivity.class);
-					intent.putExtra(ExFilePicker.SET_CHOICE_TYPE, ExFilePicker.CHOICE_TYPE_DIRECTORIES);
-					intent.putExtra(ExFilePicker.ENABLE_QUIT_BUTTON, true);
-					intent.putExtra(ExFilePicker.DISABLE_SORT_BUTTON, false);
-					intent.putExtra(ExFilePicker.DISABLE_NEW_FOLDER_BUTTON, true);
-					//intent.putExtra(ExFilePicker.SET_FILTER_EXCLUDE, new String[]{"png", "jpg", "apk", "raw", "zip", "rar", "tar"});
-					startActivityForResult(intent, EX_FILE_PICKER_RESULT);
+					dialogAddDir();
 				}
 			});
 
         btnAddExt.setOnClickListener(new View.OnClickListener() {
-
 				@Override
 				public void onClick(View view) {
-					// Create EditText
-					final EditText edtInput = new EditText(mContext);
-					edtInput.setSingleLine();
-					// Show Dialog
-					new AlertDialog.Builder(mContext)
-						.setTitle(R.string.title_label_addext)
-						.setView(edtInput)
-						.setPositiveButton(R.string.action_ok, new DialogInterface.OnClickListener() {
-							public void onClick(DialogInterface dialog, int whichButton) {
-								String ext = edtInput.getText().toString();
-								if (ext != null && ext.length() > 0) {
-									for (CheckedString t: mPrefs.mExtList) {
-										if (t.string.equalsIgnoreCase(ext)) {
-											return;
-										}
-									}
-									mPrefs.mExtList.add(new CheckedString(ext));
-									refreshExtList();
-									mPrefs.savePrefs(mContext);
-								}
-							}
-						})
-						.setNeutralButton(R.string.action_no_ext, new DialogInterface.OnClickListener() {
-							public void onClick(DialogInterface dialog, int whichButton) {
-								String ext = "*.";
-								// двойная проверка
-								for (CheckedString t: mPrefs.mExtList) {
-									if (t.string.equalsIgnoreCase(ext)) {
-										return;
-									}
-								}
-								mPrefs.mExtList.add(new CheckedString(ext));
-								refreshExtList();
-								mPrefs.savePrefs(mContext);
-							}
-						})
-						.setNegativeButton(R.string.action_cancel, null)
-						.setCancelable(true)
-						.show();
+					dialogAddExt();
 				}
 			});
-
+*/
 
         final CheckBox chkRe = (CheckBox) findViewById(R.id.cb_re);
         final CheckBox chkIc = (CheckBox) findViewById(R.id.cb_ic);
@@ -218,7 +172,7 @@ public class MainActivity extends AppCompatActivity
 					return false;
 				}
 			});
-        mRecentAdapter = new ArrayAdapter < String > (mContext, android.R.layout.simple_dropdown_item_1line, new ArrayList < String > ());
+        mRecentAdapter = new ArrayAdapter < String >(mContext, android.R.layout.simple_dropdown_item_1line, new ArrayList < String >());
         edittext.setAdapter(mRecentAdapter);
 
         ImageButton clrBtn = (ImageButton) findViewById(R.id.btn_clear_search);
@@ -248,10 +202,10 @@ public class MainActivity extends AppCompatActivity
 		// Если не указаны директории поиска то выходим
 		if (mPrefs.mDirList.size() == 0) {
             Toast.makeText(getApplicationContext(), R.string.msg_no_target_dir, Toast.LENGTH_LONG).show();
-        } else if(query.equals("")) {
+        } else if (query.equals("")) {
             Toast.makeText(getApplicationContext(), R.string.msg_no_search_query, Toast.LENGTH_LONG).show();			
 		}
-		
+
 		Intent it = new Intent(this, SearchResult.class);
 		it.setAction(Intent.ACTION_SEARCH);
         it.putExtra(SearchManager.QUERY, query);
@@ -341,8 +295,63 @@ public class MainActivity extends AppCompatActivity
         } else if (item.getItemId() == R.id.action_about) {
             Intent intent = new Intent(this, AboutActivity.class);
             startActivity(intent);
-        }
+        } else if (item.getItemId() == R.id.item_add_dir) {
+			dialogAddDir();
+		} else if (item.getItemId() == R.id.item_add_ext) {
+			dialogAddExt();
+		} else if (item.getItemId() == R.id.item_exit) {
+			finish();
+		}
         return super.onOptionsItemSelected(item);
     }
-	
+
+	private void dialogAddDir() {
+		Intent intent = new Intent(getApplicationContext(), ru.bartwell.exfilepicker.ExFilePickerActivity.class);
+		intent.putExtra(ExFilePicker.SET_CHOICE_TYPE, ExFilePicker.CHOICE_TYPE_DIRECTORIES);
+		intent.putExtra(ExFilePicker.ENABLE_QUIT_BUTTON, true);
+		intent.putExtra(ExFilePicker.DISABLE_SORT_BUTTON, false);
+		intent.putExtra(ExFilePicker.DISABLE_NEW_FOLDER_BUTTON, true);
+		//intent.putExtra(ExFilePicker.SET_FILTER_EXCLUDE, new String[]{"png", "jpg", "apk", "raw", "zip", "rar", "tar"});
+		startActivityForResult(intent, EX_FILE_PICKER_RESULT);
+	}
+	private void dialogAddExt() {
+		final EditText edtInput = new EditText(mContext);
+		edtInput.setSingleLine();
+		// Show Dialog
+		new AlertDialog.Builder(mContext)
+			.setTitle(R.string.title_label_addext)
+			.setView(edtInput)
+			.setPositiveButton(R.string.action_ok, new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int whichButton) {
+					String ext = edtInput.getText().toString();
+					if (ext != null && ext.length() > 0) {
+						for (CheckedString t: mPrefs.mExtList) {
+							if (t.string.equalsIgnoreCase(ext)) {
+								return;
+							}
+						}
+						mPrefs.mExtList.add(new CheckedString(ext));
+						refreshExtList();
+						mPrefs.savePrefs(mContext);
+					}
+				}
+			})
+			.setNeutralButton(R.string.action_no_ext, new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int whichButton) {
+					String ext = "*.";
+					// двойная проверка
+					for (CheckedString t: mPrefs.mExtList) {
+						if (t.string.equalsIgnoreCase(ext)) {
+							return;
+						}
+					}
+					mPrefs.mExtList.add(new CheckedString(ext));
+					refreshExtList();
+					mPrefs.savePrefs(mContext);
+				}
+			})
+			.setNegativeButton(R.string.action_cancel, null)
+			.setCancelable(true)
+			.show();
+	}
 }

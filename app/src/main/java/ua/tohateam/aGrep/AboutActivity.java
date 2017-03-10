@@ -21,10 +21,9 @@ public class AboutActivity extends AppCompatActivity
 			setSupportActionBar(toolbar);
 			if (getSupportActionBar() != null) {
 				getSupportActionBar().setTitle(getString(R.string.app_about));
-				getSupportActionBar().setDisplayShowHomeEnabled(true);
-				getSupportActionBar().setLogo(R.drawable.ic_launcher);
-				getSupportActionBar().setDisplayUseLogoEnabled(true);
-				//toolbar.setNavigationIcon(R.drawable.ic_arrow_left);
+				getSupportActionBar().setDisplayShowTitleEnabled(true);
+				getSupportActionBar().setHomeButtonEnabled(true);
+				getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 			}
 		}
 		

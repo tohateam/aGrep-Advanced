@@ -24,7 +24,7 @@
 	</PreferenceCategory>
 	
 	<PreferenceCategory
-		android:title="@string/title_category_search"
+		android:title="@string/title_search"
 		android:layout="@layout/pref_category">
 		<Preference
 			android:key="HighlightFg"
