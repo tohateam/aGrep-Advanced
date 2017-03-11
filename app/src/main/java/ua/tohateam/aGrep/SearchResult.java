@@ -23,10 +23,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.View.OnClickListener;
 
 public class SearchResult extends AppCompatActivity 
-implements AsyncResponse
+implements AsyncResponse, SearchAdapter.AdapterCallback
 {
-
 	private Toolbar toolbar;
+	private ActionMode mActionMode;
 
 	private MyUtils mUtils;
     private Prefs mPrefs;
@@ -117,7 +117,6 @@ implements AsyncResponse
 		}
 	}
 
-
 	private void showResult() {
         mGroupModel = setListGroups();
         mAdapter = new SearchAdapter(this, mGroupModel);
@@ -143,23 +142,90 @@ implements AsyncResponse
 					if (ExpandableListView.getPackedPositionType(id) == ExpandableListView.PACKED_POSITION_TYPE_CHILD) {
 						mCurentGroup = ExpandableListView.getPackedPositionGroup(id);
 						mCurentChild = ExpandableListView.getPackedPositionChild(id);
-						dialogMenu();
+						mActionMode = SearchResult.this.startActionMode(mActionModeCallback);
+						setTitleActionBar();
 						return true;
 					}
 					return false;
 				}
 			});
-			
-		mResultList.setOnGroupClickListener(new OnGroupClickListener() {
-            @Override
-            public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
-				if(mGroupModel.get(groupPosition).isSelected()) {
-					invalidateOptionsMenu();
-				}
-                return false;
-            }
-        });
 	}
+
+	@Override
+	public void onMethodCallback() {
+		invalidateOptionsMenu();
+		if(mActionMode != null)
+			setTitleActionBar();
+	}
+	
+	private ActionMode.Callback mActionModeCallback = new ActionMode.Callback() {
+		@Override
+		public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+			MenuInflater inflater = mode.getMenuInflater();
+			inflater.inflate(R.menu.search_context_menu, menu);
+			return true;
+		}
+
+		@Override
+		public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+			return false; // Return false if nothing is done
+		}
+
+		@Override
+		public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+			switch (item.getItemId()) {
+				case R.id.item_select_all:
+					for (int i=0; i < mGroupModel.size(); i++) {
+						mGroupModel.get(i).setSelected(true);
+					}
+					mAdapter.notifyDataSetChanged();
+					setTitleActionBar();
+					return true;
+				case R.id.item_unselect_all:
+					for (int i=0; i < mGroupModel.size(); i++) {
+						mGroupModel.get(i).setSelected(false);
+					}
+					mAdapter.notifyDataSetChanged();
+					setTitleActionBar();
+					return true;
+				case R.id.item_select_invert:
+					for (int i=0; i < mGroupModel.size(); i++) {
+						mGroupModel.get(i).setSelected(!mGroupModel.get(i).isSelected());
+					}
+					mAdapter.notifyDataSetChanged();
+					setTitleActionBar();
+					return true;
+				case R.id.item_replace_group:
+					showReplaceDialog(true);
+					mode.finish();
+					return true;
+				case R.id.item_send:
+					Intent intent = new Intent();
+					intent.setAction(Intent.ACTION_VIEW);
+					intent.setDataAndType(Uri.parse("file://" + mGroupModel.get(mCurentGroup).getPath()), "text/plain");
+					startActivity(intent);
+					mode.finish();
+					return true;
+				default:
+					return false;
+			}
+		}
+
+		@Override
+		public void onDestroyActionMode(ActionMode mode) {
+			mActionMode = null;
+		}
+	};
+
+	private void setTitleActionBar() {
+		int count = 0;
+		for (int i=0; i < mGroupModel.size(); i++) {
+			if (mGroupModel.get(i).isSelected())
+				count++;
+		}
+		mActionMode.setTitle(getString(R.string.title_actionbar, Integer.toString(count)));
+	}
+
 
 	// Заполняем список
     public ArrayList<GroupModel> setListGroups() {
@@ -218,8 +284,8 @@ implements AsyncResponse
 	// Уведомляем о результах поиска/замены
 	@Override
 	public void onProcessFinish(boolean result, int id) {
-		if (result && mData.size() != 0) {
-			if (id == 0) { // поиск
+		if (result) {
+			if (id == 0 && mData.size() != 0) {
 				// Сортируем по пути
 				Collections.sort(mData, new Comparator<SearchModel>() {
 						@Override
@@ -228,12 +294,14 @@ implements AsyncResponse
 						}
 					});
 				showResult();
-			} else if (id == 1) { // замена
+			} else {
+				showResultDialog(getString(R.string.msg_replace_no, mQuery), false);
+			}
+
+			if (id == 1) { // замена
 				String msg = result ? getString(R.string.msg_replace_ok, mQuery, mReplaceQuery) : getString(R.string.msg_replace_canceled, mQuery, mReplaceQuery);
 				showResultDialog(msg, true);
 			}
-		} else {
-			showResultDialog(getString(R.string.msg_replace_no, mQuery), false);
 		}
 	}
 
@@ -247,7 +315,7 @@ implements AsyncResponse
 
 		Drawable micon = null;
 		String mtitile = null;
-		if(type) {
+		if (type) {
 			micon = getDrawable(R.drawable.ic_alert_box);
 			mtitile = getString(R.string.title_replace);
 		} else {
@@ -288,27 +356,6 @@ implements AsyncResponse
 			case R.id.item_collapse_all:
 				collapseAll();
 				return true;
-			case R.id.item_select_all:
-				for (int i=0; i < mGroupModel.size(); i++) {
-					mGroupModel.get(i).setSelected(true);
-				}
-				mAdapter.notifyDataSetChanged();
-				invalidateOptionsMenu();
-				break;
-			case R.id.item_unselect_all:
-				for (int i=0; i < mGroupModel.size(); i++) {
-					mGroupModel.get(i).setSelected(false);
-				}
-				mAdapter.notifyDataSetChanged();
-				invalidateOptionsMenu();
-				break;
-			case R.id.item_select_invert:
-				for (int i=0; i < mGroupModel.size(); i++) {
-					mGroupModel.get(i).setSelected(!mGroupModel.get(i).isSelected());
-				}
-				mAdapter.notifyDataSetChanged();
-				invalidateOptionsMenu();
-				break;
 			case R.id.item_replace_selected:
 				showReplaceDialog(true);
 				break;
@@ -324,17 +371,13 @@ implements AsyncResponse
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		if (mAdapter != null) {
-			MenuItem item_unselect = menu.findItem(R.id.item_unselect_all);
 			MenuItem item_replace = menu.findItem(R.id.item_replace_selected);
 			if (mAdapter.countGroupSelected() != 0) {
-				item_unselect.setEnabled(true);
 				item_replace.setEnabled(true);
 			} else {
-				item_unselect.setEnabled(false);
 				item_replace.setEnabled(false);
 			}
 		}
-		//menu.findItem(R.id.item_file).getSubMenu().setGroupEnabled(R.id.group_file, true);
 		return super.onPrepareOptionsMenu(menu);
 	}
 
@@ -412,48 +455,11 @@ implements AsyncResponse
 		mRecentAdapter.notifyDataSetChanged();
 	}
 
+
+
 	/**
-	  * Меню при долгом тапе на строке
-	 **/
-	private void dialogMenu() {
-		AlertDialog.Builder builderSingle = new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.AppCompatAlertDialogStyle));
-		builderSingle.setIcon(R.drawable.ic_launcher);
-		builderSingle.setTitle(getString(R.string.title_select_action));
-
-		final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.select_dialog_item);
-		arrayAdapter.add(getString(R.string.action_replace));
-		arrayAdapter.add(getString(R.string.action_send));
-		
-		builderSingle.setNegativeButton(getString(R.string.action_cancel), new DialogInterface.OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					dialog.dismiss();
-				}
-			});
-
-		builderSingle.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					switch(which) {
-						case 0:
-							mGroupModel.get(mCurentGroup).setSelected(true);
-							showReplaceDialog(true);
-							break;
-						case 1:
-							Intent intent = new Intent();
-							intent.setAction(Intent.ACTION_VIEW);
-							intent.setDataAndType(Uri.parse("file://" + mGroupModel.get(mCurentGroup).getPath().getAbsolutePath()), "text/plain");
-							startActivity(intent);
-							break;
-					}					
-				}
-			});
-		builderSingle.show();
-	}
-	
-	
-	
-	/***** Поиск в файлах *****/
+	 * -----===== ПОИСК =====-----
+	 */
     class GrepTask extends AsyncTask<String, SearchModel, Boolean>
     {
         private ProgressDialog mProgressDialog;
@@ -667,8 +673,9 @@ implements AsyncResponse
         }
     }
 
-
-	/***** Замена в файлах *****/
+	/**
+	 * -----===== ЗАМЕНА =====-----
+	 */
     class ReplaceTask extends AsyncTask<String, ReplaceTask.Progress, Boolean>
     {
         private ProgressDialog mProgressDialog;
@@ -740,18 +747,6 @@ implements AsyncResponse
         }
 
         @Override
-        protected void onPostExecute(Boolean result) {
-            mProgressDialog.dismiss();
-            mProgressDialog = null;
-
-            Toast.makeText(getApplicationContext(), 
-						   result ?R.string.msg_grep_finished: R.string.msg_grep_canceled, 
-						   Toast.LENGTH_LONG).show();
-            mTask = null;
-			delegate.onProcessFinish(result, mResultId);
-        }
-
-        @Override
         protected void onCancelled() {
             super.onCancelled();
             onPostExecute(false);
@@ -771,5 +766,18 @@ implements AsyncResponse
 
 			mProgressDialog.incrementProgressBy(1);
         }
+
+		@Override
+        protected void onPostExecute(Boolean result) {
+            mProgressDialog.dismiss();
+            mProgressDialog = null;
+
+//            Toast.makeText(getApplicationContext(), 
+//						   result ?R.string.msg_grep_finished: R.string.msg_grep_canceled, 
+//						   Toast.LENGTH_LONG).show();
+            mTask = null;
+			delegate.onProcessFinish(result, mResultId);
+        }
+
 	}
 }

@@ -13,7 +13,7 @@
 		android:title="@string/action_collapse_all"
 		app:showAsAction="always"/>
 
-	<item
+	<!--<item
 		android:id="@+id/item_select"
 		android:icon="@drawable/ic_select_all"
 		android:title="@string/action_select"
@@ -30,7 +30,7 @@
 				android:id="@+id/item_select_invert"
 				android:title="@string/action_select_invert"/>
 		</menu>
-	</item>
+	</item>-->
 
 	<item
 		android:id="@+id/item_replace"

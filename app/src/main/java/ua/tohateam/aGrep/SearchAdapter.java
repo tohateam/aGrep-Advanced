@@ -19,11 +19,26 @@ public class SearchAdapter extends BaseExpandableListAdapter
 	private int mBgColor;
 	private int mFontSize;
 
+	private int mSelectColor;
+	private int mBackgroundColor;
+	
+	private AdapterCallback mAdapterCallback;
 
+	public static interface AdapterCallback {
+        void onMethodCallback();
+    }
+	
 	public SearchAdapter(Context context, ArrayList<GroupModel> groups) {
         this.context = context;
         this.groups = groups;
 		this.mUtils = new MyUtils();
+		this.mSelectColor = context.getResources().getColor(R.color.colorAccent);
+		this.mBackgroundColor = context.getResources().getColor(R.color.windowBackground);
+		try {
+            this.mAdapterCallback = ((AdapterCallback) context);
+        } catch (ClassCastException e) {
+            throw new ClassCastException("Activity must implement AdapterCallback.");
+        }
 	}
 
 	class GroupHolder
@@ -91,6 +106,7 @@ public class SearchAdapter extends BaseExpandableListAdapter
         if (convertView == null) {
 			LayoutInflater inf = (LayoutInflater) context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
             convertView = inf.inflate(R.layout.group_item_row, null);
+			
 			groupHolder = new GroupHolder();
 			groupHolder.groupName = (TextView) convertView.findViewById(R.id.group_name);
 			groupHolder.groupPath = (TextView) convertView.findViewById(R.id.group_path);
@@ -119,11 +135,21 @@ public class SearchAdapter extends BaseExpandableListAdapter
 						group.setSelected(false);
 					}
 					notifyDataSetChanged();
+					try {
+						mAdapterCallback.onMethodCallback();
+					} catch (ClassCastException exception) {
+						// do something
+					}
 				}
 			});
 		groupHolder.groupButton.setChecked(group.isSelected());
-		
-
+/*
+		if(group.isSelected()) {
+			convertView.setBackgroundColor(mSelectColor);
+		} else {
+			convertView.setBackgroundColor(mBackgroundColor);
+		}
+*/
         return convertView;
 	}
 

@@ -17,6 +17,7 @@
 	<string name="label_dir">Target Directories</string>
     <string name="label_ext">Target Extensions</string>
 
+	<string name="title_actionbar">%s selected</string>
 	<string name="title_label_adddir">Add Directory</string>
 	<string name="title_label_addext">Add Extension (* all)</string>
 	<string name="title_grep_spinner">Now searching…</string>

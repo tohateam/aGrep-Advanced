@@ -28,7 +28,7 @@ implements AsyncResponse
     public static final String EXTRA_PATH = "path";
 
 	private Toolbar toolbar;
-	ActionMode mActionMode;
+	private ActionMode mActionMode;
 
 	private MyUtils mUtils;
     private Prefs mPrefs;
