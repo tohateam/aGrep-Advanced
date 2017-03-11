@@ -111,24 +111,6 @@ public class MainActivity extends AppCompatActivity
 
         refreshDirList();
         refreshExtList();
-/*
-        Button btnAddDir = (Button) findViewById(R.id.btn_add_dir);
-        Button btnAddExt = (Button) findViewById(R.id.btn_add_ext);
-
-        btnAddDir.setOnClickListener(new View.OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					dialogAddDir();
-				}
-			});
-
-        btnAddExt.setOnClickListener(new View.OnClickListener() {
-				@Override
-				public void onClick(View view) {
-					dialogAddExt();
-				}
-			});
-*/
 
         final CheckBox chkRe = (CheckBox) findViewById(R.id.cb_re);
         final CheckBox chkIc = (CheckBox) findViewById(R.id.cb_ic);
@@ -200,8 +182,24 @@ public class MainActivity extends AppCompatActivity
 
 	private void startSearch(String query) {
 		// Если не указаны директории поиска то выходим
-		if (mPrefs.mDirList.size() == 0) {
+		boolean checkDir = false;
+		boolean checkExt = false;
+		for (CheckedString dir : mPrefs.mDirList) {
+			if (dir.checked) {
+				checkDir = true;
+			}
+		}
+		for (CheckedString ext : mPrefs.mExtList) {
+			if (ext.checked) {
+				checkExt = true;
+			}
+		}
+		
+
+		if (mPrefs.mDirList.size() == 0 || !checkDir) {
             Toast.makeText(getApplicationContext(), R.string.msg_no_target_dir, Toast.LENGTH_LONG).show();
+        } else if (mPrefs.mExtList.size() == 0 || !checkExt) {
+            Toast.makeText(getApplicationContext(), R.string.msg_no_target_ext, Toast.LENGTH_LONG).show();			
         } else if (query.equals("")) {
             Toast.makeText(getApplicationContext(), R.string.msg_no_search_query, Toast.LENGTH_LONG).show();			
 		}
@@ -242,7 +240,7 @@ public class MainActivity extends AppCompatActivity
 			});
         for (CheckedString s: list) {
             CheckBox v = (CheckBox) View.inflate(this, R.layout.item_row_dirext, null);
-            if (s.equals("*")) {
+            if (s.equals("*.")) {
                 v.setText(R.string.action_no_ext);
             } else {
                 v.setText(s.string);

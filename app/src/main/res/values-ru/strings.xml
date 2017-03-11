@@ -54,7 +54,7 @@
 	<string name="action_yes">Да</string>
 	<string name="action_no">Нет</string>
 
-	<string name="action_no_ext">Без рсширения</string>
+	<string name="action_no_ext">Без расширения</string>
 	<string name="action_add_ext">Добавить расширение</string>
 	<string name="action_add_dir">Добавить папку</string>
 
@@ -88,7 +88,8 @@
 	<string name="action_quit">Выход</string>
 
 	<!--MESSEGE-->
-	<string name="msg_no_target_dir">Не указаны директории поиска.\nПожайлуста, добавьте директории.</string>
+	<string name="msg_no_target_dir">Не указаны директории поиска.\nПожайлуста, укажите директории.</string>
+	<string name="msg_no_target_ext">Не указаны расширения файлов. \nПожалуйста, укажите расширения.</string>
 	<string name="msg_no_search_query">Не указана поисковая фраза.</string>
 	<string name="msg_progress">%1$s (в %2$d файлах)</string>
 	<string name="msg_grep_finished">Завершено.</string>
@@ -106,20 +107,20 @@
 	<string name="about_text">
 		Поиск и замена текста в файлах. \n
 		Исходный код: https://github.com/tohateam/aGrep-Advanced\n\n
-		Программа распространяется по принцыпу <b>\"как есть\"</b>. \n
+		Программа распространяется по принципу <b>\"как есть\"</b>. \n
 		Автор программы не несёт ответственности за возможный причинённый ущерб.\n\n
 		Программа создавалась для личного использования.\n
 		В связи тем, что я не являюсь программистом, \n
-		программа создана по принципу <b>"что знаю и умею, то и сделал"</b>.\n
+		программа создана по принципу <b>\"что знаю и умею, то и сделал\"</b>.\n
 
 		Буду рад любой помощи в развитии программы.\n
 		Спасибо, за понимание.
 	</string>
 	<string name="about_library_title">Используемые библиотеки и проекты</string>
 	<string name="about_library">
-		При создании программы был частично использован код программы aGrep: \n
+		При создании программы был частично использован код программы <b>aGrep</b>: \n
 		https://github.com/jiro-aqua/aGrep\n\n
-		а так же библиотека ExFilePicker:\n
+		а так же библиотека <b>ExFilePicker</b>:\n
 		https://github.com/bartwell/ExFilePicker
 	</string>
 

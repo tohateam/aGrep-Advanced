@@ -8,7 +8,7 @@ android {
         applicationId "ua.tohateam.aGrep"
         minSdkVersion 14
         targetSdkVersion 21
-        versionCode 3
+        versionCode 4
         versionName "1.0.1"
     }
     buildTypes {
@@ -20,6 +20,7 @@ android {
 }
 
 dependencies {
+	compile 'com.android.support:cardview-v7:+'
 	compile 'com.android.support:design:+'
 	compile 'com.android.support:support-v4:+'
 	compile 'com.android.support:appcompat-v7:+'

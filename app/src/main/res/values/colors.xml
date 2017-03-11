@@ -29,4 +29,5 @@
 	<color name="drawerBackground">#FFfafafa</color>
 	<color name="rowBackground">#34474F</color>
 	
+	<color name="backgroundCardView">#37474F</color>
 </resources>

@@ -41,7 +41,7 @@
 			android:summaryOn="@string/title_search_hidden_on"
 			android:summaryOff="@string/title_search_hidden_off"
 		/>
-		
+
 	</PreferenceCategory>
 	
 	<PreferenceCategory

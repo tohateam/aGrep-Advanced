@@ -34,6 +34,7 @@ implements AsyncResponse, SearchAdapter.AdapterCallback
 	private SearchAdapter mAdapter;
 	private Pattern mPattern;
 	private GrepTask mTask;
+	private ReplaceTask mReplaceTask;
 	private Context mContext;
 
 	private String mQuery;
@@ -154,10 +155,10 @@ implements AsyncResponse, SearchAdapter.AdapterCallback
 	@Override
 	public void onMethodCallback() {
 		invalidateOptionsMenu();
-		if(mActionMode != null)
+		if (mActionMode != null)
 			setTitleActionBar();
 	}
-	
+
 	private ActionMode.Callback mActionModeCallback = new ActionMode.Callback() {
 		@Override
 		public boolean onCreateActionMode(ActionMode mode, Menu menu) {
@@ -196,7 +197,7 @@ implements AsyncResponse, SearchAdapter.AdapterCallback
 					setTitleActionBar();
 					return true;
 				case R.id.item_replace_group:
-					showReplaceDialog(true);
+					showReplaceDialog(mGroupModel.get(mCurentGroup).getPath().toString());
 					mode.finish();
 					return true;
 				case R.id.item_send:
@@ -357,10 +358,10 @@ implements AsyncResponse, SearchAdapter.AdapterCallback
 				collapseAll();
 				return true;
 			case R.id.item_replace_selected:
-				showReplaceDialog(true);
+				showReplaceDialog("selected");
 				break;
 			case R.id.item_replace_all:
-				showReplaceDialog(false);
+				showReplaceDialog("all");
 				break;
 //        if (item.getItemId() == R.id.action_preference) {
 //            Intent intent = new Intent(this, SettingsActivity.class);
@@ -397,7 +398,7 @@ implements AsyncResponse, SearchAdapter.AdapterCallback
 		}
 	}
 
-	private void showReplaceDialog(final boolean replaceGroup) {
+	private void showReplaceDialog(final String replace) {
 		AlertDialog.Builder alertDialog = new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.AppCompatAlertDialogStyle));
 		alertDialog.setIcon(R.drawable.ic_reply);
 		alertDialog.setTitle(getString(R.string.title_replace));
@@ -427,10 +428,10 @@ implements AsyncResponse, SearchAdapter.AdapterCallback
 				public void onClick(DialogInterface dialog, int which) {
 					// Добавляем в историю
 					mPrefs.addRecent(SearchResult.this, edittext.getText().toString());
-					ReplaceTask mReplece = new ReplaceTask(1, replaceGroup);
-					mReplece.delegate = SearchResult.this;
+					mReplaceTask = new ReplaceTask(1);
+					mReplaceTask.delegate = SearchResult.this;
 					mReplaceQuery = edittext.getText().toString();
-					mReplece.execute(mQuery, mReplaceQuery);
+					mReplaceTask.execute(mQuery, mReplaceQuery, replace);
 				}
 			});
 
@@ -504,8 +505,6 @@ implements AsyncResponse, SearchAdapter.AdapterCallback
         protected void onPostExecute(Boolean result) {
             mProgressDialog.dismiss();
             mProgressDialog = null;
-
-            Toast.makeText(getApplicationContext(), result ?R.string.msg_grep_finished: R.string.msg_grep_canceled, Toast.LENGTH_LONG).show();
             mTask = null;
 			delegate.onProcessFinish(result, mId);
         }
@@ -583,7 +582,7 @@ implements AsyncResponse, SearchAdapter.AdapterCallback
             boolean extok=false;
             for (CheckedString ext : mPrefs.mExtList) {
                 if (ext.checked) {
-					if (file.getName().indexOf('.') == -1) {
+					if (file.getName().indexOf('.') == -1 && ext.string.equals("*.")) {
 						extok = true;
 						break;
 					} else if (file.getName().toLowerCase().endsWith("." + ext.string.toLowerCase())) {
@@ -684,7 +683,7 @@ implements AsyncResponse, SearchAdapter.AdapterCallback
 
 		public AsyncResponse delegate = null;
 		private int mResultId;
-		private boolean replaceGroup;
+		//private boolean replaceGroup;
 
 		class Progress
 		{
@@ -692,9 +691,9 @@ implements AsyncResponse, SearchAdapter.AdapterCallback
 			int totalSize;
 		}
 
-		public ReplaceTask(int id, boolean group) {
+		public ReplaceTask(int id) {
 			this.mResultId = id;
-			this.replaceGroup = group;
+			//this.replaceGroup = group;
 		}
 
         @Override
@@ -722,26 +721,20 @@ implements AsyncResponse, SearchAdapter.AdapterCallback
 			Progress progress = new Progress();
 			progress.totalSize = mGroupModel.size();
 
-			for (int i=0; i < mGroupModel.size(); i++) {
-				progress.label = mGroupModel.get(i).getName();
-				publishProgress(progress);
+			if (params[2].equals("all") || params[2].equals("selected")) {
+				for (int i=0; i < mGroupModel.size(); i++) {
+					progress.label = mGroupModel.get(i).getName();
+					publishProgress(progress);
 
-				if (replaceGroup && !mGroupModel.get(i).isSelected()) {
-					continue;
-				}
-
-				buffer = mUtils.replaceFile(mGroupModel.get(i).getPath(), params[1], mPattern);
-				if (buffer != null) {
-					if (mPrefs.mCreateBackup) {
-						// создать резервную копию
-						try {
-							mUtils.copyFile(mGroupModel.get(i).getPath(), new File(mGroupModel.get(i).getPath().toString() + "~"));
-						} catch (IOException e) {}
+					if (!mGroupModel.get(i).isSelected() && !params[2].equals("all")) {
+						continue;
 					}
-
-					mUtils.saveFile(mGroupModel.get(i).getPath(), buffer.toString());
+					saveFile(mGroupModel.get(i).getPath(), params[1]);
 					res = true;
 				}
+			} else {
+				saveFile(new File(params[2]), params[1]);
+				res = true;
 			}
             return res;
         }
@@ -758,7 +751,6 @@ implements AsyncResponse, SearchAdapter.AdapterCallback
                 return;
             }
 			Progress progress = values[0];
-
 			mProgressDialog.setMessage(progress.label);
 			if (mProgressDialog.getMax() == 100) {
 				mProgressDialog.setMax(progress.totalSize);
@@ -771,13 +763,22 @@ implements AsyncResponse, SearchAdapter.AdapterCallback
         protected void onPostExecute(Boolean result) {
             mProgressDialog.dismiss();
             mProgressDialog = null;
-
-//            Toast.makeText(getApplicationContext(), 
-//						   result ?R.string.msg_grep_finished: R.string.msg_grep_canceled, 
-//						   Toast.LENGTH_LONG).show();
-            mTask = null;
+            mReplaceTask = null;
 			delegate.onProcessFinish(result, mResultId);
         }
 
+		private void saveFile(File path, String replace) {
+			buffer = mUtils.replaceFile(path, replace, mPattern);
+			if (buffer != null) {
+				if (mPrefs.mCreateBackup) {
+					// создать резервную копию
+					try {
+						mUtils.copyFile(path, new File(path.toString() + "~"));
+					} catch (IOException e) {}
+				}
+
+				mUtils.saveFile(path, buffer.toString());
+			}
+		}
 	}
 }
