@@ -85,7 +85,7 @@
 	<string name="action_font_up">Font +</string>
 	<string name="action_font_down">Font -</string>
 	<string name="action_font_default">Default size</string>
-	
+	<string name="action_default">Default</string>
 	<string name="action_preference">Preferences</string>
 	<string name="action_help">Help</string>
 	<string name="action_quit">Quit</string>

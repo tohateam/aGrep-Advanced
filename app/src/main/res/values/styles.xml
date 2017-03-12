@@ -48,5 +48,6 @@
 		<item name="contentPaddingRight">16dp</item>
 		<item name="cardBackgroundColor">@color/backgroundCardView</item>
 	</style>
+	
 </resources>
 

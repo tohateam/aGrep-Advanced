@@ -11,6 +11,7 @@ import android.support.v7.widget.*;
 import android.text.*;
 import android.view.*;
 import android.view.View.*;
+import android.view.inputmethod.*;
 import android.widget.*;
 import java.io.*;
 import java.util.*;
@@ -220,22 +221,8 @@ implements AsyncResponse
 			case R.id.item_view_save:
 				saveFile(false);
 				return true;
-
-			case R.id.item_view_font_up:
-				if (mFontSize < res.getInteger(R.integer.max_font_size))
-					mFontSize = mFontSize + 1;
-				mTextPreview.setTextSize(mFontSize);
-				mEditText.setTextSize(mFontSize);
-				return true;
-			case R.id.item_view_font_down:
-				if (mFontSize > res.getInteger(R.integer.min_font_size))
-					mFontSize = mFontSize - 1;
-				mTextPreview.setTextSize(mFontSize);
-				mEditText.setTextSize(mFontSize);
-				return true;
-			case R.id.item_view_font_default:
-				mFontSize = mPrefs.mFontSize;
-				mTextPreview.setTextSize(mFontSize);
+			case R.id.item_view_font_size:
+				setFontSize();
 				return true;
 		}
         return super.onOptionsItemSelected(item);
@@ -258,6 +245,44 @@ implements AsyncResponse
 		return super.onPrepareOptionsMenu(menu);
 	}
 
+	private void setFontSize() {
+		AlertDialog.Builder alertDialog = new AlertDialog.Builder(mContext);
+		alertDialog.setIcon(R.drawable.ic_format_size);
+		alertDialog.setTitle(getString(R.string.title_font_size));
+
+		LinearLayout view = (LinearLayout) getLayoutInflater().inflate(R.layout.fontsize_number_picker, null);
+		alertDialog.setView(view);
+		
+		NumberPicker np = (NumberPicker) view.findViewById(R.id.np);
+		// Скрыть клавиатуру
+		np.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
+		np.setMinValue(12);
+		np.setMaxValue(32);
+        np.setWrapSelectorWheel(true);
+		np.setValue(mFontSize);
+        np.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+				@Override
+				public void onValueChange(NumberPicker picker, int oldVal, int newVal){
+					//Display the newly selected number from picker
+					mFontSize = newVal;
+				}
+			});
+		alertDialog.setPositiveButton(R.string.action_ok,
+			new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int which) {
+					mTextPreview.setTextSize(mFontSize);
+					mEditText.setTextSize(mFontSize);
+				}
+			});
+		alertDialog.setNegativeButton(R.string.action_cancel,
+			new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int which) {
+					dialog.cancel();
+				}
+			});
+
+		alertDialog.show();		
+	}
 
 	private void showReplaceDialog() {
 		AlertDialog.Builder alertDialog = new AlertDialog.Builder(mContext);
@@ -347,7 +372,7 @@ implements AsyncResponse
 				mUtils.copyFile(new File(mPath), new File(mPath + "~"));
 			} catch (IOException e) {}
 		}
-		
+
 		String text = null;
 		if (mTextPreview.getVisibility() == 0) {
 			text = mTextPreview.getText().toString();

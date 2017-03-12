@@ -17,18 +17,6 @@
 		android:id="@+id/item_view_font_size"
 		android:icon="@drawable/ic_format_size"
 		android:title="@string/title_font_size"
-		app:showAsAction="ifRoom">
-		<menu>
-			<item
-				android:id="@+id/item_view_font_up"
-				android:title="@string/action_font_up" />
-			<item
-				android:id="@+id/item_view_font_down"
-				android:title="@string/action_font_down" />
-			<item
-				android:id="@+id/item_view_font_default"
-				android:title="@string/action_font_default" />
-		</menu>
-	</item>
+		app:showAsAction="always"/>
 	
 </menu>

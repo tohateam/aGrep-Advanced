@@ -1,1 +1,1 @@
-include ':app', ':ExFilePicker'
+include ':app', ':ExFilePicker', ':colorpicker'

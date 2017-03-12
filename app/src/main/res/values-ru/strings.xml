@@ -81,7 +81,9 @@
 	<string name="action_mode_edit">Редактирование</string>
 	<string name="action_font_up">Шрифт +</string>
 	<string name="action_font_down">Шрифт -</string>
+	
 	<string name="action_font_default">По умолчанию</string>
+	<string name="action_default">По умолчанию</string>
 	
 	<string name="action_preference">Настройки</string>
 	<string name="action_help">Справка</string>
@@ -120,8 +122,11 @@
 	<string name="about_library">
 		При создании программы был частично использован код программы <b>aGrep</b>: \n
 		https://github.com/jiro-aqua/aGrep\n\n
-		а так же библиотека <b>ExFilePicker</b>:\n
-		https://github.com/bartwell/ExFilePicker
+		Библиотеки:\n
+		<b>ExFilePicker</b>:\n
+		https://github.com/bartwell/ExFilePicker\n
+		<b>HSV-Alpha Color Picker for Android</b>:\n
+		https://github.com/martin-stone/hsv-alpha-color-picker-android
 	</string>
 
 	<string name="about_license_title">Лицензия</string>

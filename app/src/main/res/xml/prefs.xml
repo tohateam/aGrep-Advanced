@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto">
 	
 	<PreferenceCategory
 		android:title="@string/title_category_global"
@@ -19,20 +21,11 @@
 			android:summaryOn="@string/title_create_backup_on"
 			android:summaryOff="@string/title_create_backup_off"
 		/>
-		
-		
 	</PreferenceCategory>
 	
 	<PreferenceCategory
 		android:title="@string/title_search"
 		android:layout="@layout/pref_category">
-		<Preference
-			android:key="HighlightFg"
-			android:title="@string/title_highlight_fg" />
-
-		<Preference
-			android:key="HighlightBg"
-			android:title="@string/title_highlight_bg" />
 
 		<CheckBoxPreference
 			android:defaultValue="false"
@@ -41,7 +34,24 @@
 			android:summaryOn="@string/title_search_hidden_on"
 			android:summaryOff="@string/title_search_hidden_off"
 		/>
-
+	
+		<!--android:summary="@string/pref_default_color_summary"-->
+		<com.rarepebble.colorpicker.ColorPreference
+			android:key="HighlightFg"
+			android:title="@string/title_highlight_fg"
+			app:colorpicker_showAlpha="true"
+			app:colorpicker_showHex="true"
+			android:defaultValue="#FF000000"
+			app:colorpicker_selectNoneButtonText="@string/action_default"
+        />
+		<com.rarepebble.colorpicker.ColorPreference
+			android:key="HighlightBg"
+			android:title="@string/title_highlight_bg"
+			app:colorpicker_showAlpha="true"
+			app:colorpicker_showHex="true"
+			android:defaultValue="#FF00FFFF"
+			app:colorpicker_selectNoneButtonText="@string/action_default"
+        />
 	</PreferenceCategory>
 	
 	<PreferenceCategory
