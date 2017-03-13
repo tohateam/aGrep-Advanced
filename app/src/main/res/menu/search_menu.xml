@@ -13,40 +13,9 @@
 		android:title="@string/action_collapse_all"
 		app:showAsAction="always"/>
 
-	<!--<item
-		android:id="@+id/item_select"
-		android:icon="@drawable/ic_select_all"
-		android:title="@string/action_select"
-		app:showAsAction="always">
-		<menu>
-			<item
-				android:id="@+id/item_select_all"
-				android:title="@string/action_select_all"/>
-			<item
-				android:id="@+id/item_unselect_all"
-				android:title="@string/action_unselect_all"
-				android:enabled="false"/>
-			<item
-				android:id="@+id/item_select_invert"
-				android:title="@string/action_select_invert"/>
-		</menu>
-	</item>-->
-
 	<item
 		android:id="@+id/item_replace"
 		android:icon="@drawable/ic_reply"
 		android:title="@string/action_replace"
-		app:showAsAction="ifRoom">
-		<menu>
-			<item
-				android:id="@+id/item_replace_selected"
-				android:title="@string/action_replace_selected"
-				android:enabled="false"/>
-
-			<item
-				android:id="@+id/item_replace_all"
-				android:title="@string/action_replace_all"
-				android:enabled="true"/>
-		</menu>
-	</item>
+		app:showAsAction="ifRoom"/>
 </menu>

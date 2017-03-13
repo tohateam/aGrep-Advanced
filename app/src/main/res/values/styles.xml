@@ -1,27 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
+	<!--Стиль бокового меню-->
+	<style name="DrawerArrowStyle" parent="Widget.AppCompat.DrawerArrowToggle">
+		<item name="spinBars">true</item>
+		<item name="color">@color/icons</item>
+	</style>
 
+	<!-- Style for AlertDialogs -->
+	<style name="AppCompatAlertDialogStyle" parent="Theme.AppCompat.Dialog.Alert">
+		<item name="colorAccent">@color/colorAccent</item>
+		<item name="android:textColorPrimary">@color/textColorPrimary</item>
+		<item name="android:background">@color/rowBackground</item>
+		<item name="android:textColor">@color/textColorPrimary</item>
+		<!--<item name="android:windowTitleStyle">...</item>-->
+		<!--<item name="android:textAppearanceMedium">...</item>-->
+		<!--<item name="android:borderlessButtonStyle">...</item>-->
+		<!--<item name="android:buttonBarStyle">...</item>-->
+	</style>
+
+	<!--Стиль ActionBar-->
+	<style name="MyActionMode" parent="@style/Widget.AppCompat.ActionMode">
+		<item name="background">@color/colorPrimary</item>
+	</style>
+	
 	<!-- Style for text in ListViews or RecyclerViews -->
-	<style name="TextPrimary"  parent="@android:style/TextAppearance.Medium">
+	<style name="TextPrimary" parent="@android:style/TextAppearance.Medium">
 		<item name="android:textColor">@color/colorPrimaryDark</item>
 		<item name="android:textSize">15sp</item>
 		<item name="android:textStyle">bold</item>
 	</style>
 
-	<style name="TextMedium"  parent="@android:style/TextAppearance.Medium">
+	<style name="TextMedium" parent="@android:style/TextAppearance.Medium">
 		<item name="android:textColor">@color/textColorPrimary</item>
 		<item name="android:textSize">13sp</item>
 		<item name="android:textStyle">normal</item>
 	</style>
 
-	<style name="TextSmall"  parent="@android:style/TextAppearance.Small">
+	<style name="TextSmall" parent="@android:style/TextAppearance.Small">
 		<item name="android:textColor">@color/textColorSecondary</item>
 		<item name="android:textSize">12sp</item>
 		<item name="android:textStyle">normal</item>
 	</style>
 
 	<!-- Style for Headers & Dividers -->
-	<style name="TextHeader"  parent="@android:style/TextAppearance.Medium">
+	<style name="TextHeader" parent="@android:style/TextAppearance.Medium">
 		<item name="android:textColor">@color/colorPrimaryDark</item>
 		<item name="android:textSize">14sp</item>
 		<item name="android:textStyle">bold</item>
@@ -34,12 +56,12 @@
 	</style>
 
 	<style name="VerticalDivider">
-		<item name="android:layout_height">1dp</item>
+		<item name="android:layout_height">10dp</item>
 		<item name="android:layout_width">match_parent</item>
 		<item name="android:background">@color/divider</item>
 	</style>
 
-	<style name="MyCardViewStyle" parent="Theme.AppCompat.Light">  
+	<style name="MyCardViewStyle" parent="Theme.AppCompat">  
 		<item name="cardCornerRadius">2dp</item>
 		<item name="cardElevation">2dp</item>
 		<item name="contentPaddingBottom">24dp</item>
@@ -47,6 +69,53 @@
 		<item name="contentPaddingLeft">16dp</item>
 		<item name="contentPaddingRight">16dp</item>
 		<item name="cardBackgroundColor">@color/backgroundCardView</item>
+	</style>
+
+	
+    <style name="DarkListResult" >
+		<!--parent="@android:style/Widget.ExpandableListView">-->
+        <!--Разделитель подгрупп-->
+		<item name="android:dividerHeight">0dp</item>
+        <item name="android:childDivider">@android:color/transparent</item>
+		<!--<item name="android:textViewStyle">@style/MyTextViewStyle</item>-->
+    </style>
+	
+	<style name="GroupCardViewStyle" parent="Theme.AppCompat">  
+		<item name="cardCornerRadius">4dp</item>
+		<item name="cardElevation">2dp</item>
+		<item name="contentPaddingBottom">5dp</item>
+		<item name="contentPaddingTop">5dp</item>
+		<item name="contentPaddingLeft">5dp</item>
+		<item name="contentPaddingRight">5dp</item>
+		<item name="cardBackgroundColor">@color/backgroundCardView</item>
+	</style>
+	
+	<style name="ChildCardViewStyle" parent="Theme.AppCompat">  
+		<item name="cardCornerRadius">4dp</item>
+		<item name="cardElevation">2dp</item>
+		<item name="contentPaddingBottom">5dp</item>
+		<item name="contentPaddingTop">5dp</item>
+		<item name="contentPaddingLeft">5dp</item>
+		<item name="contentPaddingRight">5dp</item>
+		<item name="cardBackgroundColor">@color/backgroundChildRow</item>
+	</style>
+
+	<!--Группа списка результатов-->
+	<style name="DarkGroupResult" >
+		<item name="android:background">@android:color/transparent</item>
+        <!--<item name="android:textColor">@color/textColorPrimary</item>-->
+		<item name="android:textViewStyle">@style/MyTextViewStyle</item>
+    </style>
+
+	<style name="MyTextViewStyle">
+		<item name="android:textSize">14sp</item>
+	</style>
+
+	<style name="GroupNameStyle" parent="@android:style/TextAppearance.Medium">
+		<item name="android:textColor">@color/textColorPrimary</item>
+		<item name="android:textSize">16sp</item>
+		<item name="android:textStyle">normal</item>
+		<item name="android:textAllCaps">true</item>
 	</style>
 	
 </resources>

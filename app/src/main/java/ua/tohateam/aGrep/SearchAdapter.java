@@ -111,9 +111,6 @@ public class SearchAdapter extends BaseExpandableListAdapter
 			groupHolder.groupName = (TextView) convertView.findViewById(R.id.group_name);
 			groupHolder.groupPath = (TextView) convertView.findViewById(R.id.group_path);
 			groupHolder.groupButton = (CheckBox) convertView.findViewById(R.id.cb_group_select);
-			groupHolder.groupName.setTextSize(mFontSize);
-			groupHolder.groupPath.setTextSize(mFontSize);
-			groupHolder.groupButton.setTextSize(mFontSize);
 
 			convertView.setTag(groupHolder);
 		} else {
@@ -165,8 +162,6 @@ public class SearchAdapter extends BaseExpandableListAdapter
 
 			childHolder.searchLine = (TextView) convertView.findViewById(R.id.child_line);
 			childHolder.searchText = (TextView) convertView.findViewById(R.id.child_text);
-			childHolder.searchLine.setTextSize(mFontSize);
-			childHolder.searchText.setTextSize(mFontSize);
             convertView.setTag(childHolder);
         } else {
             childHolder = (ChildHolder) convertView.getTag();

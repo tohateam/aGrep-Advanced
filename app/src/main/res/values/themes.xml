@@ -29,29 +29,9 @@
 		<!--- Иконка в режиме ActionBar -->
 		<!--<item name="actionModeCloseDrawable">@drawable/ic_back</item>-->
 
+		<!--<item name="android:textSize">14sp</item>-->
+		<item name="android:textAppearance">@android:style/TextAppearance.Medium</item>
 	</style>
 
-	<!--Стиль бокового меню-->
-	<style name="DrawerArrowStyle" parent="Widget.AppCompat.DrawerArrowToggle">
-		<item name="spinBars">true</item>
-		<item name="color">@color/icons</item>
-	</style>
-
-	<!-- Style for AlertDialogs -->
-	<style name="AppCompatAlertDialogStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
-		<item name="colorAccent">@color/colorAccent</item>
-		<item name="android:textColorPrimary">@color/textColorPrimary</item>
-		<item name="android:background">@color/rowBackground</item>
-		<item name="android:textColor">@color/textColorPrimary</item>
-		<!--<item name="android:windowTitleStyle">...</item>-->
-		<!--<item name="android:textAppearanceMedium">...</item>-->
-		<!--<item name="android:borderlessButtonStyle">...</item>-->
-		<!--<item name="android:buttonBarStyle">...</item>-->
-	</style>
-
-	<!--Стиль ActionBar-->
-	<style name="MyActionMode" parent="@style/Widget.AppCompat.ActionMode">
-		<item name="background">@color/colorPrimary</item>
-	</style>
 </resources>
 

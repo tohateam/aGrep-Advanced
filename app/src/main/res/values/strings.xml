@@ -21,7 +21,6 @@
 	<string name="title_label_adddir">Add Directory</string>
 	<string name="title_label_addext">Add Extension (* all)</string>
 	<string name="title_grep_spinner">Now searching…</string>
-	<string name="title_replace_spinner">Now replacing…</string>
 	
 	<string name="title_category_global">Global</string>
 	<string name="title_font_size">Font size</string>
@@ -44,9 +43,26 @@
 	
 	<string name="title_remove_item">Remove item</string>
     <string name="msg_remove_item">%s\nAre you sure?</string>
-	
+
+
+	<!--ЗАМЕНА-->
+
+	<string name="title_replace_spinner">Now replacing…</string>
 	<string name="title_replace">Replace</string>
-	
+	<string name="title_replace_options">Replacement Options</string>
+	<string name="action_replace">Replece</string>
+	<string name="action_replace_selected">Replece selected</string>
+	<string name="action_replace_all">Replece all</string>
+
+	<string name="msg_replace_confirm">Replace <b>%1$s</b>\n<b>%2$s</b> with <b>%3$s</b> in the file?</string>
+	<string name="msg_replace_selected_confirm">Replace the selected files <b>%1$s</b> with <b>%1$s</b>?</string>
+	<string name="msg_replace_all_confirm">Replace all <b>%1$s</b> files found in <b>%2$s</b>?</string>
+	<string name="msg_replace">Replace <b>%1$s</b> on:</string>
+	<string name="msg_replace_ok">The replacement of <b>%1$s</b> with <b>%2$s</b> is complete.</string>
+	<string name="msg_replace_canceled">The replacement of <b>%1$s</b> with <b>%2$s</b> is canceled.</string>
+	<string name="msg_replace_no">Your search <b>%1$s</b> did not match any documents.</string>
+	<string name="msg_no_replace_query">You did not specify a word or phrase to replace.</string>
+
 	<string name="title_save_file">Save file</string>
 	<string name="msg_save_file">The file %1$s is changed, save the changes?</string>
 	<string name="msg_saved_file">The file %1$s is saved</string>
@@ -63,6 +79,8 @@
 	
 	<string name="action_open">Open</string>
 	<string name="action_search">Search</string>
+	<string name="action_search_close">Close</string>
+	<string name="action_rescan">Rescan</string>
 	<string name="action_copy">Copy</string>
 	
 	<string name="action_select">Select</string>
@@ -73,9 +91,6 @@
 	<string name="action_expand_all">Expand all</string>
 	<string name="action_collapse_all">Collapse all</string>
 	
-	<string name="action_replace">Replece</string>
-	<string name="action_replace_selected">Replece selected</string>
-	<string name="action_replace_all">Replece all</string>
 	
 	<string name="action_view_tools">Tools</string>
 	<string name="action_view_save">Save</string>
@@ -97,10 +112,8 @@
 	<string name="msg_progress">%1$s (in %2$d files)</string>
 	<string name="msg_grep_finished">Finished.</string>
     <string name="msg_grep_canceled">Canceled.</string>
-	<string name="msg_replace">Replace <b>%1$s</b> on:</string>
-	<string name="msg_replace_ok">The replacement of <b>%1$s</b> with <b>%2$s</b> is complete.</string>
-	<string name="msg_replace_canceled">The replacement of <b>%1$s</b> with <b>%2$s</b> is canceled.</string>
-	<string name="msg_replace_no">Your search <b>%1$s</b> did not match any documents.</string>
+	
+	
 	<string name="msg_copied">Copied to clipboard</string>
 	
 	<!--Colorpicker-->

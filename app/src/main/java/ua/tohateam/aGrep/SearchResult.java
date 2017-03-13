@@ -25,6 +25,12 @@ import android.view.View.OnClickListener;
 public class SearchResult extends AppCompatActivity 
 implements AsyncResponse, SearchAdapter.AdapterCallback
 {
+	private static final int RESULT_SEARCH = 0;
+	private static final int RESULT_REPLACE = 1;
+
+	//private static final int RESULT_REPLACE_CURRENT = 1;
+//	private static final int RESULT_REPLACE_ALL = 3;
+
 	private Toolbar toolbar;
 	private ActionMode mActionMode;
 
@@ -105,19 +111,21 @@ implements AsyncResponse, SearchAdapter.AdapterCallback
 					mPattern = Pattern.compile("\\b" + patternText + "\\b");
 				}
 
-                if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
-                    mData.removeAll(mData);
-					mTask = new GrepTask(0);
-					mTask.delegate = this;
-					mTask.execute(mQuery);
-
-                }
+				startTaskSearch();
             } else {
                 finish();
             }
 		}
 	}
 
+	private void startTaskSearch() {
+		if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
+			mData.removeAll(mData);
+			mTask = new GrepTask(0);
+			mTask.delegate = this;
+			mTask.execute(mQuery);
+		}
+	}
 	private void showResult() {
         mGroupModel = setListGroups();
         mAdapter = new SearchAdapter(this, mGroupModel);
@@ -127,7 +135,6 @@ implements AsyncResponse, SearchAdapter.AdapterCallback
         mResultList.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
 				@Override
 				public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-					//ArrayList<ChildModel> ch_list = ExpListItems.get(groupPosition).getItems();
 					String patch = mGroupModel.get(groupPosition).getPath().getPath();
 					Intent it = new Intent(SearchResult.this, TextViewerActivity.class);
 					it.setAction(Intent.ACTION_SEARCH);
@@ -143,6 +150,10 @@ implements AsyncResponse, SearchAdapter.AdapterCallback
 					if (ExpandableListView.getPackedPositionType(id) == ExpandableListView.PACKED_POSITION_TYPE_CHILD) {
 						mCurentGroup = ExpandableListView.getPackedPositionGroup(id);
 						mCurentChild = ExpandableListView.getPackedPositionChild(id);
+						// выделяем текущий элемент списка
+						mGroupModel.get(mCurentGroup).setSelected(true);
+						mAdapter.notifyDataSetChanged();
+						// активируем CAB
 						mActionMode = SearchResult.this.startActionMode(mActionModeCallback);
 						setTitleActionBar();
 						return true;
@@ -197,7 +208,7 @@ implements AsyncResponse, SearchAdapter.AdapterCallback
 					setTitleActionBar();
 					return true;
 				case R.id.item_replace_group:
-					showReplaceDialog(mGroupModel.get(mCurentGroup).getPath().toString());
+					showReplaceDialog(); //mGroupModel.get(mCurentGroup).getPath().toString());
 					mode.finish();
 					return true;
 				case R.id.item_send:
@@ -218,6 +229,7 @@ implements AsyncResponse, SearchAdapter.AdapterCallback
 		}
 	};
 
+	// Устанавливаем заголовок ActionBar - кол-во выделенных элементов
 	private void setTitleActionBar() {
 		int count = 0;
 		for (int i=0; i < mGroupModel.size(); i++) {
@@ -228,7 +240,7 @@ implements AsyncResponse, SearchAdapter.AdapterCallback
 	}
 
 
-	// Заполняем список
+	// Заполняем список результатов поиска
     public ArrayList<GroupModel> setListGroups() {
         ArrayList<GroupModel> group_list = new ArrayList<GroupModel>();
         ArrayList<ChildModel> child_list = null;
@@ -259,7 +271,9 @@ implements AsyncResponse, SearchAdapter.AdapterCallback
 			Collections.sort(mData, new Comparator<SearchModel>() {
 					@Override
 					public int compare(SearchModel p1, SearchModel p2) {
-						return Integer.toString(p1.getLine()).compareToIgnoreCase(Integer.toString(p2.getLine()));
+						Integer line1 = p1.getLine();
+						Integer line2 = p2.getLine();
+						return line1.compareTo(line2);
 					}
 				});
 
@@ -286,7 +300,7 @@ implements AsyncResponse, SearchAdapter.AdapterCallback
 	@Override
 	public void onProcessFinish(boolean result, int id) {
 		if (result) {
-			if (id == 0 && mData.size() != 0) {
+			if (id == RESULT_SEARCH && mData.size() != 0) {
 				// Сортируем по пути
 				Collections.sort(mData, new Comparator<SearchModel>() {
 						@Override
@@ -296,36 +310,52 @@ implements AsyncResponse, SearchAdapter.AdapterCallback
 					});
 				showResult();
 			} else {
-				showResultDialog(getString(R.string.msg_replace_no, mQuery), false);
+				showResultSearch();
 			}
 
-			if (id == 1) { // замена
+			if (id == RESULT_REPLACE) { // замена
 				String msg = result ? getString(R.string.msg_replace_ok, mQuery, mReplaceQuery) : getString(R.string.msg_replace_canceled, mQuery, mReplaceQuery);
-				showResultDialog(msg, true);
+				mReplaceQuery = null;
+				showResultDialog(msg);
 			}
 		}
 	}
 
 	/*
-	 * Диалог завершения поиска/замены
+	 * Результаты замены
 	 * msg_result - текст сообщения
-	 * type - true/false замена/поиск
 	 */
-	private void showResultDialog(String msg_result, boolean type) {
+	private void showResultDialog(String msg_result) {
 		AlertDialog.Builder alertDialog = new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.AppCompatAlertDialogStyle));
-
-		Drawable micon = null;
-		String mtitile = null;
-		if (type) {
-			micon = getDrawable(R.drawable.ic_alert_box);
-			mtitile = getString(R.string.title_replace);
-		} else {
-			micon = getDrawable(R.drawable.ic_alert);
-			mtitile = getString(R.string.title_search);
-		}
-		alertDialog.setIcon(micon);
-		alertDialog.setTitle(mtitile);
+		alertDialog.setIcon(R.drawable.ic_alert_box);
+		alertDialog.setTitle(R.string.title_replace);
 		alertDialog.setMessage(msg_result);
+
+		alertDialog.setPositiveButton(R.string.action_rescan,
+			new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int which) {
+					startTaskSearch();
+					//finish();
+				}
+			});
+
+		alertDialog.setNegativeButton(R.string.action_search_close,
+			new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int which) {
+					mGroupModel.get(mCurentGroup).setSelected(false);
+					finish();
+				}
+			});
+
+		alertDialog.show();
+	}
+
+	// Поиск - не найдено
+	private void showResultSearch() {
+		AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+		alertDialog.setIcon(R.drawable.ic_alert);
+		alertDialog.setTitle(R.string.title_search);
+		alertDialog.setMessage(getString(R.string.msg_replace_no, mQuery));
 
 		alertDialog.setPositiveButton(R.string.action_ok,
 			new DialogInterface.OnClickListener() {
@@ -337,7 +367,7 @@ implements AsyncResponse, SearchAdapter.AdapterCallback
 		alertDialog.show();
 	}
 
-
+	// Основное меню
 	@Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -357,32 +387,26 @@ implements AsyncResponse, SearchAdapter.AdapterCallback
 			case R.id.item_collapse_all:
 				collapseAll();
 				return true;
-			case R.id.item_replace_selected:
-				showReplaceDialog("selected");
+			case R.id.item_replace:
+				showReplaceDialog();
 				break;
-			case R.id.item_replace_all:
-				showReplaceDialog("all");
-				break;
-//        if (item.getItemId() == R.id.action_preference) {
-//            Intent intent = new Intent(this, SettingsActivity.class);
-//            startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
     }
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		if (mAdapter != null) {
-			MenuItem item_replace = menu.findItem(R.id.item_replace_selected);
-			if (mAdapter.countGroupSelected() != 0) {
-				item_replace.setEnabled(true);
-			} else {
-				item_replace.setEnabled(false);
-			}
+//			MenuItem item_replace = menu.findItem(R.id.item_replace_selected);
+//			if (mAdapter.countGroupSelected() != 0) {
+//				item_replace.setEnabled(true);
+//			} else {
+//				item_replace.setEnabled(false);
+//			}
 		}
 		return super.onPrepareOptionsMenu(menu);
 	}
 
-	//method to expand all groups
+	// Развернуть всё
 	private void expandAll() {
 		int count = mAdapter.getGroupCount();
 		for (int i = 0; i < count; i++) {
@@ -390,7 +414,7 @@ implements AsyncResponse, SearchAdapter.AdapterCallback
 		}
 	}
 
-	//method to collapse all groups
+	// свернуть всё
 	private void collapseAll() {
 		int count = mAdapter.getGroupCount();
 		for (int i = 0; i < count; i++) {
@@ -398,10 +422,12 @@ implements AsyncResponse, SearchAdapter.AdapterCallback
 		}
 	}
 
-	private void showReplaceDialog(final String replace) {
-		AlertDialog.Builder alertDialog = new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.AppCompatAlertDialogStyle));
+	// Опции замены
+	// TODO (tohateam): добавить проверку введённого текста
+	private void showReplaceDialog() {
+		AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
 		alertDialog.setIcon(R.drawable.ic_reply);
-		alertDialog.setTitle(getString(R.string.title_replace));
+		alertDialog.setTitle(getString(R.string.title_replace_options));
 		alertDialog.setMessage(getString(R.string.msg_replace, mQuery));
 
 		LinearLayout view = (LinearLayout) getLayoutInflater().inflate(R.layout.replace_dialog, null);
@@ -428,10 +454,8 @@ implements AsyncResponse, SearchAdapter.AdapterCallback
 				public void onClick(DialogInterface dialog, int which) {
 					// Добавляем в историю
 					mPrefs.addRecent(SearchResult.this, edittext.getText().toString());
-					mReplaceTask = new ReplaceTask(1);
-					mReplaceTask.delegate = SearchResult.this;
 					mReplaceQuery = edittext.getText().toString();
-					mReplaceTask.execute(mQuery, mReplaceQuery, replace);
+					confirmReplace();
 				}
 			});
 
@@ -446,6 +470,55 @@ implements AsyncResponse, SearchAdapter.AdapterCallback
 		alertDialog.show();
 	}
 
+	// подтверждение замены
+	private void confirmReplace() {
+		if (mReplaceQuery == null || mReplaceQuery.equals("")) {
+			Toast.makeText(getApplicationContext(), R.string.msg_no_replace_query, Toast.LENGTH_LONG).show();
+			showReplaceDialog();
+		} else {
+
+			String fileName = null;
+			String title = null;
+			boolean replace = false;
+			if (mAdapter.countGroupSelected() == 1) {
+				fileName = mGroupModel.get(mCurentGroup).getName();
+				title = getString(R.string.msg_replace_confirm, fileName, mQuery, mReplaceQuery);
+				replace = false;
+			} else if (mAdapter.countGroupSelected() == mAdapter.getGroupCount()) {
+				title = getString(R.string.msg_replace_selected_confirm, mQuery, mReplaceQuery);
+				replace = false;
+			} else {
+				title = getString(R.string.msg_replace_all_confirm, mQuery, mReplaceQuery);
+				replace = true;
+			}
+			final boolean replaceAll = replace;
+
+			AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+			alertDialog.setIcon(R.drawable.ic_alert_box);
+			alertDialog.setTitle(R.string.title_replace);
+			alertDialog.setMessage(title);
+
+			alertDialog.setPositiveButton(R.string.action_ok,
+				new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int which) {
+						mReplaceTask = new ReplaceTask(RESULT_REPLACE, replaceAll);
+						mReplaceTask.delegate = SearchResult.this;
+						mReplaceTask.execute(mQuery, mReplaceQuery);
+					}
+				});
+
+			alertDialog.setNegativeButton(R.string.action_cancel,
+				new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int which) {
+//					mGroupModel.get(mCurentGroup).setSelected(false);
+//					finish();
+					}
+				});
+
+			alertDialog.show();
+		}
+	}
+
 	@Override
 	protected void onResume() {
 		super.onResume();
@@ -456,6 +529,112 @@ implements AsyncResponse, SearchAdapter.AdapterCallback
 		mRecentAdapter.notifyDataSetChanged();
 	}
 
+
+	/**
+	 * -----===== ЗАМЕНА =====-----
+	 */
+    class ReplaceTask extends AsyncTask<String, ReplaceTask.Progress, Boolean>
+    {
+        private ProgressDialog mProgressDialog;
+        private boolean mCancelled;
+		private StringBuffer buffer;
+
+		public AsyncResponse delegate = null;
+		private int mResultId;
+		private boolean replaceAll;
+
+		class Progress
+		{
+			String label;
+			int totalSize;
+		}
+
+		public ReplaceTask(int id, boolean replace) {
+			this.mResultId = id;
+			this.replaceAll = replace;
+		}
+
+        @Override
+        protected void onPreExecute() {
+            mCancelled = false;
+            mProgressDialog = new ProgressDialog(new ContextThemeWrapper(SearchResult.this, R.style.AppCompatAlertDialogStyle));
+            mProgressDialog.setTitle(R.string.title_replace_spinner);
+            mProgressDialog.setMessage(mQuery);
+            mProgressDialog.setIndeterminate(true);
+            mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            mProgressDialog.setCancelable(true);
+            mProgressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+					@Override
+					public void onCancel(DialogInterface dialog) {
+						mCancelled = true;
+						cancel(false);
+					}
+				});
+            mProgressDialog.show();
+        }
+
+        @Override
+        protected Boolean doInBackground(String... params) {
+			boolean res = false;
+			Progress progress = new Progress();
+			progress.totalSize = mGroupModel.size();
+
+			for (int i=0; i < mGroupModel.size(); i++) {
+				progress.label = mGroupModel.get(i).getName();
+				publishProgress(progress);
+
+				if (!mGroupModel.get(i).isSelected() && !replaceAll) {
+					continue;
+				}
+				saveFile(mGroupModel.get(i).getPath(), params[1]);
+				mGroupModel.get(mCurentGroup).setSelected(false);
+				res = true;
+			}
+            return res;
+        }
+
+        @Override
+        protected void onCancelled() {
+            super.onCancelled();
+            onPostExecute(false);
+        }
+
+        @Override
+        protected void onProgressUpdate(Progress... values) {
+            if (isCancelled()) {
+                return;
+            }
+			Progress progress = values[0];
+			mProgressDialog.setMessage(progress.label);
+			if (mProgressDialog.getMax() == 100) {
+				mProgressDialog.setMax(progress.totalSize);
+			}
+
+			mProgressDialog.incrementProgressBy(1);
+        }
+
+		@Override
+        protected void onPostExecute(Boolean result) {
+            mProgressDialog.dismiss();
+            mProgressDialog = null;
+            mReplaceTask = null;
+			delegate.onProcessFinish(result, mResultId);
+        }
+
+		private void saveFile(File path, String replace) {
+			buffer = mUtils.replaceFile(path, replace, mPattern);
+			if (buffer != null) {
+				if (mPrefs.mCreateBackup) {
+					// создать резервную копию
+					try {
+						mUtils.copyFile(path, new File(path.toString() + "~"));
+					} catch (IOException e) {}
+				}
+
+				mUtils.saveFile(path, buffer.toString());
+			}
+		}
+	}
 
 
 	/**
@@ -672,113 +851,4 @@ implements AsyncResponse, SearchAdapter.AdapterCallback
         }
     }
 
-	/**
-	 * -----===== ЗАМЕНА =====-----
-	 */
-    class ReplaceTask extends AsyncTask<String, ReplaceTask.Progress, Boolean>
-    {
-        private ProgressDialog mProgressDialog;
-        private boolean mCancelled;
-		private StringBuffer buffer;
-
-		public AsyncResponse delegate = null;
-		private int mResultId;
-		//private boolean replaceGroup;
-
-		class Progress
-		{
-			String label;
-			int totalSize;
-		}
-
-		public ReplaceTask(int id) {
-			this.mResultId = id;
-			//this.replaceGroup = group;
-		}
-
-        @Override
-        protected void onPreExecute() {
-            mCancelled = false;
-            mProgressDialog = new ProgressDialog(new ContextThemeWrapper(SearchResult.this, R.style.AppCompatAlertDialogStyle));
-            mProgressDialog.setTitle(R.string.title_replace_spinner);
-            mProgressDialog.setMessage(mQuery);
-            mProgressDialog.setIndeterminate(true);
-            mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-            mProgressDialog.setCancelable(true);
-            mProgressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-					@Override
-					public void onCancel(DialogInterface dialog) {
-						mCancelled = true;
-						cancel(false);
-					}
-				});
-            mProgressDialog.show();
-        }
-
-        @Override
-        protected Boolean doInBackground(String... params) {
-			boolean res = false;
-			Progress progress = new Progress();
-			progress.totalSize = mGroupModel.size();
-
-			if (params[2].equals("all") || params[2].equals("selected")) {
-				for (int i=0; i < mGroupModel.size(); i++) {
-					progress.label = mGroupModel.get(i).getName();
-					publishProgress(progress);
-
-					if (!mGroupModel.get(i).isSelected() && !params[2].equals("all")) {
-						continue;
-					}
-					saveFile(mGroupModel.get(i).getPath(), params[1]);
-					res = true;
-				}
-			} else {
-				saveFile(new File(params[2]), params[1]);
-				res = true;
-			}
-            return res;
-        }
-
-        @Override
-        protected void onCancelled() {
-            super.onCancelled();
-            onPostExecute(false);
-        }
-
-        @Override
-        protected void onProgressUpdate(Progress... values) {
-            if (isCancelled()) {
-                return;
-            }
-			Progress progress = values[0];
-			mProgressDialog.setMessage(progress.label);
-			if (mProgressDialog.getMax() == 100) {
-				mProgressDialog.setMax(progress.totalSize);
-			}
-
-			mProgressDialog.incrementProgressBy(1);
-        }
-
-		@Override
-        protected void onPostExecute(Boolean result) {
-            mProgressDialog.dismiss();
-            mProgressDialog = null;
-            mReplaceTask = null;
-			delegate.onProcessFinish(result, mResultId);
-        }
-
-		private void saveFile(File path, String replace) {
-			buffer = mUtils.replaceFile(path, replace, mPattern);
-			if (buffer != null) {
-				if (mPrefs.mCreateBackup) {
-					// создать резервную копию
-					try {
-						mUtils.copyFile(path, new File(path.toString() + "~"));
-					} catch (IOException e) {}
-				}
-
-				mUtils.saveFile(path, buffer.toString());
-			}
-		}
-	}
 }

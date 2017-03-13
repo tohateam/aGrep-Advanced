@@ -43,7 +43,8 @@
     <string name="msg_remove_item">%s\nВы уверены?</string>
 
 	<string name="title_replace">Замена</string>
-
+	<string name="title_replace_options">Опции замены</string>
+	
 	<string name="title_save_file">Сохранение файла</string>
 	<string name="msg_save_file">Файл %1$s изменен, сохранить изменения?</string>
 	<string name="msg_saved_file">Файл %1$s сохранён.</string>
@@ -53,13 +54,15 @@
 	<string name="action_cancel">Отменить</string>
 	<string name="action_yes">Да</string>
 	<string name="action_no">Нет</string>
-
+	
 	<string name="action_no_ext">Без расширения</string>
 	<string name="action_add_ext">Добавить расширение</string>
 	<string name="action_add_dir">Добавить папку</string>
 
 	<string name="action_open">Открыть</string>
 	<string name="action_search">Поиск</string>
+	<string name="action_close_search">Закрыть</string>
+	<string name="action_rescan">Пересканировать</string>
 	<string name="action_copy">Копировать</string>
 
 	<string name="action_select">Выделить</string>
@@ -96,10 +99,16 @@
 	<string name="msg_progress">%1$s (в %2$d файлах)</string>
 	<string name="msg_grep_finished">Завершено.</string>
     <string name="msg_grep_canceled">Отменено.</string>
+
+	<string name="msg_replace_confirm">Заменить в файле <b>%1$s</b>\n<b>%2$s</b> на <b>%3$s</b>?</string>
+	<string name="msg_replace_selected_confirm">Заменить в выделенных файлах <b>%1$s</b> на <b>%1$s</b>?</string>
+	<string name="msg_replace_all_confirm">Заменить во всех найденых файлах <b>%1$s</b> на <b>%2$s</b>?</string>
 	<string name="msg_replace">Заменить <b>%1$s</b> на:</string>
 	<string name="msg_replace_ok">Замена <b>%1$s</b> на <b>%2$s</b> завершена.</string>
 	<string name="msg_replace_canceled">Замена <b>%1$s</b> на <b>%2$s</b> отменена.</string>
 	<string name="msg_replace_no">По Вашему запросу <b>%1$s</b> ни чего не найдено.</string>
+	<string name="msg_no_replace_query">Вы не указали слово или фразу для замены.</string>
+	
 	<string name="msg_copied">Скопировано в буфер обмена</string>
 
 	<!--Colorpicker-->
