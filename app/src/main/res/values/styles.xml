@@ -130,8 +130,8 @@
 		<item name="android:background">@color/colorPrimaryDark</item>
 		<item name="android:textColor">@color/textColorPrimary</item>
 		<item name="android:paddingLeft">10dp</item>
-		<item name="android:paddingTop">5dp</item>
-		<item name="android:paddingBottom">5dp</item>
+		<item name="android:paddingTop">10dp</item>
+		<item name="android:paddingBottom">10dp</item>
 	</style>
 
 	<style name="spinnerDropDownItemStyle" parent="android:TextAppearance.Widget.TextView.SpinnerItem">

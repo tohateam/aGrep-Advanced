@@ -3,6 +3,7 @@
     <string name="app_settings">Настройки</string>
 	<string name="app_search_result">Результаты поиска</string>
 	<string name="app_text_view">Просмотр файла</string>
+	<string name="app_edit_view">Редактирование файла</string>
 	<string name="app_about">О программе</string>
 
 	<!--LABELS-->
@@ -42,14 +43,33 @@
 	<string name="title_remove_item">Удалить элемент</string>
     <string name="msg_remove_item">%s\nВы уверены?</string>
 
+	
+	<!--ЗАМЕНА-->
+
 	<string name="title_replace">Замена</string>
 	<string name="title_replace_options">Опции замены</string>
 	
+	<string name="action_replace">Заменить</string>
+	<string name="action_replace_selected">Заменить в выделенных</string>
+	<string name="action_replace_all">Заменить во всех</string>
+	
+	<string name="msg_replace_confirm">Заменить в файле <b>%1$s</b>\n<b>%2$s</b> на <b>%3$s</b>?</string>
+	<string name="msg_replace_selected_confirm">Заменить в выделенных файлах <b>%1$s</b> на <b>%1$s</b>?</string>
+	<string name="msg_replace_all_confirm">Заменить во всех найденых файлах <b>%1$s</b> на <b>%2$s</b>?</string>
+	<string name="msg_replace">Заменить <b>%1$s</b> на:</string>
+	<string name="msg_replace_ok">Замена <b>%1$s</b> на <b>%2$s</b> завершена.</string>
+	<string name="msg_replace_canceled">Замена <b>%1$s</b> на <b>%2$s</b> отменена.</string>
+	<string name="msg_replace_no">По Вашему запросу <b>%1$s</b> ни чего не найдено.</string>
+	<string name="msg_no_replace_query">Вы не указали слово или фразу для замены.</string>
+
+
 	<string name="title_save_file">Сохранение файла</string>
 	<string name="msg_save_file">Файл %1$s изменен, сохранить изменения?</string>
 	<string name="msg_saved_file">Файл %1$s сохранён.</string>
+
 	
 	<!--ACTIONS-->
+
 	<string name="action_ok">Ok</string>
 	<string name="action_cancel">Отменить</string>
 	<string name="action_yes">Да</string>
@@ -73,10 +93,6 @@
 	<string name="action_expand_all">Развернуть</string>
 	<string name="action_collapse_all">Свернуть</string>
 
-	<string name="action_replace">Заменить</string>
-	<string name="action_replace_selected">Заменить в выделенных</string>
-	<string name="action_replace_all">Заменить во всех</string>
-
 	<string name="action_view_tools">Инструменты</string>
 	<string name="action_view_save">Сохранить</string>
 	<string name="action_send">Отправить</string>
@@ -92,25 +108,17 @@
 	<string name="action_help">Справка</string>
 	<string name="action_quit">Выход</string>
 
+	
 	<!--MESSEGE-->
+
 	<string name="msg_no_target_dir">Не указаны директории поиска.\nПожайлуста, укажите директории.</string>
 	<string name="msg_no_target_ext">Не указаны расширения файлов. \nПожалуйста, укажите расширения.</string>
 	<string name="msg_no_search_query">Не указана поисковая фраза.</string>
 	<string name="msg_progress">%1$s (в %2$d файлах)</string>
 	<string name="msg_grep_finished">Завершено.</string>
-    <string name="msg_grep_canceled">Отменено.</string>
-
-	<string name="msg_replace_confirm">Заменить в файле <b>%1$s</b>\n<b>%2$s</b> на <b>%3$s</b>?</string>
-	<string name="msg_replace_selected_confirm">Заменить в выделенных файлах <b>%1$s</b> на <b>%1$s</b>?</string>
-	<string name="msg_replace_all_confirm">Заменить во всех найденых файлах <b>%1$s</b> на <b>%2$s</b>?</string>
-	<string name="msg_replace">Заменить <b>%1$s</b> на:</string>
-	<string name="msg_replace_ok">Замена <b>%1$s</b> на <b>%2$s</b> завершена.</string>
-	<string name="msg_replace_canceled">Замена <b>%1$s</b> на <b>%2$s</b> отменена.</string>
-	<string name="msg_replace_no">По Вашему запросу <b>%1$s</b> ни чего не найдено.</string>
-	<string name="msg_no_replace_query">Вы не указали слово или фразу для замены.</string>
-	
+    <string name="msg_grep_canceled">Отменено.</string>	
 	<string name="msg_copied">Скопировано в буфер обмена</string>
-
+	<string name="msg_back_pressed">Для выхода, нажмите ещё раз!</string>
 	<!--Colorpicker-->
 	<string name="color_picker_input">Введите код цвета</string>
 	<string name="color_picker_hint">Введите код в шеснадцатиричном формате</string>

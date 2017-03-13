@@ -28,9 +28,6 @@ implements AsyncResponse, SearchAdapter.AdapterCallback
 	private static final int RESULT_SEARCH = 0;
 	private static final int RESULT_REPLACE = 1;
 
-	//private static final int RESULT_REPLACE_CURRENT = 1;
-//	private static final int RESULT_REPLACE_ALL = 3;
-
 	private Toolbar toolbar;
 	private ActionMode mActionMode;
 
@@ -121,7 +118,7 @@ implements AsyncResponse, SearchAdapter.AdapterCallback
 	private void startTaskSearch() {
 		if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
 			mData.removeAll(mData);
-			mTask = new GrepTask(0);
+			mTask = new GrepTask(RESULT_SEARCH);
 			mTask.delegate = this;
 			mTask.execute(mQuery);
 		}
@@ -326,8 +323,8 @@ implements AsyncResponse, SearchAdapter.AdapterCallback
 	 * msg_result - текст сообщения
 	 */
 	private void showResultDialog(String msg_result) {
-		AlertDialog.Builder alertDialog = new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.AppCompatAlertDialogStyle));
-		alertDialog.setIcon(R.drawable.ic_alert_box);
+		AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+		alertDialog.setIcon(R.drawable.ic_message_draw);
 		alertDialog.setTitle(R.string.title_replace);
 		alertDialog.setMessage(msg_result);
 
@@ -353,7 +350,7 @@ implements AsyncResponse, SearchAdapter.AdapterCallback
 	// Поиск - не найдено
 	private void showResultSearch() {
 		AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
-		alertDialog.setIcon(R.drawable.ic_alert);
+		alertDialog.setIcon(R.drawable.ic_message_alert);
 		alertDialog.setTitle(R.string.title_search);
 		alertDialog.setMessage(getString(R.string.msg_replace_no, mQuery));
 
@@ -379,7 +376,8 @@ implements AsyncResponse, SearchAdapter.AdapterCallback
     public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 			case android.R.id.home:
-				NavUtils.navigateUpFromSameTask(this);
+				//NavUtils.navigateUpFromSameTask(this);
+				super. onBackPressed();
 				return true;
 			case R.id.item_expand_all:
 				expandAll();
@@ -494,7 +492,7 @@ implements AsyncResponse, SearchAdapter.AdapterCallback
 			final boolean replaceAll = replace;
 
 			AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
-			alertDialog.setIcon(R.drawable.ic_alert_box);
+			alertDialog.setIcon(R.drawable.ic_message_alert);
 			alertDialog.setTitle(R.string.title_replace);
 			alertDialog.setMessage(title);
 

@@ -27,7 +27,7 @@ implements AsyncResponse
 {	
     public static final String EXTRA_QUERY = "query";
     public static final String EXTRA_PATH = "path";
-
+	
 	private Toolbar toolbar;
 	private ActionMode mActionMode;
 
@@ -48,6 +48,7 @@ implements AsyncResponse
 	private String mTitle;
 
 	private int mFontSize;
+	private boolean mEditMode = false;
 	private boolean mTextChanged = false;
 
 	@Override
@@ -60,23 +61,11 @@ implements AsyncResponse
 		mPrefs = Prefs.loadPrefes(this);
 		mFontSize = mPrefs.mFontSize;
 
-		Intent it = getIntent();
-        if (it != null) {
-            Bundle extra = it.getExtras();
-            if (extra != null) {
-                mPath = extra.getString(EXTRA_PATH);
-                mQuery = extra.getString(EXTRA_QUERY);
-				startLoadFile(mQuery);
-            }
-		}
-
-		mTitle = getString(R.string.app_text_view) + " : " + mPath.substring(mPath.lastIndexOf("/") + 1);
-
 		toolbar = (Toolbar) findViewById(R.id.toolbar);
 		if (toolbar != null) {
 			setSupportActionBar(toolbar);
 			if (getSupportActionBar() != null) {
-				getSupportActionBar().setTitle(mTitle);
+				//getSupportActionBar().setTitle(mTitle);
 				getSupportActionBar().setDisplayShowTitleEnabled(true);
 				getSupportActionBar().setHomeButtonEnabled(true);
 				getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -103,6 +92,17 @@ implements AsyncResponse
 		mEditText = (EditText) findViewById(R.id.text_view_edit);
 		mEditText.setTextSize(mFontSize);
 		mEditText.addTextChangedListener(textWatcher);
+
+		Intent it = getIntent();
+        if (it != null) {
+            Bundle extra = it.getExtras();
+            if (extra != null) {
+                mPath = extra.getString(EXTRA_PATH);
+                mQuery = extra.getString(EXTRA_QUERY);
+				setViewMode();
+				startLoadFile(mQuery);
+            }
+		}
 	}
 
 	// Определение изменения файла
@@ -192,31 +192,40 @@ implements AsyncResponse
         return true;
     }
 
+	private void setViewMode() {
+		// 0-visiable, 4- invisiable, 8- gone
+		if (mEditMode) {
+			mTextPreview.setVisibility(8);
+			mEditText.setVisibility(0);
+			if(!mTextPreview.getText().equals("") || mTextPreview.getText() != null)
+				mEditText.setText(mTextPreview.getText());
+			mTextPreview.setText("");
+			mTitle = getString(R.string.app_edit_view) + " : " + mPath.substring(mPath.lastIndexOf("/") + 1);
+		} else {
+			mTextPreview.setVisibility(0);
+			mEditText.setVisibility(8);
+			if(!mEditText.getText().equals("") || mEditText.getText() != null)
+				mTextPreview.setText(mEditText.getText());
+			mEditText.setText("");
+			mTitle = getString(R.string.app_text_view) + " : " + mPath.substring(mPath.lastIndexOf("/") + 1);
+		}
+		getSupportActionBar().setTitle(mTitle);
+		invalidateOptionsMenu();
+	}
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-		Resources res = getResources();
-
 		switch (item.getItemId()) {
 			case android.R.id.home:
 				if (mTextChanged)
 					dialogSave();
 				else
-					NavUtils.navigateUpFromSameTask(this);
+					//NavUtils.navigateUpFromSameTask(this);
+					super. onBackPressed();
 				return true;
 			case R.id.item_view_mode:
-				// 0-visiable, 4- invisiable, 8- gone
-				if (mTextPreview.getVisibility() == 0) {
-					mTextPreview.setVisibility(8);
-					mEditText.setVisibility(0);
-					mEditText.setText(mTextPreview.getText());
-					mTextPreview.setText("");
-				} else {
-					mTextPreview.setVisibility(0);
-					mEditText.setVisibility(8);
-					mTextPreview.setText(mEditText.getText());
-					mEditText.setText("");
-				}
-				invalidateOptionsMenu();
+				mEditMode = !mEditMode;
+				setViewMode();
 				return true;
 			case R.id.item_view_save:
 				saveFile(false);
@@ -286,7 +295,7 @@ implements AsyncResponse
 
 	private void showReplaceDialog() {
 		AlertDialog.Builder alertDialog = new AlertDialog.Builder(mContext);
-		alertDialog.setIcon(R.drawable.ic_reply);
+		alertDialog.setIcon(R.drawable.ic_message_draw);
 		alertDialog.setTitle(getString(R.string.title_replace));
 		alertDialog.setMessage(getString(R.string.msg_replace, mQuery));
 
@@ -338,10 +347,10 @@ implements AsyncResponse
 	}
 
 	private void dialogSave() {
-		AlertDialog.Builder builderSingle = new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.AppCompatAlertDialogStyle));
+		AlertDialog.Builder builderSingle = new AlertDialog.Builder(this);
 		builderSingle.setIcon(R.drawable.ic_content_save);
 		builderSingle.setTitle(getString(R.string.title_save_file));
-		builderSingle.setMessage(getString(R.string.msg_save_file, mQuery));
+		builderSingle.setMessage(getString(R.string.msg_save_file, mPath.substring(mPath.lastIndexOf("/") + 1)));
 
 		builderSingle.setNegativeButton(getString(R.string.action_cancel), new DialogInterface.OnClickListener() {
 				@Override
@@ -358,7 +367,8 @@ implements AsyncResponse
 		builderSingle.setNeutralButton(R.string.action_no,
 			new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int which) {
-					NavUtils.navigateUpFromSameTask(TextViewerActivity.this);
+//					NavUtils.navigateUpFromSameTask(TextViewerActivity.this);
+					finish();
 				}
 			});
 
@@ -382,7 +392,8 @@ implements AsyncResponse
 		mUtils.saveFile(new File(mPath), text);
 
 		if (exit)
-			NavUtils.navigateUpFromSameTask(this);
+//			NavUtils.navigateUpFromSameTask(this);
+			finish();
 		else {
 			mTextChanged = false;
 			getSupportActionBar().setTitle(mTitle);

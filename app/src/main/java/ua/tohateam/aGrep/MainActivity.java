@@ -30,6 +30,7 @@ public class MainActivity extends AppCompatActivity
 	private AutoCompleteTextView edittext;
 
 	private Context mContext;
+	private long back_pressed = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -355,4 +356,17 @@ public class MainActivity extends AppCompatActivity
 			.setCancelable(true)
 			.show();
 	}
+
+	/*********************************************************************
+	 * Выход по двойному нажатию на кнопку [назад]
+	 *********************************************************************/
+	@Override
+	public void onBackPressed() {
+		if (back_pressed + 2000 > System.currentTimeMillis())
+			super.onBackPressed();
+		else
+			Toast.makeText(getBaseContext(), getString(R.string.msg_back_pressed), Toast.LENGTH_SHORT).show();
+		back_pressed = System.currentTimeMillis();
+	}
+	
 }
