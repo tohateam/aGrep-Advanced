@@ -154,7 +154,10 @@ public class MainActivity extends AppCompatActivity
 					return false;
 				}
 			});
-        mRecentAdapter = new ArrayAdapter < String >(mContext, android.R.layout.simple_dropdown_item_1line, new ArrayList < String >());
+        mRecentAdapter = new ArrayAdapter <String>(mContext, 
+													 R.layout.my_spinner_item, 
+													new ArrayList <String>());
+//		mRecentAdapter.setDropDownViewResource(R.layout.my_spinner_dropdown_item);
         edittext.setAdapter(mRecentAdapter);
 
         ImageButton clrBtn = (ImageButton) findViewById(R.id.btn_clear_search);

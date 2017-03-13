@@ -31,6 +31,11 @@
 
 		<!--<item name="android:textSize">14sp</item>-->
 		<item name="android:textAppearance">@android:style/TextAppearance.Medium</item>
+		
+		<!--<item name="spinnerStyle">@style/MySpinnerStyle</item>-->
+        <!--<item name="dropDownSpinnerStyle">@style/MySpinnerStyle</item>-->
+		<!--<item name="spinnerDropDownItemStyle">@style/Widget.Material.DropDownItem.Spinner</item>-->
+        <!--<item name="spinnerItemStyle">@style/Widget.Material.TextView.SpinnerItem</item>-->
 	</style>
 
 </resources>

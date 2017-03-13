@@ -72,10 +72,10 @@ implements AsyncResponse, SearchAdapter.AdapterCallback
 			}
 		}
 
-        mRecentAdapter = new ArrayAdapter<String>(mContext, 
-												  android.R.layout.simple_dropdown_item_1line, 
-												  new ArrayList <String>());
-
+        mRecentAdapter = new ArrayAdapter <String>(mContext, 
+												   R.layout.my_spinner_item, 
+												   new ArrayList <String>());
+		
 		// Если не указаны директории поиска то выходим
 		if (mPrefs.mDirList.size() == 0) {
             Toast.makeText(getApplicationContext(), R.string.msg_no_target_dir, Toast.LENGTH_LONG).show();

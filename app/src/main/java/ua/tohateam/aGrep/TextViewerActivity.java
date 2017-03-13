@@ -96,10 +96,10 @@ implements AsyncResponse
 					return true;
 				}
 			});
-        mRecentAdapter = new ArrayAdapter<String>(mContext, 
-												  android.R.layout.simple_dropdown_item_1line, 
-												  new ArrayList <String>());
-
+        mRecentAdapter = new ArrayAdapter <String>(mContext, 
+												   R.layout.my_spinner_item, 
+												   new ArrayList <String>());
+		
 		mEditText = (EditText) findViewById(R.id.text_view_edit);
 		mEditText.setTextSize(mFontSize);
 		mEditText.addTextChangedListener(textWatcher);
