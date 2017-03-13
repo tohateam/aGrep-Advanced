@@ -150,6 +150,7 @@ public class Prefs
         editor.putBoolean(KEY_REGULAR_EXPRESSION, mRegularExrpression);
         editor.putBoolean(KEY_IGNORE_CASE, mIgnoreCase);
 		editor.putBoolean(KEY_WORD_ONLY, mWordOnly);
+		editor.putString(KEY_FONTSIZE, Integer.toString(mFontSize));
 
         editor.apply();
 

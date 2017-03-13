@@ -279,6 +279,8 @@ implements AsyncResponse
 		alertDialog.setPositiveButton(R.string.action_ok,
 			new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int which) {
+					mPrefs.mFontSize = mFontSize;
+					mPrefs.savePrefs(TextViewerActivity.this);
 					mTextPreview.setTextSize(mFontSize);
 					mEditText.setTextSize(mFontSize);
 				}

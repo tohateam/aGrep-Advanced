@@ -6,13 +6,13 @@
 	<PreferenceCategory
 		android:title="@string/title_category_global"
 		android:layout="@layout/pref_category">
-		<ListPreference
+		<!--<ListPreference
             android:defaultValue="12"
             android:entries="@array/font_size_entries"
             android:entryValues="@array/font_size_values"
             android:key="FontSize"
 			android:summary="%s"
-            android:title="@string/title_font_size" />
+            android:title="@string/title_font_size" />-->
 		
 		<CheckBoxPreference
 			android:defaultValue="true"
