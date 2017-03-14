@@ -22,7 +22,7 @@ import android.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.view.View.OnClickListener;
 
-public class SearchResult extends AppCompatActivity 
+public class SearchTextActivity extends AppCompatActivity 
 implements AsyncResponse, SearchAdapter.AdapterCallback
 {
 	private static final int RESULT_SEARCH = 0;
@@ -133,7 +133,7 @@ implements AsyncResponse, SearchAdapter.AdapterCallback
 				@Override
 				public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
 					String patch = mGroupModel.get(groupPosition).getPath().getPath();
-					Intent it = new Intent(SearchResult.this, TextViewerActivity.class);
+					Intent it = new Intent(SearchTextActivity.this, TextViewerActivity.class);
 					it.setAction(Intent.ACTION_SEARCH);
 					it.putExtra(SearchManager.QUERY, mQuery);
 					it.putExtra("path", patch);
@@ -151,7 +151,7 @@ implements AsyncResponse, SearchAdapter.AdapterCallback
 						mGroupModel.get(mCurentGroup).setSelected(true);
 						mAdapter.notifyDataSetChanged();
 						// активируем CAB
-						mActionMode = SearchResult.this.startActionMode(mActionModeCallback);
+						mActionMode = SearchTextActivity.this.startActionMode(mActionModeCallback);
 						setTitleActionBar();
 						return true;
 					}
@@ -451,7 +451,7 @@ implements AsyncResponse, SearchAdapter.AdapterCallback
 			new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int which) {
 					// Добавляем в историю
-					mPrefs.addRecent(SearchResult.this, edittext.getText().toString());
+					mPrefs.addRecent(SearchTextActivity.this, edittext.getText().toString());
 					mReplaceQuery = edittext.getText().toString();
 					confirmReplace();
 				}
@@ -500,7 +500,7 @@ implements AsyncResponse, SearchAdapter.AdapterCallback
 				new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int which) {
 						mReplaceTask = new ReplaceTask(RESULT_REPLACE, replaceAll);
-						mReplaceTask.delegate = SearchResult.this;
+						mReplaceTask.delegate = SearchTextActivity.this;
 						mReplaceTask.execute(mQuery, mReplaceQuery);
 					}
 				});
@@ -555,7 +555,7 @@ implements AsyncResponse, SearchAdapter.AdapterCallback
         @Override
         protected void onPreExecute() {
             mCancelled = false;
-            mProgressDialog = new ProgressDialog(new ContextThemeWrapper(SearchResult.this, R.style.AppCompatAlertDialogStyle));
+            mProgressDialog = new ProgressDialog(SearchTextActivity.this);
             mProgressDialog.setTitle(R.string.title_replace_spinner);
             mProgressDialog.setMessage(mQuery);
             mProgressDialog.setIndeterminate(true);
@@ -655,7 +655,7 @@ implements AsyncResponse, SearchAdapter.AdapterCallback
         @Override
         protected void onPreExecute() {
             mCancelled = false;
-            mProgressDialog = new ProgressDialog(new ContextThemeWrapper(SearchResult.this, R.style.AppCompatAlertDialogStyle));
+            mProgressDialog = new ProgressDialog(SearchTextActivity.this);
             mProgressDialog.setTitle(R.string.title_grep_spinner);
 			mProgressDialog.setIcon(R.drawable.ic_file_find);
             mProgressDialog.setMessage(mQuery);
@@ -697,7 +697,7 @@ implements AsyncResponse, SearchAdapter.AdapterCallback
             if (isCancelled()) {
                 return;
             }
-            mProgressDialog.setMessage(SearchResult.this.getString(R.string.msg_progress , mQuery, mFileCount));
+            mProgressDialog.setMessage(SearchTextActivity.this.getString(R.string.msg_progress , mQuery, mFileCount));
             if (progress != null) {
                 synchronized (mData) {
                     for (SearchModel data : progress) {

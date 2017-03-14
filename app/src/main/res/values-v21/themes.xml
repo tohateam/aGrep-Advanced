@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-	<style name="AppTheme" parent="AppTheme.Base">
+	<style name="AppTheme" parent="AppTheme.Dark">
 
 		<item name="android:windowContentTransitions">true</item>
 
@@ -14,16 +14,10 @@
 		 
 		<item name="android:windowDrawsSystemBarBackgrounds">true</item>
 		<item name="android:statusBarColor">@android:color/transparent</item>
-		
 
-		<item name="android:alertDialogTheme">@style/AppCompatAlertDialogStyle</item>
+		<item name="android:alertDialogTheme">@style/AlertDialogDarkStyle</item>
 		<item name="windowActionModeOverlay">true</item>
-		<!--<item name="android:textSize">14sp</item>-->
 		<item name="android:textAppearance">@android:style/TextAppearance.Medium</item>
-
-		<!--<item name="spinnerStyle">@style/MySpinnerStyle</item>-->
-        <!--<item name="dropDownSpinnerStyle">@style/MySpinnerStyle</item>-->
-		
 	</style>
 
 </resources>

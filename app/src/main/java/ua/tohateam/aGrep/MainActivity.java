@@ -37,7 +37,6 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
 		mContext = this;
 		mPrefs = Prefs.loadPrefes(this);
-
         setContentView(R.layout.main_activity);
 
 		toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -208,7 +207,7 @@ public class MainActivity extends AppCompatActivity
             Toast.makeText(getApplicationContext(), R.string.msg_no_search_query, Toast.LENGTH_LONG).show();			
 		}
 
-		Intent it = new Intent(this, SearchResult.class);
+		Intent it = new Intent(this, SearchTextActivity.class);
 		it.setAction(Intent.ACTION_SEARCH);
         it.putExtra(SearchManager.QUERY, query);
 		startActivity(it);
@@ -368,5 +367,26 @@ public class MainActivity extends AppCompatActivity
 			Toast.makeText(getBaseContext(), getString(R.string.msg_back_pressed), Toast.LENGTH_SHORT).show();
 		back_pressed = System.currentTimeMillis();
 	}
-	
+
+	/***************************************************************************
+	 * Смена темы и перезапуск программы
+	 **************************************************************************/
+	public void changeTheme() {
+        //PreferencesManager.getInstance().setAppTheme(selected_theme_id);
+        restart();
+    }
+
+	public void restart() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            recreate();
+        } else {
+            finish();
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+        }
+    }
 }

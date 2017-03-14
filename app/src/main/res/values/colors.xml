@@ -6,28 +6,50 @@
 	<color name="colorPrimaryLight">#CFD8DC</color> <!-- [ СЕРО-СИНИЙ - 100 ] -->
 	<color name="colorAccent">#536DFE</color> <!-- [ ИНДИГО - A200 ] -->
 
+	<!--Dark-->
 	<color name="textColorPrimary">#FFFFFF</color>
 	<color name="textColorSecondary">#B2B2B2</color>
 
+	<!--Light-->
+	<color name="textColorPrimaryLight">#212121</color>
+	<color name="textColorSecondaryLight">#727272</color>
+
+
 	<color name="text">#FFFFFF</color>
 	<color name="icons">#FFFFFF</color>
-	<color name="divider">#1E1E1E</color>
 
+	
+	<!--Dark-->
+	<color name="divider">#1E1E1E</color>
+	<!--Light-->
+	<color name="dividerLight">#B6B6B6</color>
+	
+	
 	<color name="colorControlNormal">@color/textColorSecondary</color>
 	<color name="colorControlActivated">@color/colorAccent</color>
 	<color name="colorControlHighlight">@color/divider</color>
 
-	
 	<color name="colorButtonNormal">#19C1B2</color>
 	<color name="colorSwitchThumbNormal">#19C1B2</color>
 	<color name="navigationBarColor">@color/colorPrimaryDark</color>
 	
-
+	
+	<!--Dark-->
 	<color name="windowBackground">#212121</color>
+	<!--Light-->
+	<color name="windowBackgroundLight">#C0C3C6</color>
+	
+	
 	<color name="lightBackground">#E0E0E0</color>
 	<color name="darkBackground">#424242</color>
 	<color name="drawerBackground">#FFfafafa</color>
+	
+	
+	<!--Dark-->
 	<color name="rowBackground">#34474F</color>
+	<!--Light-->
+	<color name="rowBackgroundLight">#F2F2F2</color>
+
 	
 	<color name="backgroundCardView">#37474F</color>
 	<color name="backgroundChildRow">#546E7A</color>

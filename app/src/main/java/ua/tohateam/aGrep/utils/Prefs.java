@@ -31,6 +31,8 @@ public class Prefs
 	
 	public static final String KEY_SEARCH_IN_HIDDEN = "search_in_hidden";
 	public static final String KEY_CREATE_BACKUP = "create_backup";
+
+	public static final String KEY_CURRENT_THEME = "appTheme";
 	
     public boolean mRegularExrpression = false;
     public boolean mIgnoreCase = true;
@@ -43,6 +45,8 @@ public class Prefs
     public int mHighlightBg = 0xFF00FFFF;
     public int mHighlightBgReplace = 0x77FF0000;
     public int mHighlightFg = 0xFF000000;
+	
+	public int mCurrentTheme = 0;
 	
 	private static final String PREF_RECENT= "recent";
 	private boolean addLineNumber=false;
@@ -106,8 +110,9 @@ public class Prefs
         prefs.mFontSize = Integer.parseInt(sp.getString(KEY_FONTSIZE , "-1"));
         prefs.mHighlightFg = sp.getInt(KEY_HIGHLIGHTFG , 0xFF000000);
         prefs.mHighlightBg = sp.getInt(KEY_HIGHLIGHTBG , 0xFF00FFFF);
-        prefs.mHighlightBgReplace = sp.getInt(KEY_HIGHLIGHTBG_REPLACE , 0x77FF0000);
 
+		prefs.mCurrentTheme = Integer.parseInt(sp.getString(KEY_CURRENT_THEME , "0"));
+		
         prefs.addLineNumber = sp.getBoolean(KEY_ADD_LINENUMBER, false);
         return prefs;
     }

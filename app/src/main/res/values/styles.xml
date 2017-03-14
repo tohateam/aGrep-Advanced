@@ -7,7 +7,7 @@
 	</style>
 
 	<!-- Style for AlertDialogs -->
-	<style name="AppCompatAlertDialogStyle" parent="Theme.AppCompat.Dialog.Alert">
+	<style name="AlertDialogDarkStyle" parent="Theme.AppCompat.Dialog.Alert">
 		<item name="colorAccent">@color/colorAccent</item>
 		<item name="android:textColorPrimary">@color/textColorPrimary</item>
 		<item name="android:background">@color/rowBackground</item>
@@ -18,6 +18,13 @@
 		<!--<item name="android:buttonBarStyle">...</item>-->
 	</style>
 
+	<style name="AlertDialogLightStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
+		<item name="colorAccent">@color/colorAccent</item>
+		<item name="android:textColorPrimary">@color/textColorPrimaryLight</item>
+		<item name="android:background">@color/rowBackgroundLight</item>
+		<item name="android:textColor">@color/textColorPrimaryLight</item>
+	</style>
+	
 	<!--Стиль ActionBar-->
 	<style name="MyActionMode" parent="@style/Widget.AppCompat.ActionMode">
 		<item name="background">@color/colorPrimary</item>

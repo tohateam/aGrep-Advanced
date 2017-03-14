@@ -27,7 +27,7 @@
 			android:theme="@style/ExFilePickerThemeDark" />
 
 		<activity
-            android:name=".SearchResult"
+            android:name=".SearchTextActivity"
             android:label="@string/app_search_result"
 			android:configChanges="keyboardHidden|orientation"
 			android:parentActivityName=".MainActivity">
@@ -48,11 +48,6 @@
 				android:name="android.support.PARENT_ACTIVITY"
 				android:value=".MainActivity" />
 		</activity>
-
-		<activity
-			android:name=".utils.ColorPickerActivity"
-			android:configChanges="keyboardHidden|orientation"
-			android:label="@string/app_settings"/>
 
 		<activity
             android:name=".AboutActivity"
