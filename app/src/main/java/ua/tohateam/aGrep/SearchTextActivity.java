@@ -38,9 +38,6 @@ SearchText.SearchTextCallback
     private Prefs mPrefs;
 	private ExpandableListView mResultList;
 	private SearchAdapter mAdapter;
-	private Pattern mPattern;
-//	private GrepTask mTask;
-//	private ReplaceTask mReplaceTask;
 	private Context mContext;
 
 	private String mQuery;
@@ -175,7 +172,7 @@ SearchText.SearchTextCallback
 	private void showResult() {
         mGroupModel = setListGroups();
         mAdapter = new SearchAdapter(this, mGroupModel);
-		mAdapter.setFormat(mPattern , mPrefs.mHighlightFg , mPrefs.mHighlightBg , mPrefs.mFontSize);
+		mAdapter.setFormat(mUtils.getPattern(mContext, mQuery) , mPrefs.mHighlightFg , mPrefs.mHighlightBg , mPrefs.mFontSize);
         mResultList.setAdapter(mAdapter);
 
         mResultList.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
@@ -342,9 +339,6 @@ SearchText.SearchTextCallback
 		return group_list;
     }
 
-
-
-
 	// Основное меню
 	@Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -374,14 +368,6 @@ SearchText.SearchTextCallback
     }
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
-		if (mAdapter != null) {
-//			MenuItem item_replace = menu.findItem(R.id.item_replace_selected);
-//			if (mAdapter.countGroupSelected() != 0) {
-//				item_replace.setEnabled(true);
-//			} else {
-//				item_replace.setEnabled(false);
-//			}
-		}
 		return super.onPrepareOptionsMenu(menu);
 	}
 

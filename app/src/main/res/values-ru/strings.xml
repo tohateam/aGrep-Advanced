@@ -114,7 +114,7 @@
 	<string name="msg_no_target_dir">Не указаны директории поиска.\nПожайлуста, укажите директории.</string>
 	<string name="msg_no_target_ext">Не указаны расширения файлов. \nПожалуйста, укажите расширения.</string>
 	<string name="msg_no_search_query">Не указана поисковая фраза.</string>
-	<string name="msg_progress">%1$s (в %2$d файлах)</string>
+	<string name="msg_progress">Найдено %1$s (в %2$d файлах)</string>
 	<string name="msg_grep_finished">Завершено.</string>
     <string name="msg_grep_canceled">Отменено.</string>	
 	<string name="msg_copied">Скопировано в буфер обмена</string>

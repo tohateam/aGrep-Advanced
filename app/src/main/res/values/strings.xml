@@ -110,7 +110,7 @@
 	<string name="msg_no_target_dir">There is no target directory.\nPlease set target directory.</string>
 	<string name="msg_no_target_ext">No file extensions are specified. \nPlease specify extensions.</string>
 	<string name="msg_no_search_query">Missing keywords.</string>
-	<string name="msg_progress">%1$s (in %2$d files)</string>
+	<string name="msg_progress">Found %1$s (in %2$d files)</string>
 	<string name="msg_grep_finished">Finished.</string>
     <string name="msg_grep_canceled">Canceled.</string>
 	<string name="msg_copied">Copied to clipboard</string>

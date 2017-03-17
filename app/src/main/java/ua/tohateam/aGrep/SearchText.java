@@ -22,8 +22,7 @@ public class SearchText implements AsyncResponse
 	private GrepTask mTask;
 	private ReplaceTask mReplaceTask;
 
-	private String mQuery;
-	private String mReplaceQuery;
+//	private String mQuery;
 
 	private ArrayList<SearchModel> mData;
 	private SearchTextCallback mSearchTextCallback;
@@ -48,29 +47,30 @@ public class SearchText implements AsyncResponse
 	}
 
 	public void startSearchText(String query) {
-		mQuery = query;
+		//mQuery = query;
 		mData = new ArrayList<SearchModel>();
 
-		if (mQuery != null && mQuery.length() > 0) {
-			mPrefs.addRecent(mContext, mQuery);
-			mPattern = mUtils.getPattern(mContext, mQuery);
+		if (query != null && query.length() > 0) {
+			mPrefs.addRecent(mContext, query);
+			mPattern = mUtils.getPattern(mContext, query);
 
-			startTaskSearch();
+			startTaskSearch(query);
 		}
 	}
 
 	public void startReplaceText(String query, String replace, boolean replaceAll, ArrayList<GroupModel> mGroupModel) {
+		mPattern = mUtils.getPattern(mContext, query);
 		mReplaceTask = new ReplaceTask(RESULT_REPLACE, replaceAll, mGroupModel);
 		mReplaceTask.delegate = this;
-		mReplaceTask.execute(mQuery, mReplaceQuery);
+		mReplaceTask.execute(query, replace);
 	}
 
-	private void startTaskSearch() {
+	private void startTaskSearch(String query) {
 		if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
 			mData.removeAll(mData);
 			mTask = new GrepTask(RESULT_SEARCH);
 			mTask.delegate = this;
-			mTask.execute(mQuery);
+			mTask.execute(query);
 		}
 	}
 
@@ -117,7 +117,7 @@ public class SearchText implements AsyncResponse
 			mCancelled = false;
 			mProgressDialog = new ProgressDialog(mContext);
 			mProgressDialog.setTitle(R.string.title_replace_spinner);
-			mProgressDialog.setMessage(mQuery);
+			//mProgressDialog.setMessage(mQuery);
 			mProgressDialog.setIndeterminate(true);
 			mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
 			mProgressDialog.setCancelable(true);
@@ -144,6 +144,7 @@ public class SearchText implements AsyncResponse
 				if (!mGroupModel.get(i).isSelected() && !replaceAll) {
 					continue;
 				}
+
 				saveFile(mGroupModel.get(i).getPath(), params[1]);
 				res = true;
 			}
@@ -204,6 +205,7 @@ public class SearchText implements AsyncResponse
         private int mFoundcount=0;
         private boolean mCancelled;
 		private int mId;
+		private String mQuery;
 
 		public AsyncResponse delegate = null;
 
@@ -217,7 +219,7 @@ public class SearchText implements AsyncResponse
             mProgressDialog = new ProgressDialog(mContext);
             mProgressDialog.setTitle(R.string.title_grep_spinner);
 			mProgressDialog.setIcon(R.drawable.ic_file_find);
-            mProgressDialog.setMessage(mQuery);
+            //mProgressDialog.setMessage(mQuery);
             mProgressDialog.setIndeterminate(true);
             mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
             mProgressDialog.setCancelable(true);
@@ -233,6 +235,7 @@ public class SearchText implements AsyncResponse
 
         @Override
         protected Boolean doInBackground(String... params) {
+			mQuery = params[0];
             return grepRoot(params[0]);
         }
 
@@ -296,8 +299,27 @@ public class SearchText implements AsyncResponse
                     if (f.isDirectory()) {
                         res = grepDirectory(f);
                     } else {
-                        res = grepFile(f);
+						boolean extok=false;
+						for (CheckedString ext : mPrefs.mExtList) {
+							if (ext.checked) {
+								if (f.getName().indexOf('.') == -1 && ext.string.equals("*.")) {
+									extok = true;
+									break;
+								} else if (f.getName().toLowerCase().endsWith("." + ext.string.toLowerCase())) {
+									extok = true;
+									break;
+								} if (ext.string.equals("*")) {
+									extok = true;
+									break;
+								}
+							} // end extChecked
+						}
+						if(extok)
+                        	res = grepFile(f);
+						else
+							continue;
                     }
+					
                     if (!res) {
                         return false;
                     }
@@ -313,26 +335,6 @@ public class SearchText implements AsyncResponse
             }
             if (file == null) {
                 return false;
-            }
-
-            boolean extok=false;
-            for (CheckedString ext : mPrefs.mExtList) {
-                if (ext.checked) {
-					if (file.getName().indexOf('.') == -1 && ext.string.equals("*.")) {
-						extok = true;
-						break;
-					} else if (file.getName().toLowerCase().endsWith("." + ext.string.toLowerCase())) {
-                        extok = true;
-                        break;
-                    } if (ext.string.equals("*")) {
-						extok = true;
-						break;
-                    }
-                } // end extChecked
-            }
-
-            if (!extok) {
-                return true;
             }
 
             InputStream is;
