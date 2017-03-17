@@ -177,5 +177,24 @@ public class MyUtils
 		}
 		return buffer;
 	}
-	
+
+	public Pattern getPattern(Context context, String patternText) {
+		Pattern mPattern = null;
+		Prefs mPrefs = Prefs.loadPrefes(context);
+		if (!mPrefs.mRegularExrpression) {
+			patternText = escapeMetaChar(patternText);
+			patternText = convertOrPattern(patternText);
+		}
+
+		if (mPrefs.mIgnoreCase) {
+			mPattern = Pattern.compile(patternText, Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE | Pattern.MULTILINE);
+		} else {
+			mPattern = Pattern.compile(patternText);
+		}
+
+		if (mPrefs.mWordOnly) {
+			mPattern = Pattern.compile("\\b" + patternText + "\\b");
+		}
+		return mPattern;
+	}
 }

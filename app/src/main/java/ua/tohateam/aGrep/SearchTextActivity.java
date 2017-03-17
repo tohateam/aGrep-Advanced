@@ -23,8 +23,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.View.OnClickListener;
 
 public class SearchTextActivity extends AppCompatActivity 
-implements AsyncResponse, SearchAdapter.AdapterCallback
-{
+implements 
+//AsyncResponse, 
+SearchAdapter.AdapterCallback,
+SearchText.SearchTextCallback
+{	
 	private static final int RESULT_SEARCH = 0;
 	private static final int RESULT_REPLACE = 1;
 
@@ -36,8 +39,8 @@ implements AsyncResponse, SearchAdapter.AdapterCallback
 	private ExpandableListView mResultList;
 	private SearchAdapter mAdapter;
 	private Pattern mPattern;
-	private GrepTask mTask;
-	private ReplaceTask mReplaceTask;
+//	private GrepTask mTask;
+//	private ReplaceTask mReplaceTask;
 	private Context mContext;
 
 	private String mQuery;
@@ -72,7 +75,7 @@ implements AsyncResponse, SearchAdapter.AdapterCallback
         mRecentAdapter = new ArrayAdapter <String>(mContext, 
 												   R.layout.my_spinner_item, 
 												   new ArrayList <String>());
-		
+
 		// Если не указаны директории поиска то выходим
 		if (mPrefs.mDirList.size() == 0) {
             Toast.makeText(getApplicationContext(), R.string.msg_no_target_dir, Toast.LENGTH_LONG).show();
@@ -90,38 +93,84 @@ implements AsyncResponse, SearchAdapter.AdapterCallback
 			getSupportActionBar().setTitle(getString(R.string.app_search_result) + " : " + mQuery);
 
             if (mQuery != null && mQuery.length() > 0) {
-                mPrefs.addRecent(this, mQuery);
-                String patternText = mQuery;
-
-                if (!mPrefs.mRegularExrpression) {
-                    patternText = mUtils.escapeMetaChar(patternText);
-                    patternText = mUtils.convertOrPattern(patternText);
-                }
-
-                if (mPrefs.mIgnoreCase) {
-                    mPattern = Pattern.compile(patternText, Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE | Pattern.MULTILINE);
-                } else {
-                    mPattern = Pattern.compile(patternText);
-                }
-
-				if (mPrefs.mWordOnly) {
-					mPattern = Pattern.compile("\\b" + patternText + "\\b");
-				}
-
-				startTaskSearch();
+//                mPrefs.addRecent(this, mQuery);
+                //String patternText = mQuery;
+				SearchText searchText = new SearchText(this);
+				searchText.startSearchText(mQuery);
             } else {
                 finish();
             }
 		}
 	}
 
-	private void startTaskSearch() {
-		if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
-			mData.removeAll(mData);
-			mTask = new GrepTask(RESULT_SEARCH);
-			mTask.delegate = this;
-			mTask.execute(mQuery);
+	// Получаем результаты поиска
+	@Override
+	public void onMethodCallback(ArrayList<SearchModel> data, int idResult, boolean result) {
+		// TODO: Implement this method
+		if (idResult == 0 && data.size() > 0) {
+			mData = data;
+			// Сортируем по пути
+			Collections.sort(mData, new Comparator<SearchModel>() {
+					@Override
+					public int compare(SearchModel p1, SearchModel p2) {
+						return p1.getPath().getParent().compareToIgnoreCase(p2.getPath().getParent());
+					}
+				});
+			
+			showResult();
+		} else if (idResult == 0 && data.size() == 0) {
+			dialogNoSearch();
+		} else if (idResult == 1) {
+			String msg = result ? mContext.getString(R.string.msg_replace_ok, mQuery, mReplaceQuery)
+				: mContext.getString(R.string.msg_replace_canceled, mQuery, mReplaceQuery);
+			dialogReplaceResult(msg);
 		}
+	}
+
+	// Поиск - не найдено
+	private void dialogNoSearch() {
+		AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+		alertDialog.setIcon(R.drawable.ic_message_alert);
+		alertDialog.setTitle(R.string.title_search);
+		alertDialog.setMessage(getString(R.string.msg_replace_no, mQuery));
+
+		alertDialog.setPositiveButton(R.string.action_ok,
+			new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int which) {
+					finish();
+				}
+			});
+
+		alertDialog.show();
+	}
+
+	/*
+	 * Результаты замены
+	 * msg_result - текст сообщения
+	 */
+	private void dialogReplaceResult(String msg_result) {
+		AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+		alertDialog.setIcon(R.drawable.ic_message_draw);
+		alertDialog.setTitle(R.string.title_replace);
+		alertDialog.setMessage(msg_result);
+
+		alertDialog.setPositiveButton(R.string.action_ok,
+			new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int which) {
+					//startTaskSearch();
+					finish();
+				}
+			});
+
+//		alertDialog.setNegativeButton(R.string.action_search_close,
+//			new DialogInterface.OnClickListener() {
+//				public void onClick(DialogInterface dialog, int which) {
+//					mGroupModel.get(mCurentGroup).setSelected(false);
+//					finish();
+//				}
+//			});
+
+		alertDialog.show();
 	}
 	private void showResult() {
         mGroupModel = setListGroups();
@@ -293,76 +342,8 @@ implements AsyncResponse, SearchAdapter.AdapterCallback
 		return group_list;
     }
 
-	// Уведомляем о результах поиска/замены
-	@Override
-	public void onProcessFinish(boolean result, int id) {
-		if (result) {
-			if (id == RESULT_SEARCH && mData.size() != 0) {
-				// Сортируем по пути
-				Collections.sort(mData, new Comparator<SearchModel>() {
-						@Override
-						public int compare(SearchModel p1, SearchModel p2) {
-							return p1.getPath().getParent().compareToIgnoreCase(p2.getPath().getParent());
-						}
-					});
-				showResult();
-			} else {
-				showResultSearch();
-			}
 
-			if (id == RESULT_REPLACE) { // замена
-				String msg = result ? getString(R.string.msg_replace_ok, mQuery, mReplaceQuery) : getString(R.string.msg_replace_canceled, mQuery, mReplaceQuery);
-				mReplaceQuery = null;
-				showResultDialog(msg);
-			}
-		}
-	}
 
-	/*
-	 * Результаты замены
-	 * msg_result - текст сообщения
-	 */
-	private void showResultDialog(String msg_result) {
-		AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
-		alertDialog.setIcon(R.drawable.ic_message_draw);
-		alertDialog.setTitle(R.string.title_replace);
-		alertDialog.setMessage(msg_result);
-
-		alertDialog.setPositiveButton(R.string.action_rescan,
-			new DialogInterface.OnClickListener() {
-				public void onClick(DialogInterface dialog, int which) {
-					startTaskSearch();
-					//finish();
-				}
-			});
-
-		alertDialog.setNegativeButton(R.string.action_search_close,
-			new DialogInterface.OnClickListener() {
-				public void onClick(DialogInterface dialog, int which) {
-					mGroupModel.get(mCurentGroup).setSelected(false);
-					finish();
-				}
-			});
-
-		alertDialog.show();
-	}
-
-	// Поиск - не найдено
-	private void showResultSearch() {
-		AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
-		alertDialog.setIcon(R.drawable.ic_message_alert);
-		alertDialog.setTitle(R.string.title_search);
-		alertDialog.setMessage(getString(R.string.msg_replace_no, mQuery));
-
-		alertDialog.setPositiveButton(R.string.action_ok,
-			new DialogInterface.OnClickListener() {
-				public void onClick(DialogInterface dialog, int which) {
-					finish();
-				}
-			});
-
-		alertDialog.show();
-	}
 
 	// Основное меню
 	@Override
@@ -499,9 +480,8 @@ implements AsyncResponse, SearchAdapter.AdapterCallback
 			alertDialog.setPositiveButton(R.string.action_ok,
 				new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int which) {
-						mReplaceTask = new ReplaceTask(RESULT_REPLACE, replaceAll);
-						mReplaceTask.delegate = SearchTextActivity.this;
-						mReplaceTask.execute(mQuery, mReplaceQuery);
+						SearchText searchText = new SearchText(SearchTextActivity.this);
+						searchText.startReplaceText(mQuery, mReplaceQuery, replaceAll, mGroupModel);
 					}
 				});
 
@@ -526,327 +506,5 @@ implements AsyncResponse, SearchAdapter.AdapterCallback
 		mRecentAdapter.addAll(recent);
 		mRecentAdapter.notifyDataSetChanged();
 	}
-
-
-	/**
-	 * -----===== ЗАМЕНА =====-----
-	 */
-    class ReplaceTask extends AsyncTask<String, ReplaceTask.Progress, Boolean>
-    {
-        private ProgressDialog mProgressDialog;
-        private boolean mCancelled;
-		private StringBuffer buffer;
-
-		public AsyncResponse delegate = null;
-		private int mResultId;
-		private boolean replaceAll;
-
-		class Progress
-		{
-			String label;
-			int totalSize;
-		}
-
-		public ReplaceTask(int id, boolean replace) {
-			this.mResultId = id;
-			this.replaceAll = replace;
-		}
-
-        @Override
-        protected void onPreExecute() {
-            mCancelled = false;
-            mProgressDialog = new ProgressDialog(SearchTextActivity.this);
-            mProgressDialog.setTitle(R.string.title_replace_spinner);
-            mProgressDialog.setMessage(mQuery);
-            mProgressDialog.setIndeterminate(true);
-            mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-            mProgressDialog.setCancelable(true);
-            mProgressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-					@Override
-					public void onCancel(DialogInterface dialog) {
-						mCancelled = true;
-						cancel(false);
-					}
-				});
-            mProgressDialog.show();
-        }
-
-        @Override
-        protected Boolean doInBackground(String... params) {
-			boolean res = false;
-			Progress progress = new Progress();
-			progress.totalSize = mGroupModel.size();
-
-			for (int i=0; i < mGroupModel.size(); i++) {
-				progress.label = mGroupModel.get(i).getName();
-				publishProgress(progress);
-
-				if (!mGroupModel.get(i).isSelected() && !replaceAll) {
-					continue;
-				}
-				saveFile(mGroupModel.get(i).getPath(), params[1]);
-				mGroupModel.get(mCurentGroup).setSelected(false);
-				res = true;
-			}
-            return res;
-        }
-
-        @Override
-        protected void onCancelled() {
-            super.onCancelled();
-            onPostExecute(false);
-        }
-
-        @Override
-        protected void onProgressUpdate(Progress... values) {
-            if (isCancelled()) {
-                return;
-            }
-			Progress progress = values[0];
-			mProgressDialog.setMessage(progress.label);
-			if (mProgressDialog.getMax() == 100) {
-				mProgressDialog.setMax(progress.totalSize);
-			}
-
-			mProgressDialog.incrementProgressBy(1);
-        }
-
-		@Override
-        protected void onPostExecute(Boolean result) {
-            mProgressDialog.dismiss();
-            mProgressDialog = null;
-            mReplaceTask = null;
-			delegate.onProcessFinish(result, mResultId);
-        }
-
-		private void saveFile(File path, String replace) {
-			buffer = mUtils.replaceFile(path, replace, mPattern);
-			if (buffer != null) {
-				if (mPrefs.mCreateBackup) {
-					// создать резервную копию
-					try {
-						mUtils.copyFile(path, new File(path.toString() + "~"));
-					} catch (IOException e) {}
-				}
-
-				mUtils.saveFile(path, buffer.toString());
-			}
-		}
-	}
-
-
-	/**
-	 * -----===== ПОИСК =====-----
-	 */
-    class GrepTask extends AsyncTask<String, SearchModel, Boolean>
-    {
-        private ProgressDialog mProgressDialog;
-        private int mFileCount=0;
-        private int mFoundcount=0;
-        private boolean mCancelled;
-		private int mId;
-
-		public AsyncResponse delegate = null;
-
-		public GrepTask(int id) {
-			this.mId = id;
-		}
-
-        @Override
-        protected void onPreExecute() {
-            mCancelled = false;
-            mProgressDialog = new ProgressDialog(SearchTextActivity.this);
-            mProgressDialog.setTitle(R.string.title_grep_spinner);
-			mProgressDialog.setIcon(R.drawable.ic_file_find);
-            mProgressDialog.setMessage(mQuery);
-            mProgressDialog.setIndeterminate(true);
-            mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-            mProgressDialog.setCancelable(true);
-            mProgressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-					@Override
-					public void onCancel(DialogInterface dialog) {
-						mCancelled = true;
-						cancel(false);
-					}
-				});
-            mProgressDialog.show();
-        }
-
-        @Override
-        protected Boolean doInBackground(String... params) {
-            return grepRoot(params[0]);
-        }
-
-
-        @Override
-        protected void onPostExecute(Boolean result) {
-            mProgressDialog.dismiss();
-            mProgressDialog = null;
-            mTask = null;
-			delegate.onProcessFinish(result, mId);
-        }
-
-        @Override
-        protected void onCancelled() {
-            super.onCancelled();
-            onPostExecute(false);
-        }
-
-        @Override
-        protected void onProgressUpdate(SearchModel... progress) {
-            if (isCancelled()) {
-                return;
-            }
-            mProgressDialog.setMessage(SearchTextActivity.this.getString(R.string.msg_progress , mQuery, mFileCount));
-            if (progress != null) {
-                synchronized (mData) {
-                    for (SearchModel data : progress) {
-                        mData.add(data);
-                    }
-                }
-            }
-        }
-
-        boolean grepRoot(String text) {
-            for (CheckedString dir : mPrefs.mDirList) {
-                if (dir.checked && !grepDirectory(new File(dir.string))) {
-                    return false;
-                }
-            }
-            return true;
-        }
-
-        boolean grepDirectory(File dir) {
-            if (isCancelled()) {
-                return false;
-            }
-            if (dir == null) {
-                return false;
-            }
-
-            File[] flist = dir.listFiles();
-
-            if (flist != null) {
-                for (File f : flist) {
-					// Если скрытый и выкл. поиск в скрытых, то дальше
-					if (!mPrefs.mSearchHidden && f.getName().startsWith(".")) {
-						continue;
-					}
-
-                    boolean res = false;
-                    if (f.isDirectory()) {
-                        res = grepDirectory(f);
-                    } else {
-                        res = grepFile(f);
-                    }
-                    if (!res) {
-                        return false;
-                    }
-                }
-            }
-            return true;
-        }
-
-
-        boolean grepFile(File file) {
-            if (isCancelled()) {
-                return false;
-            }
-            if (file == null) {
-                return false;
-            }
-
-            boolean extok=false;
-            for (CheckedString ext : mPrefs.mExtList) {
-                if (ext.checked) {
-					if (file.getName().indexOf('.') == -1 && ext.string.equals("*.")) {
-						extok = true;
-						break;
-					} else if (file.getName().toLowerCase().endsWith("." + ext.string.toLowerCase())) {
-                        extok = true;
-                        break;
-                    } if (ext.string.equals("*")) {
-						extok = true;
-						break;
-                    }
-                } // end extChecked
-            }
-
-            if (!extok) {
-                return true;
-            }
-
-            InputStream is;
-            try {
-                is = new BufferedInputStream(new FileInputStream(file) , 65536);
-                is.mark(65536);
-
-				String encode = mUtils.getDetectedEncoding(is);
-                is.reset();
-
-                BufferedReader br=null;
-                try {
-                    if (encode != null) {
-                        br = new BufferedReader(new InputStreamReader(is , encode) , 8192);
-
-                    } else {
-                        br = new BufferedReader(new InputStreamReader(is) , 8192);
-                    }
-
-					String group = file.getName();
-                    String text;
-                    int line = 0;
-                    boolean found = false;
-                    Pattern pattern = mPattern;
-                    Matcher m = null;
-                    ArrayList<SearchModel> data = null ;
-                    mFileCount++;
-                    while ((text = br.readLine()) != null) {
-                        line ++;
-                        if (m == null) {
-                            m = pattern.matcher(text);
-                        } else {
-                            m.reset(text);
-                        }
-                        if (m.find()) {
-                            found = true;
-
-                            synchronized (mData) {
-                                mFoundcount++;
-                                if (data == null) {
-                                    data = new ArrayList<SearchModel>();
-                                }
-                                data.add(new SearchModel(line, group, text, file));
-
-                                if (mFoundcount < 10) {
-                                    publishProgress(data.toArray(new SearchModel[0]));
-                                    data = null;
-                                }
-                            }
-                            if (mCancelled) {
-                                break;
-                            }
-                        }
-                    }
-                    br.close();
-                    is.close();
-                    if (data != null) {
-                        publishProgress(data.toArray(new SearchModel[0]));
-                        data = null;
-                    }
-                    if (!found) {
-                        if (mFileCount % 10 == 0) {
-                            publishProgress((SearchModel[])null);
-                        }
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            } catch (IOException e1) {
-                e1.printStackTrace();
-            }
-            return true;
-        }
-    }
 
 }
