@@ -6,8 +6,9 @@ public class SearchModel
 {
 	private int line;
 	private String group;
-	private String text;
+	private String name;
 	private File path;
+	private boolean select;
 
 	public SearchModel() {
 		this(0, null , null , null);
@@ -16,8 +17,24 @@ public class SearchModel
 	public SearchModel(int line, String group, String text, File path) {
 		this.line = line;
 		this.group = group;
-		this.text = text;
+		this.name = text;
 		this.path = path;
+	}
+
+	public SearchModel(int line, String group, String text, File path, boolean select) {
+		this.line = line;
+		this.group = group;
+		this.name = text;
+		this.path = path;
+		this.select = select;
+	}
+	
+	public void setSelect(boolean select) {
+		this.select = select;
+	}
+
+	public boolean isSelect() {
+		return select;
 	}
 
 	public void setLine(int line) {
@@ -36,12 +53,12 @@ public class SearchModel
 		return group;
 	}
 
-	public void setText(String text) {
-		this.text = text;
+	public void setName(String text) {
+		this.name = text;
 	}
 
-	public String getText() {
-		return text;
+	public String getName() {
+		return name;
 	}
 
 	public void setPath(File path) {

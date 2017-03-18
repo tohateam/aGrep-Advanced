@@ -115,9 +115,13 @@ public class MainActivity extends AppCompatActivity
         final CheckBox chkRe = (CheckBox) findViewById(R.id.cb_re);
         final CheckBox chkIc = (CheckBox) findViewById(R.id.cb_ic);
         final CheckBox chkWo = (CheckBox) findViewById(R.id.cb_mw);
+		final CheckBox chkHd = (CheckBox) findViewById(R.id.cb_hidden);
+		final CheckBox chkFl = (CheckBox) findViewById(R.id.cb_files);
 		chkRe.setChecked(mPrefs.mRegularExrpression);
 		chkIc.setChecked(mPrefs.mIgnoreCase);
 		chkWo.setChecked(mPrefs.mWordOnly);
+		chkHd.setChecked(mPrefs.mSearchHidden);
+		chkFl.setChecked(mPrefs.mSearchFiles);
 
         chkRe.setOnClickListener(new View.OnClickListener() {
 				@Override
@@ -142,6 +146,22 @@ public class MainActivity extends AppCompatActivity
 				}
 			});
 
+		chkHd.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View view) {
+					mPrefs.mSearchHidden = chkHd.isChecked();
+					mPrefs.savePrefs(mContext);
+				}
+			});
+
+		chkFl.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View view) {
+					mPrefs.mSearchFiles = chkFl.isChecked();
+					mPrefs.savePrefs(mContext);
+				}
+			});
+
         // Поиск
         edittext = (AutoCompleteTextView) findViewById(R.id.search_text);
         edittext.setOnKeyListener(new View.OnKeyListener() {
@@ -155,8 +175,8 @@ public class MainActivity extends AppCompatActivity
 				}
 			});
         mRecentAdapter = new ArrayAdapter <String>(mContext, 
-													 R.layout.my_spinner_item, 
-													new ArrayList <String>());
+												   R.layout.my_spinner_item, 
+												   new ArrayList <String>());
 //		mRecentAdapter.setDropDownViewResource(R.layout.my_spinner_dropdown_item);
         edittext.setAdapter(mRecentAdapter);
 
@@ -197,7 +217,7 @@ public class MainActivity extends AppCompatActivity
 				checkExt = true;
 			}
 		}
-		
+
 
 		if (mPrefs.mDirList.size() == 0 || !checkDir) {
             Toast.makeText(getApplicationContext(), R.string.msg_no_target_dir, Toast.LENGTH_LONG).show();
@@ -207,9 +227,15 @@ public class MainActivity extends AppCompatActivity
             Toast.makeText(getApplicationContext(), R.string.msg_no_search_query, Toast.LENGTH_LONG).show();			
 		}
 
-		Intent it = new Intent(this, SearchTextActivity.class);
+		Intent it = null;
+		if (mPrefs.mSearchFiles) {
+			it = new Intent(this, SearchFilesActivity.class);
+		} else {
+			it = new Intent(this, ResultTextActivity.class);
+		}
+
 		it.setAction(Intent.ACTION_SEARCH);
-        it.putExtra(SearchManager.QUERY, query);
+		it.putExtra(SearchManager.QUERY, query);
 		startActivity(it);
 	}
 

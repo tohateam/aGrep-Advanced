@@ -30,6 +30,7 @@ public class Prefs
     public static final String KEY_ADD_LINENUMBER = "AddLineNumber";
 	
 	public static final String KEY_SEARCH_IN_HIDDEN = "search_in_hidden";
+	public static final String KEY_SEARCH_FILES = "search_files";
 	public static final String KEY_CREATE_BACKUP = "create_backup";
 
 	public static final String KEY_CURRENT_THEME = "appTheme";
@@ -39,6 +40,7 @@ public class Prefs
 	public boolean mWordOnly = true;
 	
 	public boolean mSearchHidden = false;
+	public boolean mSearchFiles = false;
 	public boolean mCreateBackup = true;
 	
     public int mFontSize = 12;
@@ -105,6 +107,7 @@ public class Prefs
         prefs.mIgnoreCase = sp.getBoolean(KEY_IGNORE_CASE, true);
 		prefs.mWordOnly = sp.getBoolean(KEY_WORD_ONLY, true);
 		prefs.mSearchHidden = sp.getBoolean(KEY_SEARCH_IN_HIDDEN, false);
+		prefs.mSearchFiles = sp.getBoolean(KEY_SEARCH_FILES, false);
 		prefs.mCreateBackup = sp.getBoolean(KEY_CREATE_BACKUP, true);
 		
         prefs.mFontSize = Integer.parseInt(sp.getString(KEY_FONTSIZE , "-1"));
@@ -156,6 +159,8 @@ public class Prefs
         editor.putBoolean(KEY_IGNORE_CASE, mIgnoreCase);
 		editor.putBoolean(KEY_WORD_ONLY, mWordOnly);
 		editor.putString(KEY_FONTSIZE, Integer.toString(mFontSize));
+		editor.putBoolean(KEY_SEARCH_IN_HIDDEN, mSearchHidden);
+		editor.putBoolean(KEY_SEARCH_FILES, mSearchFiles);
 
         editor.apply();
 

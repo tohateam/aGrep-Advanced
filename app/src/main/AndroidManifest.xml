@@ -40,6 +40,24 @@
 				android:value=".MainActivity" />
 		</activity>
 
+		<activity
+            android:name=".SearchFilesActivity"
+            android:label="@string/app_search_files"
+			android:configChanges="keyboardHidden|orientation"
+			android:parentActivityName=".MainActivity">
+			<intent-filter>
+				<action android:name="android.intent.action.SEARCH" />
+				<category android:name="android.intent.category.DEFAULT" />
+			</intent-filter>
+			<meta-data
+				android:name="android.support.PARENT_ACTIVITY"
+				android:value=".MainActivity" />
+			<meta-data
+				android:name="android.app.searchable"
+				android:resource="@xml/searchable">
+			</meta-data>
+		</activity>
+		
         <activity
             android:name=".SettingsActivity"
             android:label="@string/app_settings"

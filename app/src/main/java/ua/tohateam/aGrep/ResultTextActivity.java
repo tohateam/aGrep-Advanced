@@ -22,10 +22,8 @@ import android.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.view.View.OnClickListener;
 
-public class SearchTextActivity extends AppCompatActivity 
-implements 
-//AsyncResponse, 
-SearchAdapter.AdapterCallback,
+public class ResultTextActivity extends AppCompatActivity 
+implements SearchAdapter.AdapterCallback,
 SearchText.SearchTextCallback
 {	
 	private static final int RESULT_SEARCH = 0;
@@ -179,7 +177,7 @@ SearchText.SearchTextCallback
 				@Override
 				public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
 					String patch = mGroupModel.get(groupPosition).getPath().getPath();
-					Intent it = new Intent(SearchTextActivity.this, TextViewerActivity.class);
+					Intent it = new Intent(ResultTextActivity.this, TextViewerActivity.class);
 					it.setAction(Intent.ACTION_SEARCH);
 					it.putExtra(SearchManager.QUERY, mQuery);
 					it.putExtra("path", patch);
@@ -197,7 +195,7 @@ SearchText.SearchTextCallback
 						mGroupModel.get(mCurentGroup).setSelected(true);
 						mAdapter.notifyDataSetChanged();
 						// активируем CAB
-						mActionMode = SearchTextActivity.this.startActionMode(mActionModeCallback);
+						mActionMode = ResultTextActivity.this.startActionMode(mActionModeCallback);
 						setTitleActionBar();
 						return true;
 					}
@@ -328,7 +326,7 @@ SearchText.SearchTextCallback
 					String group = mData.get(j).getGroup();
 					if (group.equals(mGroup)) {
 						child.setLine(mData.get(j).getLine());
-						child.setText(mData.get(j).getText());
+						child.setText(mData.get(j).getName());
 						child.setSelected(false);
 						child_list.add(child);
 					}
@@ -418,7 +416,7 @@ SearchText.SearchTextCallback
 			new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int which) {
 					// Добавляем в историю
-					mPrefs.addRecent(SearchTextActivity.this, edittext.getText().toString());
+					mPrefs.addRecent(ResultTextActivity.this, edittext.getText().toString());
 					mReplaceQuery = edittext.getText().toString();
 					confirmReplace();
 				}
@@ -466,7 +464,7 @@ SearchText.SearchTextCallback
 			alertDialog.setPositiveButton(R.string.action_ok,
 				new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int which) {
-						SearchText searchText = new SearchText(SearchTextActivity.this);
+						SearchText searchText = new SearchText(ResultTextActivity.this);
 						searchText.startReplaceText(mQuery, mReplaceQuery, replaceAll, mGroupModel);
 					}
 				});
