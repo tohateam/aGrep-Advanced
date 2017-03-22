@@ -312,7 +312,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_preference) {
-            Intent intent = new Intent(this, SettingsActivity.class);
+            Intent intent = new Intent(this, MyPreferenceActivity.class);
             startActivity(intent);
         } else if (item.getItemId() == R.id.action_about) {
             Intent intent = new Intent(this, AboutActivity.class);
