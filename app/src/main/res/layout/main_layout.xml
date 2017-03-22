@@ -39,7 +39,7 @@
 				android:imeOptions="flagNoExtractUi|actionSearch"/>
 
 		</android.support.design.widget.TextInputLayout>
-		
+
 		<ImageButton
 			style="?android:attr/buttonBarButtonStyle"
 			android:layout_height="wrap_content"
@@ -117,13 +117,29 @@
 					android:layout_width="match_parent"
 					android:orientation="vertical">
 
-					<TextView
-						android:layout_width="match_parent"
+					<LinearLayout
 						android:layout_height="wrap_content"
-						android:layout_gravity="left|center_vertical"
-						android:text="@string/label_dir"
-						android:textAppearance="?android:attr/textAppearanceMedium"
-						android:layout_marginTop="5dp"/>
+						android:layout_width="match_parent"
+						android:orientation="horizontal">
+
+						<ImageButton
+							style="?android:attr/buttonBarButtonStyle"
+							android:layout_height="wrap_content"
+							android:layout_width="wrap_content"
+							android:src="@drawable/ic_clear_all_white_24dp"
+							android:id="@+id/btn_clear_dir"/>
+
+						<TextView
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:layout_gravity="left|center_vertical"
+							android:text="@string/label_dir"
+							android:textAppearance="?android:attr/textAppearanceMedium"
+							android:layout_marginTop="5dp"
+							android:layout_weight="1.0"
+							android:layout_marginLeft="5dp"/>
+
+					</LinearLayout>
 
 					<View
 						android:layout_width="fill_parent"
@@ -159,13 +175,27 @@
 					android:layout_width="match_parent"
 					android:orientation="vertical">
 
-					<TextView
-						android:layout_width="match_parent"
+					<LinearLayout
 						android:layout_height="wrap_content"
-						android:layout_gravity="left|center_vertical"
-						android:text="@string/label_ext"
-						android:textAppearance="?android:attr/textAppearanceMedium"
-						android:layout_marginTop="10dp"/>
+						android:layout_width="match_parent"
+						android:orientation="horizontal">
+
+						<ImageButton
+							style="?android:attr/buttonBarButtonStyle"
+							android:layout_height="wrap_content"
+							android:layout_width="wrap_content"
+							android:src="@drawable/ic_clear_all_white_24dp"
+							android:id="@+id/btn_clear_ext"/>
+
+						<TextView
+							android:layout_width="match_parent"
+							android:layout_height="wrap_content"
+							android:layout_gravity="left|center_vertical"
+							android:text="@string/label_ext"
+							android:textAppearance="?android:attr/textAppearanceMedium"
+							android:layout_marginTop="10dp"/>
+
+					</LinearLayout>
 
 					<View
 						android:layout_width="fill_parent"

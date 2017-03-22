@@ -15,7 +15,7 @@
 
 	<item
 		android:id="@+id/item_replace"
-		android:icon="@drawable/ic_reply"
+		android:icon="@drawable/ic_rename_box"
 		android:title="@string/action_replace"
 		app:showAsAction="ifRoom"/>
 </menu>

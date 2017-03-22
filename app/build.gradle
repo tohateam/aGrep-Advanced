@@ -8,7 +8,7 @@ android {
         applicationId "ua.tohateam.aGrep"
         minSdkVersion 14
         targetSdkVersion 24
-        versionCode 6
+        versionCode 7
         versionName "1.0.3"
     }
     buildTypes {

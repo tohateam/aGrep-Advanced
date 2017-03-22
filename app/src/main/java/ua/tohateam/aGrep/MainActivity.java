@@ -192,6 +192,25 @@ public class MainActivity extends AppCompatActivity
 					mSearchQuery.showDropDown();
 				}
 			});
+			
+		ImageButton btnClearDir = (ImageButton) findViewById(R.id.btn_clear_dir);
+        btnClearDir.setOnClickListener(new OnClickListener() {
+				public void onClick(View view) {
+					mPrefs.mDirList.removeAll(mPrefs.mDirList);
+					refreshDirList();
+					mPrefs.savePrefs(mContext);
+				}
+			});
+		ImageButton btnClearExt = (ImageButton) findViewById(R.id.btn_clear_ext);
+        btnClearExt.setOnClickListener(new OnClickListener() {
+				public void onClick(View view) {
+					mPrefs.mExtList.removeAll(mPrefs.mExtList);
+					mPrefs.mExtList.add(new CheckedString("txt"));
+					refreshExtList();
+					mPrefs.savePrefs(mContext);
+				}
+			});
+		
 	}
 
 	private void startSearch(String query) {
