@@ -2,25 +2,20 @@ package ua.tohateam.aGrep;
 
 import android.app.*;
 import android.content.*;
-import android.graphics.drawable.*;
 import android.net.*;
 import android.os.*;
-import android.support.v4.app.*;
 import android.support.v7.app.*;
 import android.support.v7.widget.*;
 import android.view.*;
 import android.view.View.*;
 import android.widget.*;
-import android.widget.ExpandableListView.*;
-import java.io.*;
 import java.util.*;
-import java.util.regex.*;
 import ua.tohateam.aGrep.model.*;
 import ua.tohateam.aGrep.utils.*;
+import ua.tohateam.aGrep.views.*;
 
 import android.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
-import android.view.View.OnClickListener;
 
 public class ResultTextActivity extends AppCompatActivity 
 implements SearchAdapter.AdapterCallback,
@@ -28,6 +23,7 @@ SearchText.SearchTextCallback
 {	
 	private static final int RESULT_SEARCH = 0;
 	private static final int RESULT_REPLACE = 1;
+	private static final int RESULT_CANCELED = 2;
 
 	private Toolbar toolbar;
 	private ActionMode mActionMode;
@@ -41,7 +37,7 @@ SearchText.SearchTextCallback
 	private String mQuery;
 	private String mReplaceQuery;
 
-	private ArrayList<SearchModel> mData;
+//	private ArrayList<SearchModel> mData;
 	private ArrayList<GroupModel> mGroupModel;
 	private ArrayAdapter<String> mRecentAdapter;
 	private int mCurentGroup;
@@ -71,15 +67,7 @@ SearchText.SearchTextCallback
 												   R.layout.my_spinner_item, 
 												   new ArrayList <String>());
 
-		// Если не указаны директории поиска то выходим
-		if (mPrefs.mDirList.size() == 0) {
-            Toast.makeText(getApplicationContext(), R.string.msg_no_target_dir, Toast.LENGTH_LONG).show();
-            startActivity(new Intent(this, MainActivity.class));
-            finish();
-        }
-
 		mResultList = (ExpandableListView) findViewById(R.id.search_result_list);
-		mData = new ArrayList<SearchModel>();
 
         Intent it = getIntent();
 		if (it != null && Intent.ACTION_SEARCH.equals(it.getAction())) {
@@ -88,8 +76,6 @@ SearchText.SearchTextCallback
 			getSupportActionBar().setTitle(getString(R.string.app_search_result) + " : " + mQuery);
 
             if (mQuery != null && mQuery.length() > 0) {
-//                mPrefs.addRecent(this, mQuery);
-                //String patternText = mQuery;
 				SearchText searchText = new SearchText(this);
 				searchText.startSearchText(mQuery);
             } else {
@@ -101,21 +87,21 @@ SearchText.SearchTextCallback
 	// Получаем результаты поиска
 	@Override
 	public void onMethodCallback(ArrayList<SearchModel> data, int idResult, boolean result) {
-		// TODO: Implement this method
-		if (idResult == 0 && data.size() > 0) {
-			mData = data;
+		if (idResult == RESULT_CANCELED) {
+			dialogNoSearch(mContext.getString(R.string.msg_search_canceled));
+		} else if (idResult == RESULT_SEARCH && data.size() > 0) {
 			// Сортируем по пути
-			Collections.sort(mData, new Comparator<SearchModel>() {
+			Collections.sort(data, new Comparator<SearchModel>() {
 					@Override
 					public int compare(SearchModel p1, SearchModel p2) {
 						return p1.getPath().getParent().compareToIgnoreCase(p2.getPath().getParent());
 					}
 				});
-			
-			showResult();
-		} else if (idResult == 0 && data.size() == 0) {
-			dialogNoSearch();
-		} else if (idResult == 1) {
+
+			showResult(data);
+		} else if (idResult == RESULT_SEARCH && data.size() == 0) {
+			dialogNoSearch(mContext.getString(R.string.msg_search_no, mQuery));
+		} else if (idResult == RESULT_REPLACE) {
 			String msg = result ? mContext.getString(R.string.msg_replace_ok, mQuery, mReplaceQuery)
 				: mContext.getString(R.string.msg_replace_canceled, mQuery, mReplaceQuery);
 			dialogReplaceResult(msg);
@@ -123,11 +109,11 @@ SearchText.SearchTextCallback
 	}
 
 	// Поиск - не найдено
-	private void dialogNoSearch() {
+	private void dialogNoSearch(String msg) {
 		AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
 		alertDialog.setIcon(R.drawable.ic_message_alert);
-		alertDialog.setTitle(R.string.title_search);
-		alertDialog.setMessage(getString(R.string.msg_replace_no, mQuery));
+		alertDialog.setTitle(R.string.app_search_result);
+		alertDialog.setMessage(msg);
 
 		alertDialog.setPositiveButton(R.string.action_ok,
 			new DialogInterface.OnClickListener() {
@@ -157,18 +143,11 @@ SearchText.SearchTextCallback
 				}
 			});
 
-//		alertDialog.setNegativeButton(R.string.action_search_close,
-//			new DialogInterface.OnClickListener() {
-//				public void onClick(DialogInterface dialog, int which) {
-//					mGroupModel.get(mCurentGroup).setSelected(false);
-//					finish();
-//				}
-//			});
-
 		alertDialog.show();
 	}
-	private void showResult() {
-        mGroupModel = setListGroups();
+
+	private void showResult(ArrayList<SearchModel> data) {
+        mGroupModel = setListGroups(data);
         mAdapter = new SearchAdapter(this, mGroupModel);
 		mAdapter.setFormat(mUtils.getPattern(mContext, mQuery) , mPrefs.mHighlightFg , mPrefs.mHighlightBg , mPrefs.mFontSize);
         mResultList.setAdapter(mAdapter);
@@ -249,7 +228,7 @@ SearchText.SearchTextCallback
 					setTitleActionBar();
 					return true;
 				case R.id.item_replace_group:
-					showReplaceDialog(); //mGroupModel.get(mCurentGroup).getPath().toString());
+					showReplaceDialog();
 					mode.finish();
 					return true;
 				case R.id.item_send:
@@ -282,7 +261,7 @@ SearchText.SearchTextCallback
 
 
 	// Заполняем список результатов поиска
-    public ArrayList<GroupModel> setListGroups() {
+    public ArrayList<GroupModel> setListGroups(ArrayList<SearchModel> mData) {
         ArrayList<GroupModel> group_list = new ArrayList<GroupModel>();
         ArrayList<ChildModel> child_list = null;
 		String oldGroup = null;
@@ -349,7 +328,6 @@ SearchText.SearchTextCallback
     public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 			case android.R.id.home:
-				//NavUtils.navigateUpFromSameTask(this);
 				super. onBackPressed();
 				return true;
 			case R.id.item_expand_all:
@@ -385,27 +363,28 @@ SearchText.SearchTextCallback
 		}
 	}
 
-	// Опции замены
-	// TODO (tohateam): добавить проверку введённого текста
+	// Заменить текст
 	private void showReplaceDialog() {
+		LayoutInflater inflater = getLayoutInflater();
+		View dialoglayout = inflater.inflate(R.layout.dialog_layout_replace, null);
+
 		AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
-		alertDialog.setIcon(R.drawable.ic_reply);
+		alertDialog.setIcon(R.drawable.ic_rename_box);
 		alertDialog.setTitle(getString(R.string.title_replace_options));
 		alertDialog.setMessage(getString(R.string.msg_replace, mQuery));
+		alertDialog.setView(dialoglayout);
 
-		LinearLayout view = (LinearLayout) getLayoutInflater().inflate(R.layout.replace_dialog, null);
-		alertDialog.setView(view);
-		final AutoCompleteTextView edittext = (AutoCompleteTextView) view.findViewById(R.id.replace_text);
+		final AutoCompleteTextView edittext = (AutoCompleteTextView) dialoglayout.findViewById(R.id.replace_query_input);
         edittext.setAdapter(mRecentAdapter);
 
-        ImageButton clrBtn = (ImageButton) view.findViewById(R.id.btn_clear_replace);
+        ImageButton clrBtn = (ImageButton) dialoglayout.findViewById(R.id.btn_clear_replace);
         clrBtn.setOnClickListener(new OnClickListener() {
 				public void onClick(View view) {
 					edittext.setText("");
 					edittext.requestFocus();
 				}
 			});
-        ImageButton historyBtn = (ImageButton) view.findViewById(R.id.btn_history_replace);
+        ImageButton historyBtn = (ImageButton) dialoglayout.findViewById(R.id.btn_history_replace);
         historyBtn.setOnClickListener(new OnClickListener() {
 				public void onClick(View view) {
 					edittext.showDropDown();
@@ -415,10 +394,15 @@ SearchText.SearchTextCallback
 		alertDialog.setPositiveButton(R.string.action_ok,
 			new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int which) {
-					// Добавляем в историю
-					mPrefs.addRecent(ResultTextActivity.this, edittext.getText().toString());
-					mReplaceQuery = edittext.getText().toString();
-					confirmReplace();
+					String replace = edittext.getText().toString();
+					if (replace.equals("")) {
+						edittext.setError(getString(R.string.msg_is_empty));
+						showReplaceDialog();
+					} else {
+						edittext.setError("");
+						mReplaceQuery = edittext.getText().toString();
+						confirmReplace();
+					}
 				}
 			});
 
@@ -433,51 +417,27 @@ SearchText.SearchTextCallback
 		alertDialog.show();
 	}
 
-	// подтверждение замены
+	// проверка введенных данных и замена
 	private void confirmReplace() {
-		if (mReplaceQuery == null || mReplaceQuery.equals("")) {
+		String query = mReplaceQuery.trim();
+		if (query == null || query.equals("")) {
 			Toast.makeText(getApplicationContext(), R.string.msg_no_replace_query, Toast.LENGTH_LONG).show();
 			showReplaceDialog();
 		} else {
-
-			String fileName = null;
-			String title = null;
+			// Добавляем в историю
+			mPrefs.addRecent(ResultTextActivity.this, mReplaceQuery);
+			
 			boolean replace = false;
 			if (mAdapter.countGroupSelected() == 1) {
-				fileName = mGroupModel.get(mCurentGroup).getName();
-				title = getString(R.string.msg_replace_confirm, fileName, mQuery, mReplaceQuery);
 				replace = false;
 			} else if (mAdapter.countGroupSelected() == mAdapter.getGroupCount()) {
-				title = getString(R.string.msg_replace_selected_confirm, mQuery, mReplaceQuery);
 				replace = false;
 			} else {
-				title = getString(R.string.msg_replace_all_confirm, mQuery, mReplaceQuery);
 				replace = true;
 			}
-			final boolean replaceAll = replace;
 
-			AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
-			alertDialog.setIcon(R.drawable.ic_message_alert);
-			alertDialog.setTitle(R.string.title_replace);
-			alertDialog.setMessage(title);
-
-			alertDialog.setPositiveButton(R.string.action_ok,
-				new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int which) {
-						SearchText searchText = new SearchText(ResultTextActivity.this);
-						searchText.startReplaceText(mQuery, mReplaceQuery, replaceAll, mGroupModel);
-					}
-				});
-
-			alertDialog.setNegativeButton(R.string.action_cancel,
-				new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int which) {
-//					mGroupModel.get(mCurentGroup).setSelected(false);
-//					finish();
-					}
-				});
-
-			alertDialog.show();
+			SearchText searchText = new SearchText(ResultTextActivity.this);
+			searchText.startReplaceText(mQuery, mReplaceQuery, replace, mGroupModel);
 		}
 	}
 

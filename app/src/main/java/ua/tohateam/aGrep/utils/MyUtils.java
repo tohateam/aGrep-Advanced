@@ -1,13 +1,10 @@
 package ua.tohateam.aGrep.utils;
 
 import android.content.*;
-import android.content.SharedPreferences.*;
-import android.preference.*;
 import android.text.*;
 import android.text.style.*;
+import android.webkit.*;
 import java.io.*;
-import java.util.*;
-import java.util.Map.*;
 import java.util.regex.*;
 import org.mozilla.universalchardet.*;
 
@@ -21,9 +18,8 @@ public class MyUtils
 	public String escapeMetaChar(String pattern) {
         final String metachar = ".^${}[]*+?|()\\";
         StringBuilder newpat = new StringBuilder();
-        int len = pattern.length();
 
-        for (int i=0;i < len;i++) {
+        for (int i=0;i < pattern.length();i++) {
             char c = pattern.charAt(i);
             if (metachar.indexOf(c) >= 0) {
                 newpat.append('\\');
@@ -196,5 +192,23 @@ public class MyUtils
 			mPattern = Pattern.compile("\\b" + patternText + "\\b");
 		}
 		return mPattern;
+	}
+	
+	public static String getMimeType(String url) {
+		String type = null;
+		String extension = MimeTypeMap.getFileExtensionFromUrl(url);
+		if (extension != null) {
+			type = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension);
+		}
+		return type;
+	}
+
+	public boolean isEmpty(String text) {
+       text = text.trim();
+
+        if(text==null||text.equals("")) {
+            return true;
+        }
+		return false;
 	}
 }

@@ -301,9 +301,9 @@ implements AsyncResponse
 		alertDialog.setTitle(getString(R.string.title_replace));
 		alertDialog.setMessage(getString(R.string.msg_replace, mQuery));
 
-		LinearLayout view = (LinearLayout) getLayoutInflater().inflate(R.layout.replace_dialog, null);
+		LinearLayout view = (LinearLayout) getLayoutInflater().inflate(R.layout.dialog_layout_replace, null);
 		alertDialog.setView(view);
-		final AutoCompleteTextView edittext = (AutoCompleteTextView) view.findViewById(R.id.replace_text);
+		final AutoCompleteTextView edittext = (AutoCompleteTextView) view.findViewById(R.id.replace_query_input);
         edittext.setAdapter(mRecentAdapter);
 
         ImageButton clrBtn = (ImageButton) view.findViewById(R.id.btn_clear_replace);

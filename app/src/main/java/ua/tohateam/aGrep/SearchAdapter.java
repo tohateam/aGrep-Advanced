@@ -105,7 +105,7 @@ public class SearchAdapter extends BaseExpandableListAdapter
 
         if (convertView == null) {
 			LayoutInflater inf = (LayoutInflater) context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
-            convertView = inf.inflate(R.layout.group_item_row, null);
+            convertView = inf.inflate(R.layout.result_group_item, null);
 			
 			groupHolder = new GroupHolder();
 			groupHolder.groupName = (TextView) convertView.findViewById(R.id.group_name);
@@ -157,7 +157,7 @@ public class SearchAdapter extends BaseExpandableListAdapter
 
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
-            convertView = infalInflater.inflate(R.layout.child_item_row, null);
+            convertView = infalInflater.inflate(R.layout.result_child_item, null);
 			childHolder = new ChildHolder();
 
 			childHolder.searchLine = (TextView) convertView.findViewById(R.id.child_line);

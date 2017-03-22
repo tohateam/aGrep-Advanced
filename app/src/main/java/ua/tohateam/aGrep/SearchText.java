@@ -16,7 +16,7 @@ public class SearchText implements AsyncResponse
 
 	private Context mContext;
 	private MyUtils mUtils;
-    private Prefs mPrefs;
+	private Prefs mPrefs;
 
 	private Pattern mPattern;
 	private GrepTask mTask;
@@ -29,8 +29,8 @@ public class SearchText implements AsyncResponse
 
 	public static interface SearchTextCallback
 	{
-        void onMethodCallback(ArrayList<SearchModel> data, int idResult, boolean result);
-    }
+		void onMethodCallback(ArrayList<SearchModel> data, int idResult, boolean result);
+	}
 
 	public SearchText(Context context) {
 		this.mContext = context;
@@ -39,10 +39,10 @@ public class SearchText implements AsyncResponse
 		this.mUtils = new MyUtils();
 
 		try {
-            this.mSearchTextCallback = ((SearchTextCallback) context);
-        } catch (ClassCastException e) {
-            throw new ClassCastException("Activity must implement AdapterCallback.");
-        }
+			this.mSearchTextCallback = ((SearchTextCallback) context);
+		} catch (ClassCastException e) {
+			throw new ClassCastException("Activity must implement AdapterCallback.");
+		}
 
 	}
 
@@ -88,7 +88,7 @@ public class SearchText implements AsyncResponse
 	 * -----===== ЗАМЕНА =====-----
 	 */
 
-	class ReplaceTask extends AsyncTask<String, ReplaceTask.Progress, Boolean>
+	class ReplaceTask extends AsyncTask<String, Integer, Boolean>
 	{
 		private ProgressDialog mProgressDialog;
 		private boolean mCancelled;
@@ -97,14 +97,8 @@ public class SearchText implements AsyncResponse
 		public AsyncResponse delegate = null;
 		private int mResultId;
 		private boolean replaceAll;
-		
-		private ArrayList<GroupModel> mGroupModel;
 
-		class Progress
-		{
-			String label;
-			int totalSize;
-		}
+		private ArrayList<GroupModel> mGroupModel;
 
 		public ReplaceTask(int id, boolean replace, ArrayList<GroupModel> groupModel) {
 			this.mResultId = id;
@@ -120,10 +114,13 @@ public class SearchText implements AsyncResponse
 			//mProgressDialog.setMessage(mQuery);
 			mProgressDialog.setIndeterminate(true);
 			mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+			mProgressDialog.setCanceledOnTouchOutside(false);
 			mProgressDialog.setCancelable(true);
-			mProgressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+			mProgressDialog.setButton(ProgressDialog.BUTTON_NEGATIVE, 
+				mContext.getString(R.string.action_cancel), 
+				new DialogInterface.OnClickListener() {
 					@Override
-					public void onCancel(DialogInterface dialog) {
+					public void onClick(DialogInterface dialog, int which) {
 						mCancelled = true;
 						cancel(false);
 					}
@@ -134,19 +131,16 @@ public class SearchText implements AsyncResponse
 		@Override
 		protected Boolean doInBackground(String... params) {
 			boolean res = false;
-			Progress progress = new Progress();
-			progress.totalSize = mGroupModel.size();
-
+			int count = 0;
 			for (int i=0; i < mGroupModel.size(); i++) {
-				progress.label = mGroupModel.get(i).getName();
-				publishProgress(progress);
-
 				if (!mGroupModel.get(i).isSelected() && !replaceAll) {
 					continue;
 				}
 
 				saveFile(mGroupModel.get(i).getPath(), params[1]);
 				res = true;
+				publishProgress(count);
+				count++;
 			}
 			return res;
 		}
@@ -154,22 +148,18 @@ public class SearchText implements AsyncResponse
 		@Override
 		protected void onCancelled() {
 			super.onCancelled();
+			mResultId = 2;
 			onPostExecute(false);
 		}
 
 		@Override
-		protected void onProgressUpdate(Progress... values) {
+		protected void onProgressUpdate(Integer... progress) {
 			if (isCancelled()) {
 				return;
 			}
-			Progress progress = values[0];
-			mProgressDialog.setMessage(progress.label);
-			if (mProgressDialog.getMax() == 100) {
-				mProgressDialog.setMax(progress.totalSize);
-			}
-
-			mProgressDialog.incrementProgressBy(1);
+			mProgressDialog.setMessage(mContext.getString(R.string.msg_progress_replace , progress));
 		}
+	
 
 		@Override
 		protected void onPostExecute(Boolean result) {
@@ -194,111 +184,114 @@ public class SearchText implements AsyncResponse
 		}
 	}
 
-
 	/**
 	 * -----===== ПОИСК =====-----
 	 */
-    class GrepTask extends AsyncTask<String, SearchModel, Boolean>
-    {
-        private ProgressDialog mProgressDialog;
-        private int mFileCount=0;
-        private int mFoundcount=0;
-        private boolean mCancelled;
-		private int mId;
+	class GrepTask extends AsyncTask<String, SearchModel, Boolean>
+	{
+		private ProgressDialog mProgressDialog;
+		private int mFileCount=0;
+		private int mFoundcount=0;
+		private boolean mCancelled;
+		private int mResultId;
 		private String mQuery;
 
 		public AsyncResponse delegate = null;
 
 		public GrepTask(int id) {
-			this.mId = id;
+			this.mResultId = id;
 		}
 
-        @Override
-        protected void onPreExecute() {
-            mCancelled = false;
-            mProgressDialog = new ProgressDialog(mContext);
-            mProgressDialog.setTitle(R.string.title_grep_spinner);
+		@Override
+		protected void onPreExecute() {
+			mCancelled = false;
+			mProgressDialog = new ProgressDialog(mContext);
+			mProgressDialog.setTitle(R.string.title_grep_spinner);
 			mProgressDialog.setIcon(R.drawable.ic_file_find);
-            //mProgressDialog.setMessage(mQuery);
-            mProgressDialog.setIndeterminate(true);
-            mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-            mProgressDialog.setCancelable(true);
-            mProgressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+			//mProgressDialog.setMessage(mQuery);
+			mProgressDialog.setIndeterminate(true);
+			mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+			mProgressDialog.setCanceledOnTouchOutside(false);
+			mProgressDialog.setCancelable(true);
+			mProgressDialog.setButton(ProgressDialog.BUTTON_NEGATIVE, 
+				mContext.getString(R.string.action_cancel), 
+				new DialogInterface.OnClickListener() {
 					@Override
-					public void onCancel(DialogInterface dialog) {
+					public void onClick(DialogInterface dialog, int which) {
 						mCancelled = true;
 						cancel(false);
 					}
 				});
-            mProgressDialog.show();
-        }
+			mProgressDialog.show();
+		}
 
-        @Override
-        protected Boolean doInBackground(String... params) {
+		@Override
+		protected Boolean doInBackground(String... params) {
 			mQuery = params[0];
-            return grepRoot(params[0]);
-        }
+			return grepRoot(params[0]);
+		}
 
 
-        @Override
-        protected void onPostExecute(Boolean result) {
-            mProgressDialog.dismiss();
-            mProgressDialog = null;
-            mTask = null;
-			delegate.onProcessFinish(result, mId);
-        }
+		@Override
+		protected void onPostExecute(Boolean result) {
+			mProgressDialog.dismiss();
+			mProgressDialog = null;
+			mTask = null;
+			delegate.onProcessFinish(result, mResultId);
+		}
 
-        @Override
-        protected void onCancelled() {
-            super.onCancelled();
-            onPostExecute(false);
-        }
+		@Override
+		protected void onCancelled() {
+			super.onCancelled();
+			mResultId = 2;
+			onPostExecute(false);
+		}
 
-        @Override
-        protected void onProgressUpdate(SearchModel... progress) {
-            if (isCancelled()) {
-                return;
-            }
-            mProgressDialog.setMessage(mContext.getString(R.string.msg_progress , mQuery, mFileCount));
-            if (progress != null) {
-                synchronized (mData) {
-                    for (SearchModel data : progress) {
-                        mData.add(data);
-                    }
-                }
-            }
-        }
+		@Override
+		protected void onProgressUpdate(SearchModel... progress) {
+			if (isCancelled()) {
+				return;
+			}
+			mProgressDialog.setMessage(mContext.getString(R.string.msg_progress , mQuery, mFileCount));
+			if (progress != null) {
+				synchronized (mData) {
+					for (SearchModel data : progress) {
+						mData.add(data);
+					}
+				}
+			}
+		}
 
-        boolean grepRoot(String text) {
-            for (CheckedString dir : mPrefs.mDirList) {
-                if (dir.checked && !grepDirectory(new File(dir.string))) {
-                    return false;
-                }
-            }
-            return true;
-        }
+		boolean grepRoot(String text) {
+			for (CheckedString dir : mPrefs.mDirList) {
+				if (dir.checked && !grepDirectory(new File(dir.string))) {
+					return false;
+				}
+			}
+			return true;
+		}
 
-        boolean grepDirectory(File dir) {
-            if (isCancelled()) {
-                return false;
-            }
-            if (dir == null) {
-                return false;
-            }
+		boolean grepDirectory(File dir) {
+			if (isCancelled()) {
+				return false;
+			}
+			if (dir == null) {
+				return false;
+			}
 
-            File[] flist = dir.listFiles();
+			File[] flist = dir.listFiles();
 
-            if (flist != null) {
-                for (File f : flist) {
+			if (flist != null) {
+				for (File f : flist) {
 					// Если скрытый и выкл. поиск в скрытых, то дальше
 					if (!mPrefs.mSearchHidden && f.getName().startsWith(".")) {
 						continue;
 					}
 
-                    boolean res = false;
-                    if (f.isDirectory()) {
-                        res = grepDirectory(f);
-                    } else {
+					boolean res = false;
+					if (f.isDirectory()) {
+						res = grepDirectory(f);
+					} else {
 						boolean extok=false;
 						for (CheckedString ext : mPrefs.mExtList) {
 							if (ext.checked) {
@@ -314,100 +307,100 @@ public class SearchText implements AsyncResponse
 								}
 							} // end extChecked
 						}
-						if(extok)
-                        	res = grepFile(f);
+						if (extok)
+							res = grepFile(f);
 						else
 							continue;
-                    }
-					
-                    if (!res) {
-                        return false;
-                    }
-                }
-            }
-            return true;
-        }
+					}
+
+					if (!res) {
+						return false;
+					}
+				}
+			}
+			return true;
+		}
 
 
-        boolean grepFile(File file) {
-            if (isCancelled()) {
-                return false;
-            }
-            if (file == null) {
-                return false;
-            }
+		boolean grepFile(File file) {
+			if (isCancelled()) {
+				return false;
+			}
+			if (file == null) {
+				return false;
+			}
 
-            InputStream is;
-            try {
-                is = new BufferedInputStream(new FileInputStream(file) , 65536);
-                is.mark(65536);
+			InputStream is;
+			try {
+				is = new BufferedInputStream(new FileInputStream(file) , 65536);
+				is.mark(65536);
 
 				String encode = mUtils.getDetectedEncoding(is);
-                is.reset();
+				is.reset();
 
-                BufferedReader br=null;
-                try {
-                    if (encode != null) {
-                        br = new BufferedReader(new InputStreamReader(is , encode) , 8192);
+				BufferedReader br=null;
+				try {
+					if (encode != null) {
+						br = new BufferedReader(new InputStreamReader(is , encode) , 8192);
 
-                    } else {
-                        br = new BufferedReader(new InputStreamReader(is) , 8192);
-                    }
+					} else {
+						br = new BufferedReader(new InputStreamReader(is) , 8192);
+					}
 
 					String group = file.getName();
-                    String text;
-                    int line = 0;
-                    boolean found = false;
-                    Pattern pattern = mPattern;
-                    Matcher m = null;
-                    ArrayList<SearchModel> data = null ;
-                    mFileCount++;
-                    while ((text = br.readLine()) != null) {
-                        line ++;
-                        if (m == null) {
-                            m = pattern.matcher(text);
-                        } else {
-                            m.reset(text);
-                        }
-                        if (m.find()) {
-                            found = true;
+					String text;
+					int line = 0;
+					boolean found = false;
+					Pattern pattern = mPattern;
+					Matcher m = null;
+					ArrayList<SearchModel> data = null ;
+					mFileCount++;
+					while ((text = br.readLine()) != null) {
+						line ++;
+						if (m == null) {
+							m = pattern.matcher(text);
+						} else {
+							m.reset(text);
+						}
+						if (m.find()) {
+							found = true;
 
-                            synchronized (mData) {
-                                mFoundcount++;
-                                if (data == null) {
-                                    data = new ArrayList<SearchModel>();
-                                }
-                                data.add(new SearchModel(line, group, text, file));
+							synchronized (mData) {
+								mFoundcount++;
+								if (data == null) {
+									data = new ArrayList<SearchModel>();
+								}
+								data.add(new SearchModel(line, group, text, file));
 
-                                if (mFoundcount < 10) {
-                                    publishProgress(data.toArray(new SearchModel[0]));
-                                    data = null;
-                                }
-                            }
-                            if (mCancelled) {
-                                break;
-                            }
-                        }
-                    }
-                    br.close();
-                    is.close();
-                    if (data != null) {
-                        publishProgress(data.toArray(new SearchModel[0]));
-                        data = null;
-                    }
-                    if (!found) {
-                        if (mFileCount % 10 == 0) {
-                            publishProgress((SearchModel[])null);
-                        }
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            } catch (IOException e1) {
-                e1.printStackTrace();
-            }
-            return true;
-        }
-    }
+								if (mFoundcount < 10) {
+									publishProgress(data.toArray(new SearchModel[0]));
+									data = null;
+								}
+							}
+							if (mCancelled) {
+								break;
+							}
+						}
+					}
+					br.close();
+					is.close();
+					if (data != null) {
+						publishProgress(data.toArray(new SearchModel[0]));
+						data = null;
+					}
+					if (!found) {
+						if (mFileCount % 10 == 0) {
+							publishProgress((SearchModel[])null);
+						}
+					}
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+			return true;
+		}
+	}
 
 }

@@ -24,10 +24,11 @@ public class MainActivity extends AppCompatActivity
 	private Prefs mPrefs;
 	private LinearLayout mDirListView;
     private LinearLayout mExtListView;
+
     private View.OnLongClickListener mDirListener;
     private View.OnLongClickListener mExtListener;
 	private CompoundButton.OnCheckedChangeListener mCheckListener;
-	private AutoCompleteTextView edittext;
+	private AutoCompleteTextView mSearchQuery;
 
 	private Context mContext;
 	private long back_pressed = 0;
@@ -59,7 +60,6 @@ public class MainActivity extends AppCompatActivity
             @Override
             public boolean onLongClick(View view) {
                 final CheckedString strItem = (CheckedString) view.getTag();
-                // Show Dialog
                 new AlertDialog.Builder(mContext)
                     .setTitle(R.string.title_remove_item)
                     .setMessage(getString(R.string.msg_remove_item, strItem))
@@ -116,12 +116,11 @@ public class MainActivity extends AppCompatActivity
         final CheckBox chkIc = (CheckBox) findViewById(R.id.cb_ic);
         final CheckBox chkWo = (CheckBox) findViewById(R.id.cb_mw);
 		final CheckBox chkHd = (CheckBox) findViewById(R.id.cb_hidden);
-		final CheckBox chkFl = (CheckBox) findViewById(R.id.cb_files);
+
 		chkRe.setChecked(mPrefs.mRegularExrpression);
 		chkIc.setChecked(mPrefs.mIgnoreCase);
 		chkWo.setChecked(mPrefs.mWordOnly);
 		chkHd.setChecked(mPrefs.mSearchHidden);
-		chkFl.setChecked(mPrefs.mSearchFiles);
 
         chkRe.setOnClickListener(new View.OnClickListener() {
 				@Override
@@ -154,21 +153,14 @@ public class MainActivity extends AppCompatActivity
 				}
 			});
 
-		chkFl.setOnClickListener(new View.OnClickListener() {
-				@Override
-				public void onClick(View view) {
-					mPrefs.mSearchFiles = chkFl.isChecked();
-					mPrefs.savePrefs(mContext);
-				}
-			});
 
         // Поиск
-        edittext = (AutoCompleteTextView) findViewById(R.id.search_text);
-        edittext.setOnKeyListener(new View.OnKeyListener() {
+        mSearchQuery = (AutoCompleteTextView) findViewById(R.id.query_input);
+        mSearchQuery.setOnKeyListener(new View.OnKeyListener() {
 				@Override
 				public boolean onKey(View v, int keyCode, KeyEvent event) {
 					if (keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_UP) {
-						startSearch(edittext.getText().toString());
+						startSearch(mSearchQuery.getText().toString());
 						return true;
 					}
 					return false;
@@ -177,28 +169,27 @@ public class MainActivity extends AppCompatActivity
         mRecentAdapter = new ArrayAdapter <String>(mContext, 
 												   R.layout.my_spinner_item, 
 												   new ArrayList <String>());
-//		mRecentAdapter.setDropDownViewResource(R.layout.my_spinner_dropdown_item);
-        edittext.setAdapter(mRecentAdapter);
+        mSearchQuery.setAdapter(mRecentAdapter);
 
         ImageButton clrBtn = (ImageButton) findViewById(R.id.btn_clear_search);
         clrBtn.setOnClickListener(new OnClickListener() {
 				public void onClick(View view) {
-					edittext.setText("");
-					edittext.requestFocus();
+					mSearchQuery.setText("");
+					mSearchQuery.requestFocus();
 				}
 			});
 
         ImageButton searchBtn = (ImageButton) findViewById(R.id.btn_search);
         searchBtn.setOnClickListener(new OnClickListener() {
 				public void onClick(View view) {
-					startSearch(edittext.getText().toString());
+					startSearch(mSearchQuery.getText().toString());
 				}
 			});
 
         ImageButton historyBtn = (ImageButton) findViewById(R.id.btn_history_search);
         historyBtn.setOnClickListener(new OnClickListener() {
 				public void onClick(View view) {
-					edittext.showDropDown();
+					mSearchQuery.showDropDown();
 				}
 			});
 	}
@@ -219,24 +210,28 @@ public class MainActivity extends AppCompatActivity
 		}
 
 
+		boolean error = false;
 		if (mPrefs.mDirList.size() == 0 || !checkDir) {
             Toast.makeText(getApplicationContext(), R.string.msg_no_target_dir, Toast.LENGTH_LONG).show();
+			error = true;
         } else if (mPrefs.mExtList.size() == 0 || !checkExt) {
-            Toast.makeText(getApplicationContext(), R.string.msg_no_target_ext, Toast.LENGTH_LONG).show();			
+            Toast.makeText(getApplicationContext(), R.string.msg_no_target_ext, Toast.LENGTH_LONG).show();
+			error = true;
         } else if (query.equals("")) {
-            Toast.makeText(getApplicationContext(), R.string.msg_no_search_query, Toast.LENGTH_LONG).show();			
+//            Toast.makeText(getApplicationContext(), R.string.msg_no_search_query, Toast.LENGTH_LONG).show();
+			mSearchQuery.setError(getString(R.string.msg_is_empty));
+			error = true;
 		}
 
-		Intent it = null;
-		if (mPrefs.mSearchFiles) {
-			it = new Intent(this, SearchFilesActivity.class);
-		} else {
+		if (!error) {
+			Intent it = null;
 			it = new Intent(this, ResultTextActivity.class);
+			it.setAction(Intent.ACTION_SEARCH);
+			it.putExtra(SearchManager.QUERY, query);
+			startActivity(it);
+		} else {
+			initSearch();
 		}
-
-		it.setAction(Intent.ACTION_SEARCH);
-		it.putExtra(SearchManager.QUERY, query);
-		startActivity(it);
 	}
 
 	@Override

@@ -17,8 +17,6 @@
 
 	</android.support.design.widget.AppBarLayout>
 
-	<include
-		android:id="@+id/main_view"
-		layout="@layout/main_textview" />
+	<include layout="@layout/textview_layout" />
 </LinearLayout>
 

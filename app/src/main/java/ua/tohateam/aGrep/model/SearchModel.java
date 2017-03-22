@@ -1,5 +1,6 @@
 package ua.tohateam.aGrep.model;
 
+import android.graphics.drawable.*;
 import java.io.*;
 
 public class SearchModel
@@ -9,7 +10,8 @@ public class SearchModel
 	private String name;
 	private File path;
 	private boolean select;
-
+	private Drawable icon;
+	
 	public SearchModel() {
 		this(0, null , null , null);
 	}
@@ -21,14 +23,22 @@ public class SearchModel
 		this.path = path;
 	}
 
-	public SearchModel(int line, String group, String text, File path, boolean select) {
-		this.line = line;
+	public SearchModel(Drawable icon, String group, String text, File path, boolean select) {
+		this.icon = icon;
 		this.group = group;
 		this.name = text;
 		this.path = path;
 		this.select = select;
 	}
-	
+
+	public void setIcon(Drawable icon) {
+		this.icon = icon;
+	}
+
+	public Drawable getIcon() {
+		return icon;
+	}
+
 	public void setSelect(boolean select) {
 		this.select = select;
 	}

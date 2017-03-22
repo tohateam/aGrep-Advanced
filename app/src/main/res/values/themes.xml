@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
-	<style name="AppTheme" parent="AppTheme.Dark">
+	<!-- Application theme. -->
+	<style name="AppTheme" parent="AppTheme.Base">
 		<!-- All customizations that are NOT specific to a particular API-level can go here. -->
 	</style>
-	
-	<!--DARK-->
-	<style name="AppTheme.Dark" parent="Theme.AppCompat.NoActionBar">
+
+	<style name="AppTheme.Base" parent="Theme.AppCompat.NoActionBar">
+
 		<item name="colorPrimaryDark">@color/colorPrimaryDark</item>
 		<item name="colorPrimary">@color/colorPrimary</item>
 		<item name="colorAccent">@color/colorAccent</item>
@@ -20,32 +21,13 @@
 		<item name="android:windowNoTitle">true</item>
 		<item name="windowActionBar">false</item>  <!-- For 2.x version  -->
 
-		<item name="alertDialogTheme">@style/AlertDialogDarkStyle</item>
+		<item name="alertDialogTheme">@style/AppCompatAlertDialogStyle</item>
 
 		<item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
+		
+		<item name="windowActionModeOverlay">true</item>
+
 	</style>
 
-	<!--LIGHT-->
-	<style name="AppTheme.Light" parent="Theme.AppCompat.Light.NoActionBar">
-		<item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-		<item name="colorPrimary">@color/colorPrimary</item>
-		<item name="colorAccent">@color/colorAccent</item>
-
-		<item name="android:textColorPrimary">@color/textColorPrimaryLight</item>
-		<item name="android:textColorSecondary">@color/textColorSecondaryLight</item>
-
-		<item name="colorControlNormal">@color/colorControlNormal</item>
-		<item name="colorControlActivated">@color/colorControlActivated</item>
-		<item name="colorControlHighlight">@color/colorControlHighlight</item>
-
-		<item name="android:windowNoTitle">true</item>
-		<item name="windowActionBar">false</item>  <!-- For 2.x version  -->
-
-		<item name="alertDialogTheme">@style/AlertDialogLightStyle</item>
-
-		<item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
-	</style>
-	
-	
 </resources>
 

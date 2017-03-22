@@ -27,22 +27,8 @@
 			android:theme="@style/ExFilePickerThemeDark" />
 
 		<activity
-            android:name=".SearchTextActivity"
-            android:label="@string/app_search_result"
-			android:configChanges="keyboardHidden|orientation"
-			android:parentActivityName=".MainActivity">
-			<intent-filter>
-				<action android:name="android.intent.action.SEARCH" />
-				<category android:name="android.intent.category.DEFAULT" />
-			</intent-filter>
-			<meta-data
-				android:name="android.support.PARENT_ACTIVITY"
-				android:value=".MainActivity" />
-		</activity>
-
-		<activity
-            android:name=".SearchFilesActivity"
-            android:label="@string/app_search_files"
+			android:name=".ResultTextActivity"
+			android:label="@string/app_search_result"
 			android:configChanges="keyboardHidden|orientation"
 			android:parentActivityName=".MainActivity">
 			<intent-filter>
@@ -57,10 +43,10 @@
 				android:resource="@xml/searchable">
 			</meta-data>
 		</activity>
-		
-        <activity
-            android:name=".SettingsActivity"
-            android:label="@string/app_settings"
+	
+		<activity
+			android:name=".SettingsActivity"
+			android:label="@string/app_settings"
 			android:parentActivityName=".MainActivity">
 			<meta-data
 				android:name="android.support.PARENT_ACTIVITY"
@@ -68,9 +54,9 @@
 		</activity>
 
 		<activity
-            android:name=".AboutActivity"
+			android:name=".AboutActivity"
 			android:configChanges="keyboardHidden|orientation"
-            android:label="@string/app_about"
+			android:label="@string/app_about"
 			android:parentActivityName=".MainActivity">
 			<meta-data
 				android:name="android.support.PARENT_ACTIVITY"
@@ -78,13 +64,17 @@
 		</activity>
 
 		<activity
-            android:name=".TextViewerActivity"
+			android:name=".TextViewerActivity"
 			android:configChanges="keyboardHidden|orientation"
-            android:label="@string/app_name"
+			android:label="@string/app_name"
 			android:parentActivityName=".SearchResult">
 			<meta-data
 				android:name="android.support.PARENT_ACTIVITY"
 				android:value=".SearchResult" />
+			<meta-data
+				android:name="android.app.searchable"
+				android:resource="@xml/searchable">
+			</meta-data>
 		</activity>
 
     </application>
