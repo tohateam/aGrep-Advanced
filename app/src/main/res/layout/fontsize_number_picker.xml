@@ -1,15 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="wrap_content"
 	android:layout_height="wrap_content"
-	android:padding="16dp"
-	android:gravity="center_horizontal">
+	android:gravity="center"
+	android:paddingLeft="24dp"
+	android:paddingRight="24dp"
+	android:paddingTop="16dp"
+	android:paddingBottom="16dp">
 
-	<NumberPicker
-		android:id="@+id/np"
+	<LinearLayout
+		android:layout_height="wrap_content"
 		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"/>
+		android:orientation="vertical"
+		android:gravity="center">
 
-</LinearLayout>
+		<NumberPicker
+			android:id="@+id/np"
+			android:theme="@style/AppTheme.Picker"
+			android:layout_width="wrap_content"
+			android:layout_height="match_parent"
+			android:layout_centerHorizontal="true"
+			android:layout_centerVertical="true"/>
+
+	</LinearLayout>
+
+</RelativeLayout>
 

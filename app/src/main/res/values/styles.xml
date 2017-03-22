@@ -61,5 +61,9 @@
 		<item name="android:paddingBottom">10dp</item>
 	</style>	
 
+	<style name="AppTheme.Picker" parent="AppTheme.Base" >
+		<item name="android:textColorPrimary">#000000</item>
+		<item name="android:background">@drawable/numberpicker_background</item>
+	</style>
 </resources>
 

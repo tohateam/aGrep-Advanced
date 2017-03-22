@@ -7,91 +7,108 @@
 	android:orientation="vertical"
 	android:padding="5dp">
 
-	<LinearLayout
-		android:layout_height="wrap_content"
+	<android.support.v7.widget.CardView
 		android:layout_width="match_parent"
-		android:orientation="horizontal">
+		android:layout_height="wrap_content"
+		card_view:cardUseCompatPadding="true"
+		card_view:cardElevation="2dp"
+		card_view:cardCornerRadius="4dp"
+		card_view:contentPadding="16dp"
+		card_view:cardBackgroundColor="@color/rowBackground">
 
-		<ImageButton
-			style="?android:attr/buttonBarButtonStyle"
-			android:layout_height="wrap_content"
-			android:layout_width="wrap_content"
-			android:src="@drawable/ic_history"
-			android:id="@+id/btn_history_search"/>
-
-		<android.support.design.widget.TextInputLayout
-			android:id="@+id/title_query_input"
+		<LinearLayout
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:layout_weight="1.0"
-			card_view:hintTextAppearance="?android:attr/textAppearanceMedium"
-			card_view:errorEnabled="true">
+			android:orientation="vertical">
 
-			<AutoCompleteTextView
-				android:id="@+id/query_input"
-				android:layout_width="match_parent"
-				android:capitalize="none"
+			<LinearLayout
 				android:layout_height="wrap_content"
-				android:singleLine="true"
-				android:textAppearance="?android:attr/textAppearanceMedium"
-				android:hint="@string/search_hint"
-				android:completionThreshold="2"
-				android:imeOptions="flagNoExtractUi|actionSearch"/>
+				android:layout_width="match_parent"
+				android:orientation="horizontal">
 
-		</android.support.design.widget.TextInputLayout>
+				<ImageButton
+					style="?android:attr/buttonBarButtonStyle"
+					android:layout_height="wrap_content"
+					android:layout_width="wrap_content"
+					android:src="@drawable/ic_history"
+					android:id="@+id/btn_history_search"/>
 
-		<ImageButton
-			style="?android:attr/buttonBarButtonStyle"
-			android:layout_height="wrap_content"
-			android:layout_width="wrap_content"
-			android:src="@drawable/ic_close"
-			android:id="@+id/btn_clear_search"/>
+				<android.support.design.widget.TextInputLayout
+					android:id="@+id/title_query_input"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:layout_weight="1.0"
+					card_view:hintTextAppearance="?android:attr/textAppearanceMedium"
+					card_view:errorEnabled="true">
 
-		<ImageButton
-			style="?android:attr/buttonBarButtonStyle"
-			android:layout_height="wrap_content"
-			android:layout_width="wrap_content"
-			android:src="@drawable/ic_magnify"
-			android:id="@+id/btn_search"
-			android:layout_marginLeft="5dp"/>
+					<AutoCompleteTextView
+						android:id="@+id/query_input"
+						android:layout_width="match_parent"
+						android:capitalize="none"
+						android:layout_height="wrap_content"
+						android:singleLine="true"
+						android:textAppearance="?android:attr/textAppearanceMedium"
+						android:hint="@string/search_hint"
+						android:completionThreshold="2"
+						android:imeOptions="flagNoExtractUi|actionSearch"/>
 
-	</LinearLayout>
+				</android.support.design.widget.TextInputLayout>
 
-	<LinearLayout
-		android:layout_height="wrap_content"
-		android:layout_width="match_parent"
-		android:orientation="horizontal"
-		android:gravity="center_horizontal"
-		android:id="@+id/search_text_options">
+				<ImageButton
+					style="?android:attr/buttonBarButtonStyle"
+					android:layout_height="wrap_content"
+					android:layout_width="wrap_content"
+					android:src="@drawable/ic_close"
+					android:id="@+id/btn_clear_search"/>
 
-		<CheckBox
-			android:layout_height="wrap_content"
-			android:layout_width="wrap_content"
-			android:text="@string/label_ic"
-			android:id="@+id/cb_ic"/>
+				<ImageButton
+					style="?android:attr/buttonBarButtonStyle"
+					android:layout_height="wrap_content"
+					android:layout_width="wrap_content"
+					android:src="@drawable/ic_magnify"
+					android:id="@+id/btn_search"
+					android:layout_marginLeft="5dp"/>
 
-		<CheckBox
-			android:layout_height="wrap_content"
-			android:layout_width="wrap_content"
-			android:text="@string/label_re"
-			android:id="@+id/cb_re"
-			android:layout_marginLeft="10dp"/>
+			</LinearLayout>
 
-		<CheckBox
-			android:layout_height="wrap_content"
-			android:layout_width="wrap_content"
-			android:id="@+id/cb_mw"
-			android:text="@string/label_mw"
-			android:layout_marginLeft="10dp"/>
+			<LinearLayout
+				android:layout_height="wrap_content"
+				android:layout_width="match_parent"
+				android:orientation="horizontal"
+				android:gravity="center_horizontal"
+				android:id="@+id/search_text_options">
 
-		<CheckBox
-			android:layout_height="wrap_content"
-			android:layout_width="wrap_content"
-			android:id="@+id/cb_hidden"
-			android:text="@string/label_hidden"
-			android:layout_marginLeft="10dp"/>
+				<CheckBox
+					android:layout_height="wrap_content"
+					android:layout_width="wrap_content"
+					android:text="@string/label_ic"
+					android:id="@+id/cb_ic"/>
 
-	</LinearLayout>
+				<CheckBox
+					android:layout_height="wrap_content"
+					android:layout_width="wrap_content"
+					android:text="@string/label_re"
+					android:id="@+id/cb_re"
+					android:layout_marginLeft="10dp"/>
+
+				<CheckBox
+					android:layout_height="wrap_content"
+					android:layout_width="wrap_content"
+					android:id="@+id/cb_mw"
+					android:text="@string/label_mw"
+					android:layout_marginLeft="10dp"/>
+
+				<CheckBox
+					android:layout_height="wrap_content"
+					android:layout_width="wrap_content"
+					android:id="@+id/cb_hidden"
+					android:text="@string/label_hidden"
+					android:layout_marginLeft="10dp"/>
+
+			</LinearLayout>
+		</LinearLayout>
+
+	</android.support.v7.widget.CardView>
 
 	<ScrollView
 		android:layout_height="wrap_content"

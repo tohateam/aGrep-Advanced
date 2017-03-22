@@ -255,14 +255,16 @@ implements AsyncResponse
 	}
 
 	private void setFontSize() {
+		LayoutInflater inflater = getLayoutInflater();
+		View dialoglayout = inflater.inflate(R.layout.fontsize_number_picker, null);
+		
 		AlertDialog.Builder alertDialog = new AlertDialog.Builder(mContext);
 		alertDialog.setIcon(R.drawable.ic_format_size);
 		alertDialog.setTitle(getString(R.string.title_font_size));
 
-		LinearLayout view = (LinearLayout) getLayoutInflater().inflate(R.layout.fontsize_number_picker, null);
-		alertDialog.setView(view);
+		alertDialog.setView(dialoglayout);
 		
-		NumberPicker np = (NumberPicker) view.findViewById(R.id.np);
+		NumberPicker np = (NumberPicker) dialoglayout.findViewById(R.id.np);
 		// Скрыть клавиатуру
 		np.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
 		np.setMinValue(12);
