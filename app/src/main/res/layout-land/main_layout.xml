@@ -91,15 +91,6 @@
 					android:id="@+id/cb_re"
 					android:layout_marginLeft="10dp"/>
 
-			</LinearLayout>
-			<LinearLayout
-				android:layout_height="wrap_content"
-				android:layout_width="match_parent"
-				android:orientation="horizontal"
-				android:gravity="center_horizontal"
-				android:id="@+id/search_text_options">
-
-
 				<CheckBox
 					android:layout_height="wrap_content"
 					android:layout_width="wrap_content"
