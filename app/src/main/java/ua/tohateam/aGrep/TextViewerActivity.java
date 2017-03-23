@@ -476,7 +476,7 @@ implements AsyncResponse
             mProgressDialog = null;
 
             Toast.makeText(getApplicationContext(), 
-						   result ?R.string.msg_grep_finished: R.string.msg_grep_canceled, 
+						   result ?R.string.msg_search_canceled: R.string.msg_search_canceled, 
 						   Toast.LENGTH_LONG).show();
 			delegate.onProcessFinish(result, mResultId);
 			mReplece = null;

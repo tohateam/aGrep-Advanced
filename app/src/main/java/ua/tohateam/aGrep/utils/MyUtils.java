@@ -203,12 +203,4 @@ public class MyUtils
 		return type;
 	}
 
-	public boolean isEmpty(String text) {
-       text = text.trim();
-
-        if(text==null||text.equals("")) {
-            return true;
-        }
-		return false;
-	}
 }

@@ -103,7 +103,7 @@ SearchText.SearchTextCallback
 			dialogNoSearch(mContext.getString(R.string.msg_search_no, mQuery));
 		} else if (idResult == RESULT_REPLACE) {
 			String msg = result ? mContext.getString(R.string.msg_replace_ok, mQuery, mReplaceQuery)
-				: mContext.getString(R.string.msg_replace_canceled, mQuery, mReplaceQuery);
+				: mContext.getString(R.string.msg_search_canceled, mQuery, mReplaceQuery);
 			dialogReplaceResult(msg);
 		}
 	}
@@ -268,12 +268,12 @@ SearchText.SearchTextCallback
 
         if (mData != null) {
 			// Сортируем по по группе
-			Collections.sort(mData, new Comparator<SearchModel>() {
-					@Override
-					public int compare(SearchModel p1, SearchModel p2) {
-						return p1.getGroup().compareToIgnoreCase(p2.getGroup());
-					}
-				});
+//			Collections.sort(mData, new Comparator<SearchModel>() {
+//					@Override
+//					public int compare(SearchModel p1, SearchModel p2) {
+//						return p1.getGroup().compareToIgnoreCase(p2.getGroup());
+//					}
+//				});
 
 			for (int i=0; i < mData.size();i++) {
 				GroupModel group = new GroupModel();
