@@ -79,19 +79,22 @@
 				android:id="@+id/search_text_options">
 
 				<CheckBox
-					android:layout_height="wrap_content"
+					android:layout_height="match_parent"
 					android:layout_width="wrap_content"
 					android:text="@string/label_ic"
-					android:id="@+id/cb_ic"/>
+					android:id="@+id/cb_ic"
+					android:layout_weight="1.0"/>
 
 				<CheckBox
-					android:layout_height="wrap_content"
+					android:layout_height="match_parent"
 					android:layout_width="wrap_content"
 					android:text="@string/label_re"
 					android:id="@+id/cb_re"
-					android:layout_marginLeft="10dp"/>
+					android:layout_marginLeft="10dp"
+					android:layout_weight="1.0"/>
 
 			</LinearLayout>
+
 			<LinearLayout
 				android:layout_height="wrap_content"
 				android:layout_width="match_parent"
@@ -99,22 +102,24 @@
 				android:gravity="center_horizontal"
 				android:id="@+id/search_text_options">
 
-
 				<CheckBox
-					android:layout_height="wrap_content"
+					android:layout_height="match_parent"
 					android:layout_width="wrap_content"
 					android:id="@+id/cb_mw"
 					android:text="@string/label_mw"
-					android:layout_marginLeft="10dp"/>
+					android:layout_marginLeft="10dp"
+					android:layout_weight="1.0"/>
 
 				<CheckBox
-					android:layout_height="wrap_content"
+					android:layout_height="match_parent"
 					android:layout_width="wrap_content"
 					android:id="@+id/cb_hidden"
 					android:text="@string/label_hidden"
-					android:layout_marginLeft="10dp"/>
+					android:layout_marginLeft="10dp"
+					android:layout_weight="1.0"/>
 
 			</LinearLayout>
+
 		</LinearLayout>
 
 	</android.support.v7.widget.CardView>

@@ -6,7 +6,7 @@ import java.util.*;
 public class GroupModel
 {
 	private String Name;
-    private ArrayList<ChildModel> Items;
+	private ArrayList<ChildModel> Items;
 	private File path;
 	private boolean selected;
 
