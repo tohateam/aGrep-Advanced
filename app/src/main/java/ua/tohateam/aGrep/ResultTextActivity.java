@@ -90,14 +90,6 @@ SearchText.SearchTextCallback
 		if (idResult == RESULT_CANCELED) {
 			dialogNoSearch(mContext.getString(R.string.msg_search_canceled));
 		} else if (idResult == RESULT_SEARCH && data.size() > 0) {
-			// Сортируем по пути
-			Collections.sort(data, new Comparator<SearchModel>() {
-					@Override
-					public int compare(SearchModel p1, SearchModel p2) {
-						return p1.getPath().getParent().compareToIgnoreCase(p2.getPath().getParent());
-					}
-				});
-
 			showResult(data);
 		} else if (idResult == RESULT_SEARCH && data.size() == 0) {
 			dialogNoSearch(mContext.getString(R.string.msg_search_no, mQuery));
@@ -267,13 +259,24 @@ SearchText.SearchTextCallback
 		String oldGroup = null;
 
         if (mData != null) {
+			
 			// Сортируем по по группе
-//			Collections.sort(mData, new Comparator<SearchModel>() {
-//					@Override
-//					public int compare(SearchModel p1, SearchModel p2) {
-//						return p1.getGroup().compareToIgnoreCase(p2.getGroup());
-//					}
-//				});
+			Collections.sort(mData, new Comparator<SearchModel>() {
+					@Override
+					public int compare(SearchModel p1, SearchModel p2) {
+						return p1.getGroup().compareToIgnoreCase(p2.getGroup());
+					}
+				});
+			
+			// Сортируем по пути
+			Collections.sort(mData, new Comparator<SearchModel>() {
+					@Override
+					public int compare(SearchModel p1, SearchModel p2) {
+						
+						return p1.getPath().getParent().compareToIgnoreCase(p2.getPath().getParent());
+					}
+				});
+			
 
 			for (int i=0; i < mData.size();i++) {
 				GroupModel group = new GroupModel();
@@ -313,6 +316,14 @@ SearchText.SearchTextCallback
 				group_list.get(i).setItems(child_list);
 			}
 		}
+		// Сортируем группу по имени
+		Collections.sort(group_list, new Comparator<GroupModel>() {
+				@Override
+				public int compare(GroupModel p1, GroupModel p2) {
+					return p1.getName().compareToIgnoreCase(p2.getName());
+				}
+			});
+		
 		return group_list;
     }
 
