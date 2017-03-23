@@ -72,7 +72,6 @@ SearchText.SearchTextCallback
 		if (it != null && Intent.ACTION_SEARCH.equals(it.getAction())) {
             Bundle extras = it.getExtras();
             mQuery = extras.getString(SearchManager.QUERY);
-			getSupportActionBar().setTitle(getString(R.string.app_search_result) + " : " + mQuery);
 
             if (mQuery != null && mQuery.length() > 0) {
 				SearchText searchText = new SearchText(this);
@@ -91,7 +90,7 @@ SearchText.SearchTextCallback
 			toolbar.setSubtitleTextColor(getResources().getColor(R.color.colorAccent));
 			getSupportActionBar().setSubtitle(getString(R.string.title_actionbar, selected));
 		} else {
-			getSupportActionBar().setSubtitle("");
+			getSupportActionBar().setSubtitle(mQuery);
 		}
 		if (mActionMode != null)
 			setTitleActionBar();
@@ -152,6 +151,8 @@ SearchText.SearchTextCallback
 	}
 
 	private void showResult(ArrayList<SearchModel> data) {
+		toolbar.setTitle(getString(R.string.app_search_result) + ":");
+		toolbar.setSubtitle(mQuery);
         mGroupModel = setListGroups(data);
         mAdapter = new SearchAdapter(this, mGroupModel);
 		mAdapter.setFormat(mUtils.getPattern(mContext, mQuery) , mPrefs.mHighlightFg , mPrefs.mHighlightBg , mPrefs.mFontSize);

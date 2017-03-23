@@ -29,7 +29,7 @@ implements AsyncResponse
     public static final String EXTRA_PATH = "path";
 	
 	private Toolbar toolbar;
-	private ActionMode mActionMode;
+//	private ActionMode mActionMode;
 
 	private MyUtils mUtils;
     private Prefs mPrefs;
@@ -46,6 +46,7 @@ implements AsyncResponse
 	private String mQuery;
 	private String mReplaceQuery;
 	private String mTitle;
+	private String mSubTitle;
 
 	private int mFontSize;
 	private boolean mEditMode = false;
@@ -65,7 +66,6 @@ implements AsyncResponse
 		if (toolbar != null) {
 			setSupportActionBar(toolbar);
 			if (getSupportActionBar() != null) {
-				//getSupportActionBar().setTitle(mTitle);
 				getSupportActionBar().setDisplayShowTitleEnabled(true);
 				getSupportActionBar().setHomeButtonEnabled(true);
 				getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -74,17 +74,16 @@ implements AsyncResponse
 
 		mTextPreview = (TextView) findViewById(R.id.text_view_body);
 		mTextPreview.setTextSize(mFontSize);
+		mTextPreview.setTextIsSelectable(true);
+/*
 		mTextPreview.setOnLongClickListener(new View.OnLongClickListener() {
 				// Called when the user long-clicks on someView
 				public boolean onLongClick(View view) {
-					if (mActionMode != null) {
-						return false;
-					}
-					mActionMode = startActionMode(mActionModeCallback);
 					view.setSelected(true);
 					return true;
 				}
 			});
+*/
         mRecentAdapter = new ArrayAdapter <String>(mContext, 
 												   R.layout.my_spinner_item, 
 												   new ArrayList <String>());
@@ -113,7 +112,8 @@ implements AsyncResponse
 		public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 			if (after == 1 || count == 1) {
 				mTextChanged = true;
-				getSupportActionBar().setTitle(mTitle + " *");
+				toolbar.setTitle(mTitle);
+				toolbar.setSubtitle(mSubTitle + "*");
 			}
 		}
 
@@ -122,6 +122,7 @@ implements AsyncResponse
 		}
 	};
 
+/*
 	private ActionMode.Callback mActionModeCallback = new ActionMode.Callback() {
 		@Override
 		public boolean onCreateActionMode(ActionMode mode, Menu menu) {
@@ -166,7 +167,7 @@ implements AsyncResponse
 			mActionMode = null;
 		}
 	};
-
+*/
 	private void startLoadFile(String query) {
 		if (!mPrefs.mRegularExrpression) {
 			mQuery = mUtils.escapeMetaChar(query);
@@ -200,16 +201,20 @@ implements AsyncResponse
 			if(!mTextPreview.getText().equals("") || mTextPreview.getText() != null)
 				mEditText.setText(mTextPreview.getText());
 			mTextPreview.setText("");
-			mTitle = getString(R.string.app_edit_view) + " : " + mPath.substring(mPath.lastIndexOf("/") + 1);
+			mTitle = getString(R.string.app_edit_view) + ":";
+			mSubTitle = mPath.substring(mPath.lastIndexOf("/") + 1);
 		} else {
 			mTextPreview.setVisibility(0);
 			mEditText.setVisibility(8);
 			if(!mEditText.getText().equals("") || mEditText.getText() != null)
 				mTextPreview.setText(mEditText.getText());
 			mEditText.setText("");
-			mTitle = getString(R.string.app_text_view) + " : " + mPath.substring(mPath.lastIndexOf("/") + 1);
+			mTitle = getString(R.string.app_text_view) + ":";
+			mSubTitle = mPath.substring(mPath.lastIndexOf("/") + 1);
 		}
-		getSupportActionBar().setTitle(mTitle);
+		toolbar.setTitle(mTitle);
+		toolbar.setSubtitle(mSubTitle);
+		
 		invalidateOptionsMenu();
 	}
 
@@ -220,7 +225,6 @@ implements AsyncResponse
 				if (mTextChanged)
 					dialogSave();
 				else
-					//NavUtils.navigateUpFromSameTask(this);
 					super. onBackPressed();
 				return true;
 			case R.id.item_view_mode:
@@ -232,6 +236,21 @@ implements AsyncResponse
 				return true;
 			case R.id.item_view_font_size:
 				setFontSize();
+				return true;
+			case R.id.item_view_copy:
+				ClipboardManager cm = (ClipboardManager)getSystemService(Context.CLIPBOARD_SERVICE);
+				ClipData clip = ClipData.newPlainText("aGrep Text Viewer", mTextPreview.getText());
+				cm.setPrimaryClip(clip);
+				Toast.makeText(TextViewerActivity.this, R.string.msg_copied, Toast.LENGTH_LONG).show();
+				return true;
+			case R.id.item_view_replace:
+				showReplaceDialog();
+				return true;
+			case R.id.item_view_send:
+				Intent intent = new Intent();
+				intent.setAction(Intent.ACTION_VIEW);					
+				intent.setDataAndType(Uri.parse("file://" + mPath), "text/plain");
+				startActivity(intent);
 				return true;
 		}
         return super.onOptionsItemSelected(item);
@@ -250,10 +269,18 @@ implements AsyncResponse
 			item_view.setIcon(R.drawable.ic_pencil);
 			item_save.setVisible(true);
 		}
-		//menu.findItem(R.id.item_file).getSubMenu().setGroupEnabled(R.id.group_file, true);
+
 		return super.onPrepareOptionsMenu(menu);
 	}
 
+	@Override
+	public void onBackPressed() {
+		if (mTextChanged)
+			dialogSave();
+		else
+			super. onBackPressed();
+	}
+	
 	private void setFontSize() {
 		LayoutInflater inflater = getLayoutInflater();
 		View dialoglayout = inflater.inflate(R.layout.fontsize_number_picker, null);
@@ -400,7 +427,9 @@ implements AsyncResponse
 			finish();
 		else {
 			mTextChanged = false;
-			getSupportActionBar().setTitle(mTitle);
+			toolbar.setTitle(mTitle);
+			toolbar.setSubtitle(mSubTitle);
+			
 		}
 		String msg = getString(R.string.msg_saved_file, mPath.substring(mPath.lastIndexOf("/") + 1));
 		Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
