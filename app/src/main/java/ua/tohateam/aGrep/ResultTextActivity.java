@@ -9,10 +9,10 @@ import android.support.v7.widget.*;
 import android.view.*;
 import android.view.View.*;
 import android.widget.*;
+import java.io.*;
 import java.util.*;
 import ua.tohateam.aGrep.model.*;
 import ua.tohateam.aGrep.utils.*;
-import ua.tohateam.aGrep.views.*;
 
 import android.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
@@ -37,7 +37,6 @@ SearchText.SearchTextCallback
 	private String mQuery;
 	private String mReplaceQuery;
 
-//	private ArrayList<SearchModel> mData;
 	private ArrayList<GroupModel> mGroupModel;
 	private ArrayAdapter<String> mRecentAdapter;
 	private int mCurentGroup;
@@ -84,6 +83,20 @@ SearchText.SearchTextCallback
 		}
 	}
 
+	@Override
+	public void onMethodCallback() {
+		invalidateOptionsMenu();
+		int selected = mAdapter.countGroupSelected();
+		if(selected>0) {
+			toolbar.setSubtitleTextColor(getResources().getColor(R.color.colorAccent));
+			getSupportActionBar().setSubtitle(getString(R.string.title_actionbar, selected));
+		} else {
+			getSupportActionBar().setSubtitle("");
+		}
+		if (mActionMode != null)
+			setTitleActionBar();
+	}
+	
 	// Получаем результаты поиска
 	@Override
 	public void onMethodCallback(ArrayList<SearchModel> data, int idResult, boolean result) {
@@ -153,6 +166,14 @@ SearchText.SearchTextCallback
 					it.putExtra(SearchManager.QUERY, mQuery);
 					it.putExtra("path", patch);
 					startActivity(it);
+					if (mActionMode != null) {
+						mActionMode = null;
+						for (int i=0; i < mGroupModel.size(); i++) {
+							mGroupModel.get(i).setSelected(false);
+						}
+						mGroupModel.get(mCurentGroup).getItems().get(mCurentChild).setSelected(false);
+						mAdapter.notifyDataSetChanged();
+					}
 					return false;
 				}
 			});
@@ -162,11 +183,21 @@ SearchText.SearchTextCallback
 					if (ExpandableListView.getPackedPositionType(id) == ExpandableListView.PACKED_POSITION_TYPE_CHILD) {
 						mCurentGroup = ExpandableListView.getPackedPositionGroup(id);
 						mCurentChild = ExpandableListView.getPackedPositionChild(id);
-						// выделяем текущий элемент списка
+						// выделяем текущую группу
 						mGroupModel.get(mCurentGroup).setSelected(true);
+						// сброс всех выделений
+						for (int i= 0; i < mGroupModel.size(); i++) {
+							for (int j=0; j < mGroupModel.get(i).getItems().size(); j++) {
+								mGroupModel.get(i).getItems().get(j).setSelected(false);
+							}
+						}
+						// выделяем текущий элемент
+						mGroupModel.get(mCurentGroup).getItems().get(mCurentChild).setSelected(true);
 						mAdapter.notifyDataSetChanged();
 						// активируем CAB
-						mActionMode = ResultTextActivity.this.startActionMode(mActionModeCallback);
+						if (mActionMode == null) {
+							mActionMode = ResultTextActivity.this.startActionMode(mActionModeCallback);
+						}
 						setTitleActionBar();
 						return true;
 					}
@@ -175,12 +206,6 @@ SearchText.SearchTextCallback
 			});
 	}
 
-	@Override
-	public void onMethodCallback() {
-		invalidateOptionsMenu();
-		if (mActionMode != null)
-			setTitleActionBar();
-	}
 
 	private ActionMode.Callback mActionModeCallback = new ActionMode.Callback() {
 		@Override
@@ -226,7 +251,16 @@ SearchText.SearchTextCallback
 				case R.id.item_send:
 					Intent intent = new Intent();
 					intent.setAction(Intent.ACTION_VIEW);
-					intent.setDataAndType(Uri.parse("file://" + mGroupModel.get(mCurentGroup).getPath()), "text/plain");
+
+					File path = mGroupModel.get(mCurentGroup).getPath();
+					int position = mGroupModel.get(mCurentGroup).getItems().get(mCurentChild).getLine();
+
+					if (mPrefs.addLineNumber) {
+						intent.setDataAndType(Uri.parse("file://" + path + "?line=" + (position)), "text/plain");
+					} else {
+						intent.setDataAndType(Uri.parse("file://" + path), "text/plain");
+					}
+					mGroupModel.get(mCurentGroup).getItems().get(mCurentChild).setSelected(false);
 					startActivity(intent);
 					mode.finish();
 					return true;
@@ -238,17 +272,20 @@ SearchText.SearchTextCallback
 		@Override
 		public void onDestroyActionMode(ActionMode mode) {
 			mActionMode = null;
+			mGroupModel.get(mCurentGroup).getItems().get(mCurentChild).setSelected(false);
+			// сброс всех выделений 
+			for (int i= 0; i < mGroupModel.size(); i++) {
+				for (int j=0; j < mGroupModel.get(i).getItems().size(); j++) {
+					mGroupModel.get(i).getItems().get(j).setSelected(false);
+				}
+			}
+			mAdapter.notifyDataSetChanged();
 		}
 	};
 
 	// Устанавливаем заголовок ActionBar - кол-во выделенных элементов
 	private void setTitleActionBar() {
-		int count = 0;
-		for (int i=0; i < mGroupModel.size(); i++) {
-			if (mGroupModel.get(i).isSelected())
-				count++;
-		}
-		mActionMode.setTitle(getString(R.string.title_actionbar, Integer.toString(count)));
+		mActionMode.setTitle(getString(R.string.title_actionbar, Integer.toString(mAdapter.countGroupSelected())));
 	}
 
 
@@ -259,7 +296,6 @@ SearchText.SearchTextCallback
 		String oldGroup = null;
 
         if (mData != null) {
-			
 			// Сортируем по по группе
 			Collections.sort(mData, new Comparator<SearchModel>() {
 					@Override
@@ -267,16 +303,16 @@ SearchText.SearchTextCallback
 						return p1.getGroup().compareToIgnoreCase(p2.getGroup());
 					}
 				});
-			
+
 			// Сортируем по пути
 			Collections.sort(mData, new Comparator<SearchModel>() {
 					@Override
 					public int compare(SearchModel p1, SearchModel p2) {
-						
+
 						return p1.getPath().getParent().compareToIgnoreCase(p2.getPath().getParent());
 					}
 				});
-			
+
 
 			for (int i=0; i < mData.size();i++) {
 				GroupModel group = new GroupModel();
@@ -323,7 +359,7 @@ SearchText.SearchTextCallback
 					return p1.getName().compareToIgnoreCase(p2.getName());
 				}
 			});
-		
+
 		return group_list;
     }
 
@@ -437,7 +473,7 @@ SearchText.SearchTextCallback
 		} else {
 			// Добавляем в историю
 			mPrefs.addRecent(ResultTextActivity.this, mReplaceQuery);
-			
+
 			boolean replace = false;
 			if (mAdapter.countGroupSelected() == 1) {
 				replace = false;

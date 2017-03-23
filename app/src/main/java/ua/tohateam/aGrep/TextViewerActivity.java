@@ -151,7 +151,7 @@ implements AsyncResponse
 					return true;
 				case R.id.item_view_send:
 					Intent intent = new Intent();
-					intent.setAction(Intent.ACTION_VIEW);
+					intent.setAction(Intent.ACTION_VIEW);					
 					intent.setDataAndType(Uri.parse("file://" + mPath), "text/plain");
 					startActivity(intent);
 					mode.finish();

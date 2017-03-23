@@ -21,19 +21,20 @@ public class SearchAdapter extends BaseExpandableListAdapter
 
 	private int mSelectColor;
 	private int mBackgroundColor;
-	
+
 	private AdapterCallback mAdapterCallback;
 
-	public static interface AdapterCallback {
+	public static interface AdapterCallback
+	{
         void onMethodCallback();
     }
-	
+
 	public SearchAdapter(Context context, ArrayList<GroupModel> groups) {
         this.context = context;
         this.groups = groups;
 		this.mUtils = new MyUtils();
 		this.mSelectColor = context.getResources().getColor(R.color.colorAccent);
-		this.mBackgroundColor = context.getResources().getColor(R.color.windowBackground);
+		this.mBackgroundColor = context.getResources().getColor(R.color.rowBackground);
 		try {
             this.mAdapterCallback = ((AdapterCallback) context);
         } catch (ClassCastException e) {
@@ -53,6 +54,7 @@ public class SearchAdapter extends BaseExpandableListAdapter
 		TextView searchLine;
 		TextView searchText;
 		boolean fileSelect;
+		LinearLayout mRow;
     }
 
 	@Override
@@ -106,7 +108,7 @@ public class SearchAdapter extends BaseExpandableListAdapter
         if (convertView == null) {
 			LayoutInflater inf = (LayoutInflater) context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
             convertView = inf.inflate(R.layout.result_group_item, null);
-			
+
 			groupHolder = new GroupHolder();
 			groupHolder.groupName = (TextView) convertView.findViewById(R.id.group_name);
 			groupHolder.groupPath = (TextView) convertView.findViewById(R.id.group_path);
@@ -121,7 +123,7 @@ public class SearchAdapter extends BaseExpandableListAdapter
 		groupHolder.groupPath.setText(group.getPath().getAbsolutePath());
 		final String count = Integer.toString(getChildrenCount(groupPosition));
 		groupHolder.groupButton.setText(count);
-		
+
 		groupHolder.groupButton.setOnCheckedChangeListener(
 			new CompoundButton.OnCheckedChangeListener() {
 				@Override
@@ -140,13 +142,13 @@ public class SearchAdapter extends BaseExpandableListAdapter
 				}
 			});
 		groupHolder.groupButton.setChecked(group.isSelected());
-/*
-		if(group.isSelected()) {
-			convertView.setBackgroundColor(mSelectColor);
-		} else {
-			convertView.setBackgroundColor(mBackgroundColor);
-		}
-*/
+		/*
+		 if(group.isSelected()) {
+		 convertView.setBackgroundColor(mSelectColor);
+		 } else {
+		 convertView.setBackgroundColor(mBackgroundColor);
+		 }
+		 */
         return convertView;
 	}
 
@@ -160,6 +162,7 @@ public class SearchAdapter extends BaseExpandableListAdapter
             convertView = infalInflater.inflate(R.layout.result_child_item, null);
 			childHolder = new ChildHolder();
 
+			childHolder.mRow = (LinearLayout) convertView.findViewById(R.id.layout_row);
 			childHolder.searchLine = (TextView) convertView.findViewById(R.id.child_line);
 			childHolder.searchText = (TextView) convertView.findViewById(R.id.child_text);
             convertView.setTag(childHolder);
@@ -169,6 +172,14 @@ public class SearchAdapter extends BaseExpandableListAdapter
 
         childHolder.searchLine.setText(Integer.toString(child.getLine()));
 		childHolder.searchText.setText(mUtils.highlightKeyword(child.getText(), mPattern, mFgColor , mBgColor));
+
+		if (child.isSelected()) {
+		 	childHolder.mRow.setBackgroundColor(mSelectColor);
+		} else {
+			childHolder.mRow.setBackgroundColor(mBackgroundColor);
+		}
+
+
         return convertView;
 	}
 

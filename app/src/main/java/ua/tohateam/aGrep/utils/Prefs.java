@@ -53,7 +53,7 @@ public class Prefs
 	public int mCurrentTheme = 0;
 	
 	private static final String PREF_RECENT= "recent";
-	private boolean addLineNumber=false;
+	public boolean addLineNumber=false;
 
     public ArrayList<CheckedString> mDirList = new ArrayList<CheckedString>();
     public ArrayList<CheckedString> mExtList = new ArrayList<CheckedString>();

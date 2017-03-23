@@ -60,7 +60,9 @@
 	<string name="title_highlight_bg">Highlight BG Color</string>
 	<string name="title_category_about">About</string>
 	<string name="title_application_version">Version</string>
-
+	<string name="title_add_linenumber">Send Intent with line number</string>
+	<string name="add_linenumber_summary">If you open the file by Jota+/Jota Text Editor, automatically move the line.</string>
+	
 	<string name="title_font_size">Font size</string>
 	<string name="title_remove_item">Remove item</string>
 	<string name="title_grep_spinner">Now searching…</string>

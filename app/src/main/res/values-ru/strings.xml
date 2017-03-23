@@ -57,13 +57,15 @@
 	<string name="title_highlight_bg">Цвет фона найденного текста</string>
 	<string name="title_category_about">О программе</string>
 	<string name="title_application_version">Версия</string>
-
+	<string name="title_add_linenumber">Отправлять с номером строки</string>
+	<string name="add_linenumber_summary">Автоматический переход к строке, если используется редактор Jota+/Jota Text Editor.</string>
+	
 	<string name="title_font_size">Размер шрифта</string>
 	<string name="title_remove_item">Удалить элемент</string>
 	<string name="title_grep_spinner">Now searching…</string>
 	<string name="title_replace_spinner">Now replacing…</string>
 	<string name="title_replace">Заменить</string>
-	<string name="title_actionbar">%s выделено</string>
+	<string name="title_actionbar">Выделено %s</string>
 	<string name="title_label_addext">Добавить расширение (* все)</string>
 	<string name="title_save_file">Сохранить файл</string>
 
