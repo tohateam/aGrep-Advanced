@@ -347,7 +347,8 @@ public class SearchText implements AsyncResponse
 						br = new BufferedReader(new InputStreamReader(is) , 8192);
 					}
 
-					String group = file.getName();
+					// группа по имени папки
+					String group = file.getParent().substring(file.getParent().lastIndexOf("/")+1);
 					String text;
 					int line = 0;
 					boolean found = false;

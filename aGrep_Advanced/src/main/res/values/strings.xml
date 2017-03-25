@@ -106,10 +106,14 @@
 		freely distributed projects and libraries were used:\n
 		<b>aGrep</b>:\n
 		https://github.com/jiro-aqua/aGrep\n\n
+		Library:\n
 		<b>ExFilePicker</b>:\n
-		https://github.com/bartwell/ExFilePicker
+		https://github.com/bartwell/ExFilePicker\n\n
 		<b>HSV-Alpha Color Picker for Android</b>:\n
-		https://github.com/martin-stone/hsv-alpha-color-picker-android
+		https://github.com/martin-stone/hsv-alpha-color-picker-android\n\n
+		<b>RunDo</b>:\n
+		https://github.com/PPartisan/RunDo
+		
 	</string>
 
 	<string name="about_license_title">License</string>

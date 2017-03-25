@@ -11,12 +11,26 @@
 		android:paddingLeft="10dp"
 		android:paddingRight="10dp">
 
+		<HorizontalScrollView
+			android:layout_height="wrap_content"
+			android:layout_width="match_parent"
+			android:background="@color/rowBackground">
+
+			<TextView
+				android:layout_height="wrap_content"
+				android:layout_width="match_parent"
+				android:text="Text"
+				android:layout_marginBottom="5dp"
+				android:id="@+id/text_view_path"
+				android:textAppearance="?android:attr/textAppearanceSmall"/>
+
+		</HorizontalScrollView>
+
 		<TextView
-			android:layout_height="match_parent"
+			android:layout_height="wrap_content"
 			android:layout_width="match_parent"
 			android:id="@+id/text_view_body"
 			android:layout_weight="1.0"
-			android:layout_marginLeft="10dp"
 			android:gravity="top|left"/>
 
 	</LinearLayout>

@@ -40,13 +40,14 @@ implements AsyncResponse
 
 	private ArrayAdapter<String> mRecentAdapter;
 	private TextView mTextPreview;
+	private TextView mTextPath;
 	private StringBuilder mLoadText = null;
 
 	private String mPath;
 	private String mQuery;
 	private String mReplaceQuery;
-	private String mTitle;
-	private String mSubTitle;
+//	private String mTitle;
+//	private String mSubTitle;
 
 	private int mFontSize = 14;
 
@@ -73,6 +74,8 @@ implements AsyncResponse
 		mTextPreview = (TextView) findViewById(R.id.text_view_body);
 		mTextPreview.setTextSize(mFontSize);
 		mTextPreview.setTextIsSelectable(true);
+		mTextPath = (TextView) findViewById(R.id.text_view_path);
+		
         mRecentAdapter = new ArrayAdapter <String>(mContext, 
 												   R.layout.my_spinner_item, 
 												   new ArrayList <String>());
@@ -90,10 +93,11 @@ implements AsyncResponse
 				}
 			}
 		}
-		mTitle = getString(R.string.app_edit_view) + ":";
-		mSubTitle = mPath.substring(mPath.lastIndexOf("/") + 1);
-		toolbar.setTitle(mTitle);
-		toolbar.setSubtitle(mSubTitle);
+//		mTitle = getString(R.string.app_text_view) + ":";
+//		mSubTitle = mPath.substring(mPath.lastIndexOf("/") + 1);
+		getSupportActionBar().setTitle(getString(R.string.app_text_view) + ":");
+		getSupportActionBar().setSubtitle(mPath.substring(mPath.lastIndexOf("/") + 1));
+		mTextPath.setText(mPath);
 		
 		startLoadFile(mQuery);
 	}

@@ -86,7 +86,7 @@ SearchText.SearchTextCallback
 	public void onMethodCallback() {
 		invalidateOptionsMenu();
 		int selected = mAdapter.countGroupSelected();
-		if(selected>0) {
+		if (selected > 0) {
 			toolbar.setSubtitleTextColor(getResources().getColor(R.color.colorAccent));
 			getSupportActionBar().setSubtitle(getString(R.string.title_actionbar, selected));
 		} else {
@@ -95,7 +95,7 @@ SearchText.SearchTextCallback
 		if (mActionMode != null)
 			setTitleActionBar();
 	}
-	
+
 	// Получаем результаты поиска
 	@Override
 	public void onMethodCallback(ArrayList<SearchModel> data, int idResult, boolean result) {
@@ -294,7 +294,6 @@ SearchText.SearchTextCallback
     public ArrayList<GroupModel> setListGroups(ArrayList<SearchModel> mData) {
         ArrayList<GroupModel> group_list = new ArrayList<GroupModel>();
         ArrayList<ChildModel> child_list = null;
-		String oldGroup = null;
 
         if (mData != null) {
 			// Сортируем по по группе
@@ -304,7 +303,6 @@ SearchText.SearchTextCallback
 						return p1.getGroup().compareToIgnoreCase(p2.getGroup());
 					}
 				});
-
 			// Сортируем по пути
 			Collections.sort(mData, new Comparator<SearchModel>() {
 					@Override
@@ -314,53 +312,56 @@ SearchText.SearchTextCallback
 					}
 				});
 
-
 			for (int i=0; i < mData.size();i++) {
 				GroupModel group = new GroupModel();
-				String mGroup = mData.get(i).getGroup();
-				if (!mGroup.equals(oldGroup)) {
-					group.setName(mGroup);
-					group.setPath(mData.get(i).getPath());
-					group.setSelected(false);
-					group_list.add(group);
-					oldGroup = mGroup;
+				if(mData.get(i).isSelect()) {
+					continue;
 				}
-			}
+				String title = mData.get(i).getPath().getName();
+				group.setName(title);
+				group.setPath(mData.get(i).getPath());
+				group.setSelected(false);
 
-			// Сортируем по номеру строки
-			Collections.sort(mData, new Comparator<SearchModel>() {
-					@Override
-					public int compare(SearchModel p1, SearchModel p2) {
-						Integer line1 = p1.getLine();
-						Integer line2 = p2.getLine();
-						return line1.compareTo(line2);
-					}
-				});
-
-			for (int i=0; i < group_list.size();i++) {
-				String mGroup = group_list.get(i).getName();
 				child_list = new ArrayList<ChildModel>();
 				for (int j=0; j < mData.size(); j++) {
-					ChildModel child = new ChildModel();
-					String group = mData.get(j).getGroup();
-					if (group.equals(mGroup)) {
+					if (group.getPath().toString()
+						.equals(mData.get(j).getPath().toString())
+						&& !mData.get(j).isSelect()) {
+
+						mData.get(j).setSelect(true);
+						ChildModel child = new ChildModel();
 						child.setLine(mData.get(j).getLine());
 						child.setText(mData.get(j).getName());
 						child.setSelected(false);
 						child_list.add(child);
 					}
 				}
-				group_list.get(i).setItems(child_list);
+				group.setItems(child_list);
+				group_list.add(group);
 			}
-		}
-		// Сортируем группу по имени
-		Collections.sort(group_list, new Comparator<GroupModel>() {
-				@Override
-				public int compare(GroupModel p1, GroupModel p2) {
-					return p1.getName().compareToIgnoreCase(p2.getName());
-				}
-			});
 
+
+
+			/*
+
+			 // Сортируем по номеру строки
+			 Collections.sort(mData, new Comparator<SearchModel>() {
+			 @Override
+			 public int compare(SearchModel p1, SearchModel p2) {
+			 Integer line1 = p1.getLine();
+			 Integer line2 = p2.getLine();
+			 return line1.compareTo(line2);
+			 }
+			 });
+			 */
+			// Сортируем группу по имени
+			Collections.sort(group_list, new Comparator<GroupModel>() {
+					@Override
+					public int compare(GroupModel p1, GroupModel p2) {
+						return p1.getName().compareToIgnoreCase(p2.getName());
+					}
+				});
+		}
 		return group_list;
     }
 

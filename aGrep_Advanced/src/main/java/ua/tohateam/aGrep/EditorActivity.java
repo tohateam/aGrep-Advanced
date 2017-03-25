@@ -37,7 +37,7 @@ implements RunDo.TextLink, RunDo.Callbacks
 	private int mFontSize = 14;
 
     private RunDo mRunDo;
-	private int mRundoCount = 20;
+	private int mRundoCount = 50;
 	private int mCountChanges = 0;
 
 	@Override
@@ -180,8 +180,8 @@ implements RunDo.TextLink, RunDo.Callbacks
 		if (mChanged) {
 			subTitle = subTitle + "*";
 		}
-		toolbar.setTitle(getString(R.string.app_edit_view) + ":");
-		toolbar.setSubtitle(subTitle);
+		getSupportActionBar().setTitle(getString(R.string.app_edit_view) + ":");
+		getSupportActionBar().setSubtitle(subTitle);
 
 		invalidateOptionsMenu();
 	}
@@ -217,7 +217,6 @@ implements RunDo.TextLink, RunDo.Callbacks
 		builderSingle.setNeutralButton(R.string.action_no,
 			new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int which) {
-//					EditorActivity.super.onBackPressed();
 					onExitEditor();
 				}
 			});
@@ -360,7 +359,6 @@ implements RunDo.TextLink, RunDo.Callbacks
         np.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
 				@Override
 				public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-					//Display the newly selected number from picker
 					mFontSize = newVal;
 				}
 			});
