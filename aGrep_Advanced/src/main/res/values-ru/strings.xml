@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_settings">Настройки</string>
+	<string name="app_search_result">Результаты поиска</string>
+	<string name="app_text_view">Просмотр файла</string>
+	<string name="app_edit_view">Редактирование файла</string>
+	<string name="app_about">О программе</string>
+
+	<string name="search_hint">Поиск</string>
+	<string name="msg_search_no">По Вашему запросу <b>%1$s</b> ни чего не найдено.</string>
+	<string name="msg_search_canceled">Отменено пользователем.</string>
+	<string name="title_replace_options">Заменить текст</string>
+
+	<string name="label_re">Регулярное выражение</string>
+    <string name="label_ic">Игнорировать регистр</string>
+	<string name="label_mw">Целое слово</string>
+	<string name="label_dir">Директории поиска</string>
+    <string name="label_ext">Расширения файлов</string>
+	<string name="label_hidden">Скрытые файлы</string>
+
+	<string name="msg_progress">Найдено %1$s (в %2$d файлах)</string>
+	<string name="msg_progress_replace">Заменено %1$s файлах</string>
+	<string name="msg_is_empty">Введите ключевое слово</string>
+
+	<string name="action_expand_all">Развернуть всё</string>
+	<string name="action_collapse_all">Свернуть всё</string>
+	<string name="action_replace">Заменить</string>
+	<string name="action_select">Выделить</string>
+	<string name="action_select_all">Выделить всё</string>
+	<string name="action_unselect_all">Снять выделение</string>
+	<string name="action_select_invert">Инвертировать выделение</string>
+	<string name="action_send">Отправить</string>
+	<string name="action_copy">Копировать</string>
+	<string name="action_view_save">Сохранить</string>
+	<string name="action_mode_edit">Редактор</string>
+
+	<string name="action_ok">Ok</string>
+	<string name="action_cancel">Отменить</string>
+	<string name="action_default">По умолчанию</string>
+	<string name="action_yes">Да</string>
+	<string name="action_no">Нет</string>
+	<string name="action_no_ext">Без расширения</string>
+
+	<string name="action_preference">Настройки</string>
+	<string name="action_help">Справка</string>
+	<string name="action_quit">Выход</string>
+
+	<string name="title_category_global">Общие</string>
+	<string name="title_create_backup">Резервная копия</string>
+	<string name="title_create_backup_on">Создать резерную копию файла типа "~"</string>
+	<string name="title_create_backup_off">Не создавать резервную копию</string>
+	<string name="title_search">Поиск</string>
+	<string name="title_search_hidden">Искать в скрытых файлах</string>
+	<string name="title_search_hidden_on">Поиск текста в скрытых файлах и папках</string>
+	<string name="title_search_hidden_off">Исключить из поиска скрытые файлы и папки</string>
+	<string name="title_highlight_fg">Цвет найденого текста</string>
+	<string name="title_highlight_bg">Цвет фона найденного текста</string>
+	<string name="title_category_about">О программе</string>
+	<string name="title_application_version">Версия</string>
+	<string name="title_add_linenumber">Отправлять с номером строки</string>
+	<string name="add_linenumber_summary">Автоматический переход к строке, если используется редактор Jota+/Jota Text Editor.</string>
+	<string name="title_undo_number">Количество отмен</string>
+	<string name="title_undo_number_summary">Количество отмен в текстовом редакторе</string>
+	
+	<string name="title_font_size">Размер шрифта</string>
+	<string name="title_remove_item">Удалить элемент</string>
+	<string name="title_grep_spinner">Now searching…</string>
+	<string name="title_replace_spinner">Now replacing…</string>
+	<string name="title_replace">Заменить</string>
+	<string name="title_actionbar">Выделено %s</string>
+	<string name="title_label_addext">Добавить расширение (* все)</string>
+	<string name="title_save_file">Сохранить файл</string>
+
+    <string name="msg_remove_item">%s\nВы уверены?</string>
+	<string name="msg_replace_ok">Замена <b>%1$s</b> на <b>%2$s</b> завершена.</string>
+	<string name="msg_replace">Заменить <b>%1$s</b> на:</string>
+	<string name="msg_no_replace_query">Вы не указали слово или фразу для замены.</string>
+	<string name="msg_copied">Скопировано в буфер обмена</string>
+	<string name="msg_back_pressed">Для выхода, нажмите ещё раз!</string>
+	<string name="msg_save_file">Файл %1$s изменен, сохранить изменения?</string>
+	<string name="msg_saved_file">Файл %1$s сохранён.</string>
+	<string name="msg_no_target_dir">Не указаны директории поиска.
+		\nПожайлуста, укажите директории.</string>
+	<string name="msg_no_target_ext">Не указаны расширения файлов.
+		\nПожалуйста, укажите расширения.</string>
+
+
+	
+	<string name="about_text">
+		Поиск и замена текста в файлах. \n
+		Исходный код: https://github.com/tohateam/aGrep-Advanced\n\n
+		Программа распространяется по принципу <b>\"как есть\"</b>.\n
+		Автор программы не несёт ответственности за возможный причинённый ущерб.\n\n
+		Программа создавалась для личного использования.\n
+		В связи тем, что я не являюсь программистом,\n
+		программа создана по принципу <b>\"что знаю и умею, то и сделал\"</b>.\n
+
+		Буду рад любой помощи в развитии программы.\n
+		Спасибо, за понимание.
+	</string>
+	<string name="about_library_title">Используемые библиотеки и проекты</string>
+	<string name="about_library">
+		При создании программы был частично использован код программы\n
+		<b>aGrep</b>:\n
+		https://github.com/jiro-aqua/aGrep\n\n
+		Используемые библиотеки:\n
+		<b>ExFilePicker</b>:\n
+		https://github.com/bartwell/ExFilePicker\n\n
+		<b>HSV-Alpha Color Picker for Android</b>:\n
+		https://github.com/martin-stone/hsv-alpha-color-picker-android
+	</string>
+
+	<string name="about_license_title">Лицензия</string>
+	
+</resources>

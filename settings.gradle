@@ -1,1 +1,1 @@
-include ':app', ':ExFilePicker', ':colorpicker'
+include ':aGrep_Advanced', ':ExFilePicker', ':colorpicker', ':rundo'

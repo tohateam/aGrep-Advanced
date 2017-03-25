@@ -1,0 +1,34 @@
+<menu
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto">
+	<item
+		android:id="@+id/item_view_mode"
+		android:icon="@drawable/ic_pencil"
+		android:title="@string/action_mode_edit"
+		app:showAsAction="always"/>
+	
+	<item
+		android:id="@+id/item_view_replace"
+		android:icon="@drawable/ic_rename_box"
+		android:title="@string/action_replace"
+		app:showAsAction="ifRoom"/>
+
+	<item
+        android:id="@+id/item_view_copy"
+		android:icon="@drawable/ic_content_copy"
+        android:title="@string/action_copy"
+		app:showAsAction="ifRoom"/>
+
+	<item
+		android:id="@+id/item_view_send"
+		android:icon="@drawable/ic_share_variant"
+		android:title="@string/action_send"
+		app:showAsAction="ifRoom"/>
+	
+	<item
+		android:id="@+id/item_view_font_size"
+		android:icon="@drawable/ic_format_size"
+		android:title="@string/title_font_size"
+		app:showAsAction="never"/>
+	
+</menu>

@@ -1,0 +1,30 @@
+<menu
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto">
+    
+	<item
+		android:id="@+id/item_edit_save"
+		android:icon="@drawable/ic_content_save"
+		android:title="@string/action_view_save"
+		android:enabled="false"
+		app:showAsAction="always"/>
+
+	<item
+		android:id="@+id/item_edit_undo"
+		android:icon="@drawable/ic_undo"
+		android:enabled="false"
+		app:showAsAction="always"/>
+	
+	<item
+		android:id="@+id/item_edit_redo"
+		android:icon="@drawable/ic_redo"
+		android:enabled="false"
+		app:showAsAction="always"/>
+	
+	<item
+		android:id="@+id/item_edit_font_size"
+		android:icon="@drawable/ic_format_size"
+		android:title="@string/title_font_size"
+		app:showAsAction="never"/>
+	
+</menu>
