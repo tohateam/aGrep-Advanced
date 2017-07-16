@@ -1,132 +1,189 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">aGrep Advanced</string>
-    <string name="app_settings">Settings</string>
-	<string name="app_search_result">Searching results</string>
-	
-	<string name="app_text_view">View file</string>
-	<string name="app_edit_view">Edit file</string>
-	<string name="app_about">About</string>
+    <string name="app_name" translatable="false">aGrep Advanced</string>
+    <string name="app_name_notepad" translatable="false">aGrep - Text Viewer</string>
 
-	<string name="search_hint">Search</string>
-	<string name="msg_search_no">Your search <b>%1$s</b> did not match any documents.</string>
-	<string name="msg_search_canceled">Canceled by the user.</string>
-	<string name="title_replace_options">Text replacement</string>
+    <string name="app_text_view">View file</string>
+    <string name="app_search_result">Searching results</string>
+    <string name="app_edit_history">Manage history</string>
+    <string name="app_about">About</string>
 
-	<string name="label_dir">Target Directories</string>
-    <string name="label_ext">Target Extensions</string>
-	<string name="label_re">Regular Expression</string>
-    <string name="label_ic">Ignore Case</string>
-	<string name="label_mw">Match word</string>
-	<string name="label_hidden">Hidden files</string>
-	
-	<string name="msg_progress">Found %1$s (in %2$d files)</string>
-	<string name="msg_progress_replace">Replaced in %1$s files</string>
-	<string name="msg_is_empty">Enter the keyword(s)</string>
 
-	<string name="action_expand_all">Expand all</string>
-	<string name="action_collapse_all">Collapse all</string>
-	<string name="action_replace">Replece</string>
-	<string name="action_select">Select</string>
-	<string name="action_select_all">Select all</string>
-	<string name="action_unselect_all">Unselect all</string>
-	<string name="action_select_invert">Invert selection</string>
-	<string name="action_send">Send</string>
-	<string name="action_copy">Copy</string>
-	<string name="action_view_save">Save</string>
-	<string name="action_mode_edit">Editor</string>
-	
-	<string name="action_ok">Ok</string>
-	<string name="action_cancel">Cancel</string>
-	<string name="action_default">Default</string>
-	<string name="action_yes">Yes</string>
-	<string name="action_no">No</string>
-	<string name="action_no_ext">No Extension</string>
-	
-	<string name="action_preference">Preferences</string>
-	<string name="action_help">Help</string>
-	<string name="action_quit">Quit</string>
-	
-	<string name="title_category_global">Global</string>
-	<string name="title_create_backup">Create backup</string>
-	<string name="title_create_backup_on">Create backup file type "~"</string>
-	<string name="title_create_backup_off">Do not create a backup copy</string>
-	<string name="title_search">Search</string>
-	<string name="title_search_hidden">Search in hidden files</string>
-	<string name="title_search_hidden_on">Search for text in hidden files and folders</string>
-	<string name="title_search_hidden_off">Exclude from Search hidden files and folders</string>
-	<string name="title_highlight_fg">Highlight Text Color</string>
-	<string name="title_highlight_bg">Highlight BG Color</string>
-	<string name="title_category_about">About</string>
-	<string name="title_application_version">Version</string>
-	<string name="title_add_linenumber">Send Intent with line number</string>
-	<string name="add_linenumber_summary">If you open the file by Jota+/Jota Text Editor, automatically move the line.</string>
-	<string name="title_undo_number">Number of cancellations</string>
-	<string name="title_undo_number_summary">Number of cancellations in a text editor</string>
-	
-	<string name="title_font_size">Font size</string>
-	<string name="title_remove_item">Remove item</string>
-	<string name="title_grep_spinner">Now searching…</string>
-	<string name="title_replace_spinner">Now replacing…</string>
-	<string name="title_replace">Replace</string>
-	<string name="title_actionbar">%s selected</string>
-	<string name="title_label_addext">Add Extension (* all)</string>
-	<string name="title_save_file">Save file</string>
-	
+    <!--===== ACTIONS =====-->
+
+    <string name="action_replace">Replece</string>
+    <string name="action_file">File</string>
+    <string name="action_open">Open</string>
+    <string name="action_save">Save</string>
+    <string name="action_save_as">Save As…</string>
+
+    <string name="action_search">Search</string>
+    <string name="action_send">Send</string>
+    <string name="action_copy">Copy</string>
+    <string name="action_information">Properties</string>
+    <string name="action_font_size">Font Size</string>
+    <string name="action_select_all">Select all</string>
+    <string name="action_unselect_all">Unselect all</string>
+    <string name="action_select_invert">Invert selection</string>
+    <string name="action_delete">Delete</string>
+    <string name="action_default">Default</string>
+    <string name="action_ok">OK</string>
+    <string name="action_cancel">Cancel</string>
+    <string name="action_yes">Yes</string>
+    <string name="action_no">No</string>
+    <string name="action_no_ext">No Extension</string>
+
+    <string name="action_expand_all">Expand all</string>
+    <string name="action_collapse_all">Collapse all</string>
+    <string name="action_rename">Rename</string>
+
+    <string name="action_goto_line">Go to line</string>
+
+    <string name="action_add_expression">Add Expression</string>
+    <string name="action_add_folder">Add Folders</string>
+
+    <!--MAIN MENU-->
+    <string name="action_edit_history">Manage history</string>
+    <string name="action_preference">Preferences</string>
+    <string name="action_about">About</string>
+    <string name="action_quit">Quit</string>
+
+
+    <!--===== MAIN ACTIVITY =====-->
+
     <string name="msg_remove_item">%s\nAre you sure?</string>
-	<string name="msg_replace_ok">The replacement of <b>%1$s</b> with <b>%2$s</b> is complete.</string>
-	<string name="msg_replace">Replace <b>%1$s</b> on:</string>
-	<string name="msg_no_replace_query">You did not specify a word or phrase to replace.</string>
-	<string name="msg_copied">Copied to clipboard</string>
-	<string name="msg_back_pressed">Press once again to exit!</string>
-	<string name="msg_save_file">The file %1$s is changed, save the changes?</string>
-	<string name="msg_saved_file">The file %1$s is saved</string>
-	<string name="msg_no_target_dir">There is no target directory.
-		\nPlease set target directory.</string>
-	<string name="msg_no_target_ext">No file extensions are specified.
-		\nPlease specify extensions.</string>
+    <string name="msg_no_target_dir">There is no target directory.\nPlease set target directory.</string>
+    <string name="msg_no_target_ext">No file extensions are specified.\nPlease specify extensions.</string>
+    <string name="title_label_addext">Add Extension (* all)</string>
+    <string name="msg_back_pressed">Press once again to exit!</string>
 
 
-	<string name="about_text">
-		Search and replace in text files. \n
-		Site: https://github.com/tohateam/aGrep-Advanced\n\n
-		The program is distributed <b>\"as is\"</b>. \n
-		The author is not responsible for lost or corrupted files.\n
-		The program was created for personal use, and since I am not a programmer, \n
-		the program code is written on the principle that <b>\"I know and I can do it\"</b>.\n
-		I will be glad to any help in improving the program. \n
-		Thank you.
-	</string>
-	
-	<string name="about_library_title">Used libraries and projects</string>
-	
-	<string name="about_library">
-		When creating the program, \n
-		freely distributed projects and libraries were used:\n
-		<b>aGrep</b>:\n
-		https://github.com/jiro-aqua/aGrep\n\n
-		Library:\n
-		<b>ExFilePicker</b>:\n
-		https://github.com/bartwell/ExFilePicker\n\n
-		<b>HSV-Alpha Color Picker for Android</b>:\n
-		https://github.com/martin-stone/hsv-alpha-color-picker-android\n\n
-		<b>RunDo</b>:\n
-		https://github.com/PPartisan/RunDo
-		
-	</string>
+    <!--===== SEARCH =====-->
 
-	<string name="about_license_title">License</string>
-	<string name="about_google_license">
-		Copyright (C) 2005-2015 The Android Open Source Project
-		\n\nLicensed under the Apache License, Version 2.0 (the "License");
-		\nyou may not use this file except in compliance with the License.
-		\nYou may obtain a copy of the License at\n\nhttp://www.apache.org/licenses/LICENSE-2.0
-		\n\nUnless required by applicable law or agreed to in writing, 
-		\nsoftware distributed under the License is distributed on an "AS IS" BASIS, 
-		\nWITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
-		\nSee the License for the specific language governing permissions
-		\nand limitations under the License.
-	</string>
-	
-	</resources>
+    <string name="title_actionbar">%d selected</string>
+
+    <string name="title_search_options">Search Options</string>
+
+    <string name="title_replace_options">Replacement Options</string>
+    <string name="title_replace_spinner">Now replacing…</string>
+    <string name="replace_hint">Replace…</string>
+
+    <string name="title_grep_spinner">Now searching…</string>
+    <string name="search_hint">Search…</string>
+
+    <string name="label_dir">Target Directories</string>
+    <string name="label_ext">Target Extensions</string>
+    <string name="label_re">Regular Expression</string>
+    <string name="label_ic">Ignore Case</string>
+    <string name="label_mw">Match word</string>
+    <string name="label_hidden">Hidden files</string>
+
+    <string name="msg_search_ok">Search completed</string>
+    <string name="msg_search_canceled">Canceled by the user.</string>
+    <string name="msg_search_no">Your search %1$s did not match any documents.</string>
+    <string name="msg_progress">Found %1$s (in %2$d files)</string>
+
+    <string name="msg_replace_comlplete">Replacement completed</string>
+    <string name="msg_replace">Replace %1$s on:</string>
+    <string name="msg_no_replace_query">You did not specify a word or phrase to replace.</string>
+    <string name="msg_progress_replace">Replaced in %1$s files</string>
+
+    <string name="msg_is_empty">Enter the keyword(s)</string>
+    <string name="toast_syntax_error">Syntax error.</string>
+    <string name="spinner_message">Wait a while…</string>
+
+
+    <!--===== VIEWER =====-->
+
+    <string name="title_search_cab">Search : %1$s (%2$d)</string>
+    <string name="title_save_file">Save file</string>
+    <string name="title_save_file_as">Save file as</string>
+    <string name="title_please_wait">Please wait…</string>
+    <string name="title_font_size">Font Size</string>
+    <string name="title_encoding">Encodings</string>
+    <string name="title_delimiters">Delimiters</string>
+    <string name="title_goto_line">Go to line</string>
+
+    <string name="hint_line_number">Enter the line number</string>
+
+    <string name="result_word_count">
+        <b>Name:</b> %5$s\n
+        <b>Path:</b> %6$s\n
+        <b>Encoding/Delimiter:</b> %7$s\n
+        <b>Characters:</b> %1$d\n
+        <b>Lines:</b> %2$d\n
+        <b>Logical Lines:</b> %3$d\n
+        <b>Words:</b> %4$d
+    </string>
+
+    <string name="msg_copied">Copied to clipboard</string>
+    <string name="msg_error_line">You did not specify a line number</string>
+    <string name="msg_search_no_macth">No matches found.</string>
+
+    <string name="msg_save_file">The file:\n%s\nis changed, save the changes?</string>
+    <string name="msg_file_written">File Written</string>
+    <string name="msg_can_not_write_file">Can not write file</string>
+    <string name="msg_file_exists">File %s exists, replace it?</string>
+
+    <string name="msg_progress_load">Reading file %s</string>
+    <string name="msg_file_opened">File opened:\n%s</string>
+    <string name="msg_file_not_found">File not found</string>
+    <string name="msg_can_not_read_file">Can not read file</string>
+    <string name="msg_file_isempty">File is empty</string>
+
+
+    <!--===== EDIT HISTORY =====-->
+
+    <string name="title_remove_item">Remove item</string>
+    <string name="subtitle_edit_history">Long press to select</string>
+    <string name="msg_remove_item_recent">Remove %d item(s)\nAre you sure?</string>
+
+
+    <!--SETTINGS-->
+
+    <string name="title_activity_settings">aGrep Settings</string>
+
+    <!--Основные настройки-->
+    <string name="pref_header_general">General</string>
+
+    <string name="pref_title_create_backup">Create backup</string>
+    <string name="pref_create_backup_summary_on">Create backup file type "~"</string>
+    <string name="pref_create_backup_summary_off">Do not create a backup copy</string>
+
+    <string name="pref_title_show_toast">Pop-up notifications</string>
+    <string name="pref_show_toast_summary_on">Show pop-up notifications</string>
+    <string name="pref_show_toast_summary_off">Do not show pop-up notifications</string>
+
+    <string name="pref_title_application_theme">Theme</string>
+    <string name="pref_title_category_about">About</string>
+    <string name="pref_title_application_version">Version</string>
+
+    <string name="title_add_linenumber">Send Intent with line number</string>
+    <string name="add_linenumber_summary">If you open the file by Jota+/Jota Text Editor, automatically move the line.</string>
+
+
+    <!--Настройки поиска-->
+    <string name="pref_header_search">Search Setting</string>
+    <string name="pref_title_category_search">Search Settings</string>
+
+    <string name="pref_title_search_hidden">Search in hidden files</string>
+    <string name="pref_search_hidden_summary_on">Search for text in hidden files and folders</string>
+    <string name="pref_search_hidden_summary_off">Exclude from Search hidden files and folders</string>
+
+    <string name="pref_title_recent_number">Number of items in history</string>
+    <string name="pref_recent_number_summary">Number of items in your search history</string>
+
+    <string name="pref_title_category_color">Highlighting found words</string>
+    <string name="pref_title_highlight_foreground">Text Color</string>
+    <string name="pref_title_highlight_background">Background Color</string>
+    <string name="pref_title_highlight_selected">Current Word</string>
+
+
+    <!--Настройки редактора-->
+    <string name="pref_header_viewer">Viewer Setting</string>
+    <string name="pref_title_color_line_number">Color Line Number</string>
+    <string name="pref_title_font_size">Font Size</string>
+
+
+</resources>

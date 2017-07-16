@@ -1,26 +1,26 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-	<item
-		android:id="@+id/item_replace_group"
-		android:icon="@drawable/ic_rename_box"
-		android:title="@string/action_replace"/>
+    <item
+        android:id="@+id/item_replace_group"
+        android:icon="@drawable/ic_rename_box"
+        android:title="@string/action_replace" />
 
-	<item
-		android:id="@+id/item_send"
-		android:icon="@drawable/ic_share_variant"
-		android:title="@string/action_send"/>
+    <item
+        android:id="@+id/item_send"
+        android:icon="@drawable/ic_share_variant"
+        android:title="@string/action_send" />
 
-	<item
-		android:id="@+id/item_select_all"
-		android:icon="@drawable/ic_select_all"
-		android:title="@string/action_select_all"/>
-	<item
-		android:id="@+id/item_unselect_all"
-		android:icon="@drawable/ic_select_off"
-		android:title="@string/action_unselect_all"/>
-	<item
-		android:id="@+id/item_select_invert"
-		android:icon="@drawable/ic_select_inverse"
-		android:title="@string/action_select_invert"/>
-	
+    <item
+        android:id="@+id/item_select_all"
+        android:icon="@drawable/ic_select_all"
+        android:title="@string/action_select_all" />
+    <item
+        android:id="@+id/item_unselect_all"
+        android:icon="@drawable/ic_select_off"
+        android:title="@string/action_unselect_all" />
+    <item
+        android:id="@+id/item_select_invert"
+        android:icon="@drawable/ic_select_inverse"
+        android:title="@string/action_select_invert" />
+
 </menu>

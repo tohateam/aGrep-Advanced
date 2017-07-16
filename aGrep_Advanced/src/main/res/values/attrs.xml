@@ -1,9 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<!--SeekBarPreference-->
-	<declare-styleable name="ua.tohateam.aGrep.views.SeekBarPreference">
-		<attr name="minValue" format="integer" />
-		<attr name="maxValue" format="integer" />
-	</declare-styleable>
-	
+    <!--SeekBarPreference-->
+    <declare-styleable name="ua.tohateam.aGrep.views.SeekBarPreference">
+        <attr name="minValue" format="integer" />
+        <attr name="maxValue" format="integer" />
+    </declare-styleable>
+
+    <!--Text view with line number-->
+    <declare-styleable name="TextViewLines">
+        <attr name="number_line_color" format="color" />
+        <attr name="number_text_color" format="color" />
+    </declare-styleable>
+
+    <attr name="attr_highlight_background" format="reference" />
+    <attr name="attr_highlight_foreground" format="reference" />
+    <attr name="attr_highlight_selected" format="reference" />
+
+    <attr name="attr_text_color" format="color" />
+    <attr name="attr_background_color" format="color" />
+    <attr name="attr_card_style" format="reference" />
+    <attr name="attr_toolbar_title_color" format="color" />
+    <attr name="attr_color_line_number" format="color" />
+
 </resources>

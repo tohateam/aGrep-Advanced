@@ -1,33 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
-	<!-- Application theme. -->
-	<style name="AppTheme" parent="AppTheme.Base">
-		<!-- All customizations that are NOT specific to a particular API-level can go here. -->
-	</style>
 
-	<style name="AppTheme.Base" parent="Theme.AppCompat.NoActionBar">
+    <!-- Application theme. -->
+    <style name="AppTheme" parent="ThemeGreenDark">
+        <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+    </style>
 
-		<item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-		<item name="colorPrimary">@color/colorPrimary</item>
-		<item name="colorAccent">@color/colorAccent</item>
+    <style name="ThemeGreenDark" parent="Theme.AppCompat.NoActionBar">
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
 
-		<item name="android:textColorPrimary">@color/textColorPrimary</item>
-		<item name="android:textColorSecondary">@color/textColorSecondary</item>
+        <item name="android:textColorPrimary">@color/textColorPrimaryDark</item>
+        <item name="android:textColorSecondary">@color/textColorSecondaryDark</item>
+        <item name="colorControlNormal">@color/colorControlNormalDark</item>
 
-		<item name="colorControlNormal">@color/colorControlNormal</item>
-		<item name="colorControlActivated">@color/colorControlActivated</item>
-		<item name="colorControlHighlight">@color/colorControlHighlight</item>
 
-		<item name="android:windowNoTitle">true</item>
-		<item name="windowActionBar">false</item>  <!-- For 2.x version  -->
+        <item name="windowActionModeOverlay">true</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>  <!-- For 2.x version  -->
 
-		<item name="alertDialogTheme">@style/AppCompatAlertDialogStyle</item>
+        <item name="colorControlActivated">@color/colorControlActivated</item>
+        <item name="colorControlHighlight">@color/colorControlHighlight</item>
 
-		<item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
-		
-		<item name="windowActionModeOverlay">true</item>
+        <item name="alertDialogTheme">@style/AlertDialogDarkStyle</item>
+        <item name="attr_card_style">@style/CardViewStyleDark</item>
+        <item name="attr_text_color">@color/textColorPrimaryDark</item>
+        <item name="attr_background_color">@color/rowBackgroundDark</item>
 
-	</style>
+        <item name="attr_highlight_background">@color/selectBackground</item>
+        <item name="attr_highlight_foreground">@color/selectForeground</item>
+        <item name="attr_highlight_selected">@color/selectCurrent</item>
+        <item name="attr_color_line_number">@color/colorAccent</item>
+
+    </style>
+
+    <style name="ThemeGreenLight" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
+
+        <item name="android:textColorPrimary">@color/textColorPrimaryLight</item>
+        <item name="android:textColorSecondary">@color/textColorSecondaryLight</item>
+        <item name="colorControlNormal">@color/colorControlNormalLight</item>
+
+        <item name="attr_text_color">@color/textColorPrimaryLight</item>
+        <item name="attr_background_color">@color/rowBackgroundLight</item>
+
+        <item name="attr_highlight_background">@color/selectBackground</item>
+        <item name="attr_highlight_foreground">@color/selectForeground</item>
+        <item name="attr_highlight_selected">@color/selectCurrent</item>
+
+        <item name="windowActionModeOverlay">true</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>  <!-- For 2.x version  -->
+
+        <item name="colorControlActivated">@color/colorControlActivated</item>
+        <item name="colorControlHighlight">@color/colorControlHighlight</item>
+
+        <item name="alertDialogTheme">@style/AlertDialogLightStyle</item>
+        <item name="attr_card_style">@style/CardViewStyleLight</item>
+        <item name="attr_color_line_number">@color/colorAccent</item>
+
+    </style>
 
 </resources>
 

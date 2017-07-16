@@ -1,21 +1,20 @@
-<menu
-	xmlns:android="http://schemas.android.com/apk/res/android"
-	xmlns:app="http://schemas.android.com/apk/res-auto">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-	<item
-		android:id="@+id/item_expand_all"
-		android:icon="@drawable/ic_unfold_more"
-		android:title="@string/action_expand_all"
-		app:showAsAction="always"/>
-   	<item
-		android:id="@+id/item_collapse_all"
-		android:icon="@drawable/ic_unfold_less"
-		android:title="@string/action_collapse_all"
-		app:showAsAction="always"/>
+    <item
+        android:id="@+id/item_expand_all"
+        android:icon="@drawable/ic_unfold_more"
+        android:title="@string/action_expand_all"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/item_collapse_all"
+        android:icon="@drawable/ic_unfold_less"
+        android:title="@string/action_collapse_all"
+        app:showAsAction="always" />
 
-	<item
-		android:id="@+id/item_replace"
-		android:icon="@drawable/ic_rename_box"
-		android:title="@string/action_replace"
-		app:showAsAction="ifRoom"/>
+    <item
+        android:id="@+id/item_replace"
+        android:icon="@drawable/ic_rename_box"
+        android:title="@string/action_replace"
+        app:showAsAction="ifRoom" />
 </menu>

@@ -1,1 +1,1 @@
-include ':aGrep_Advanced', ':ExFilePicker', ':colorpicker', ':rundo'
+include ':aGrep_Advanced', ':ExFilePicker', ':colorpicker', ':LineNumber'

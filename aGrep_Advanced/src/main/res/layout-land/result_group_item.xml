@@ -1,69 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-	xmlns:android="http://schemas.android.com/apk/res/android"
-	xmlns:card_view="http://schemas.android.com/apk/res-auto"
-	android:layout_width="match_parent"
-	android:layout_height="match_parent"
-	android:orientation="vertical"
-	android:focusable="false"
-	android:background="@android:color/transparent">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/transparent"
+    android:focusable="false"
+    android:orientation="vertical">
 
-	<android.support.v7.widget.CardView
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		card_view:cardUseCompatPadding="true"
-		card_view:cardElevation="2dp"
-		card_view:cardCornerRadius="4dp"
-		card_view:contentPadding="16dp"
-		card_view:cardBackgroundColor="@color/rowBackground">
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="?attr/attr_card_style"
+        card_view:cardUseCompatPadding="true"
+        card_view:contentPadding="16dp">
 
-		<LinearLayout
-			android:layout_height="wrap_content"
-			android:layout_width="match_parent"
-			android:orientation="horizontal"
-			android:layout_weight="1.0"
-			android:paddingLeft="32dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.0"
+            android:orientation="horizontal"
+            android:paddingLeft="32dp">
 
-			<LinearLayout
-				android:layout_height="wrap_content"
-				android:layout_width="match_parent"
-				android:orientation="vertical"
-				android:layout_weight="1.0">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.0"
+                android:orientation="vertical">
 
-				<TextView
-					android:id="@+id/group_name"
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:focusable="false"
-					android:textAllCaps="true"/>
+                <TextView
+                    android:id="@+id/group_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:focusable="false"
+                    android:textAllCaps="true" />
 
-				<TextView
-					android:layout_height="wrap_content"
-					android:layout_width="match_parent"
-					android:id="@+id/group_path"
-					android:focusable="false"/>
+                <TextView
+                    android:id="@+id/group_path"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:focusable="false" />
 
-			</LinearLayout>
+            </LinearLayout>
 
-			<LinearLayout
-				android:layout_height="wrap_content"
-				android:layout_width="wrap_content"
-				android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-				<CheckBox
-					android:focusable="false"
-					android:layout_height="wrap_content"
-					android:layout_width="wrap_content"
-					android:text="0"
-					android:layout_marginLeft="10dp"
-					android:id="@+id/cb_group_select"
-					android:minEms="5"/>
+                <CheckBox
+                    android:id="@+id/cb_group_select"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:focusable="false"
+                    android:minEms="5"
+                    android:text="0" />
 
-			</LinearLayout>
+            </LinearLayout>
 
-		</LinearLayout>
+        </LinearLayout>
 
-	</android.support.v7.widget.CardView>
+    </android.support.v7.widget.CardView>
 
 </LinearLayout>
 

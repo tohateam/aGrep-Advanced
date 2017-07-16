@@ -1,43 +1,47 @@
-<menu
-	xmlns:android="http://schemas.android.com/apk/res/android"
-	xmlns:app="http://schemas.android.com/apk/res-auto">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-	<item
-		android:id="@+id/item_add_ext"
-		android:icon="@drawable/ic_library_plus"
-		android:title="@string/action_expand_all"
-		app:showAsAction="always"/>
-	<item
-		android:id="@+id/item_add_dir"
-		android:icon="@drawable/ic_folder_plus"
-		android:title="@string/action_expand_all"
-		app:showAsAction="always"/>
-	
-	<item
-		android:id="@+id/action_preference"
-		android:icon="@drawable/ic_cog"
-		android:title="@string/action_preference"
-		android:enabled="true">
-	</item>
-	
-	<!--<item
-		android:id="@+id/help_menu"
-		android:icon="@drawable/ic_help_circle"
-		android:title="@string/action_help"
-		android:enabled="true"/>-->
+    <item
+        android:id="@+id/item_add_ext"
+        android:icon="@drawable/ic_library_plus"
+        android:title="@string/action_add_expression"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/item_add_dir"
+        android:icon="@drawable/ic_folder_plus"
+        android:title="@string/action_add_folder"
+        app:showAsAction="ifRoom" />
 
-	
-	<item
-		android:id="@+id/action_about"
-		android:icon="@drawable/ic_information"
-		android:title="@string/app_about"
-		android:enabled="true">
-	</item>
-	
-	<item
-		android:id="@+id/item_exit"
-		android:icon="@drawable/ic_exit_to_app"
-		android:title="@string/action_quit"
-		android:enabled="true">
-	</item>	
+    <item
+        android:id="@+id/item_open_file"
+        android:icon="@drawable/ic_folder"
+        android:title="@string/action_open"
+        app:showAsAction="ifRoom" />
+
+
+    <item
+        android:id="@+id/item_edit_history"
+        android:icon="@drawable/ic_history"
+        android:title="@string/action_edit_history"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_preference"
+        android:icon="@drawable/ic_cog"
+        android:title="@string/action_preference"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_about"
+        android:enabled="true"
+        android:icon="@drawable/ic_information"
+        android:title="@string/action_about"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/item_exit"
+        android:enabled="true"
+        android:icon="@drawable/ic_exit_to_app"
+        android:title="@string/action_quit"
+        app:showAsAction="never" />
 </menu>

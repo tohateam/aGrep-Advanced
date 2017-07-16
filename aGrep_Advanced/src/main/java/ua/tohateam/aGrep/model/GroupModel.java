@@ -1,30 +1,47 @@
 package ua.tohateam.aGrep.model;
 
-import java.io.*;
-import java.util.*;
+import java.io.File;
+import java.util.ArrayList;
 
-public class GroupModel
-{
-	private String Name;
-	private ArrayList<ChildModel> Items;
-	private File path;
-	private boolean selected;
+public class GroupModel {
+    private String Name;
+    private ArrayList<ChildModel> Items;
+    private File path;
+    private boolean selected;
+    private String encoding;
+    private String delimiter;
 
-	public void setSelected(boolean selected) {
-		this.selected = selected;
-	}
+    public String getEncoding() {
+        return encoding;
+    }
 
-	public boolean isSelected() {
-		return selected;
-	}
+    public void setEncoding(String encoding) {
+        this.encoding = encoding;
+    }
 
-	public void setPath(File path) {
-		this.path = path;
-	}
+    public String getDelimiter() {
+        return delimiter;
+    }
 
-	public File getPath() {
-		return path;
-	}
+    public void setDelimiter(String delimiter) {
+        this.delimiter = delimiter;
+    }
+
+    public boolean isSelected() {
+        return selected;
+    }
+
+    public void setSelected(boolean selected) {
+        this.selected = selected;
+    }
+
+    public File getPath() {
+        return path;
+    }
+
+    public void setPath(File path) {
+        this.path = path;
+    }
 
     public String getName() {
         return Name;

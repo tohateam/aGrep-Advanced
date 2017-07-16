@@ -1,34 +1,86 @@
-<menu
-	xmlns:android="http://schemas.android.com/apk/res/android"
-	xmlns:app="http://schemas.android.com/apk/res-auto">
-	<item
-		android:id="@+id/item_view_mode"
-		android:icon="@drawable/ic_pencil"
-		android:title="@string/action_mode_edit"
-		app:showAsAction="always"/>
-	
-	<item
-		android:id="@+id/item_view_replace"
-		android:icon="@drawable/ic_rename_box"
-		android:title="@string/action_replace"
-		app:showAsAction="ifRoom"/>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-	<item
+    <!--<group
+    android:id="@+id/item_group_editor"
+    android:checkableBehavior="none"
+    android:visible="false">
+    <item
+    android:id="@+id/item_notepad_undo"
+    android:icon="@drawable/ic_undo"
+    app:showAsAction="always"/>
+    <item
+    android:id="@+id/item_notepad_redo"
+    android:icon="@drawable/ic_redo"
+    app:showAsAction="always"/>
+    </group>-->
+
+    <item
+        android:icon="@drawable/ic_folder"
+        android:title="@string/action_file"
+        app:showAsAction="ifRoom">
+        <menu>
+            <item
+                android:id="@+id/item_notepad_open"
+                android:icon="@drawable/ic_folder"
+                android:title="@string/action_open"
+                app:showAsAction="ifRoom" />
+
+            <item
+                android:id="@+id/item_notepad_save"
+                android:enabled="false"
+                android:icon="@drawable/ic_content_save"
+                android:title="@string/action_save"
+                app:showAsAction="ifRoom" />
+
+            <item
+                android:id="@+id/item_notepad_save_as"
+                android:icon="@drawable/ic_content_save"
+                android:title="@string/action_save_as"
+                app:showAsAction="ifRoom" />
+        </menu>
+    </item>
+
+    <item
+        android:id="@+id/item_notepad_search"
+        android:icon="@drawable/ic_magnify"
+        android:title="@string/action_search"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/item_notepad_goto"
+        android:icon="@drawable/ic_pound_box"
+        android:title="@string/action_goto_line"
+        app:showAsAction="always" />
+
+    <!--<item android:id="@+id/item_search"
+    android:title="@string/search_hint"
+    android:icon="@drawable/ic_magnify"
+    app:showAsAction="collapseActionView|always"
+    app:actionViewClass="android.support.v7.widget.SearchView"/>-->
+
+    <item
         android:id="@+id/item_view_copy"
-		android:icon="@drawable/ic_content_copy"
+        android:icon="@drawable/ic_content_copy"
         android:title="@string/action_copy"
-		app:showAsAction="ifRoom"/>
+        app:showAsAction="never" />
 
-	<item
-		android:id="@+id/item_view_send"
-		android:icon="@drawable/ic_share_variant"
-		android:title="@string/action_send"
-		app:showAsAction="ifRoom"/>
-	
-	<item
-		android:id="@+id/item_view_font_size"
-		android:icon="@drawable/ic_format_size"
-		android:title="@string/title_font_size"
-		app:showAsAction="never"/>
-	
+    <item
+        android:id="@+id/item_view_send"
+        android:icon="@drawable/ic_share_variant"
+        android:title="@string/action_send"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/item_view_info"
+        android:icon="@drawable/ic_information"
+        android:title="@string/action_information"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/item_view_font_size"
+        android:icon="@drawable/ic_format_size"
+        android:title="@string/action_font_size"
+        app:showAsAction="never" />
+
 </menu>

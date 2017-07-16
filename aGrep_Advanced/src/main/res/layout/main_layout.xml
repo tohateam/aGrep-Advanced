@@ -1,254 +1,242 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-	xmlns:android="http://schemas.android.com/apk/res/android"
-	xmlns:card_view="http://schemas.android.com/apk/res-auto"
-	android:layout_width="fill_parent"
-	android:layout_height="fill_parent"
-	android:orientation="vertical"
-	android:padding="5dp">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:padding="5dp">
 
-	<android.support.v7.widget.CardView
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		card_view:cardUseCompatPadding="true"
-		card_view:cardElevation="2dp"
-		card_view:cardCornerRadius="4dp"
-		card_view:contentPadding="16dp"
-		card_view:cardBackgroundColor="@color/rowBackground">
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="?attr/attr_card_style"
+        card_view:cardUseCompatPadding="true"
+        card_view:contentPadding="16dp">
 
-		<LinearLayout
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-			<LinearLayout
-				android:layout_height="wrap_content"
-				android:layout_width="match_parent"
-				android:orientation="horizontal">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
-				<ImageButton
-					style="?android:attr/buttonBarButtonStyle"
-					android:layout_height="wrap_content"
-					android:layout_width="wrap_content"
-					android:src="@drawable/ic_history"
-					android:id="@+id/btn_history_search"/>
+                <ImageButton
+                    android:id="@+id/btn_history_search"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_history" />
 
-				<android.support.design.widget.TextInputLayout
-					android:id="@+id/title_query_input"
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:layout_weight="1.0"
-					card_view:hintTextAppearance="?android:attr/textAppearanceMedium"
-					card_view:errorEnabled="true">
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.0"
+                    card_view:errorEnabled="true"
+                    card_view:hintTextAppearance="?android:attr/textAppearanceMedium">
 
-					<AutoCompleteTextView
-						android:id="@+id/query_input"
-						android:layout_width="match_parent"
-						android:capitalize="none"
-						android:layout_height="wrap_content"
-						android:singleLine="true"
-						android:textAppearance="?android:attr/textAppearanceMedium"
-						android:hint="@string/search_hint"
-						android:completionThreshold="2"
-						android:imeOptions="flagNoExtractUi|actionSearch"/>
+                    <AutoCompleteTextView
+                        android:id="@+id/query_input"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:completionThreshold="2"
+                        android:hint="@string/search_hint"
+                        android:imeOptions="flagNoExtractUi|actionSearch"
+                        android:textAppearance="?android:attr/textAppearanceMedium" />
 
-				</android.support.design.widget.TextInputLayout>
+                </android.support.design.widget.TextInputLayout>
 
-				<ImageButton
-					style="?android:attr/buttonBarButtonStyle"
-					android:layout_height="wrap_content"
-					android:layout_width="wrap_content"
-					android:src="@drawable/ic_close"
-					android:id="@+id/btn_clear_search"/>
+                <ImageButton
+                    android:id="@+id/btn_clear_search"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_close" />
 
-				<ImageButton
-					style="?android:attr/buttonBarButtonStyle"
-					android:layout_height="wrap_content"
-					android:layout_width="wrap_content"
-					android:src="@drawable/ic_magnify"
-					android:id="@+id/btn_search"
-					android:layout_marginLeft="5dp"/>
+                <ImageButton
+                    android:id="@+id/btn_search"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:src="@drawable/ic_magnify" />
 
-			</LinearLayout>
+            </LinearLayout>
 
-			<LinearLayout
-				android:layout_height="wrap_content"
-				android:layout_width="match_parent"
-				android:orientation="horizontal"
-				android:gravity="center_horizontal"
-				android:id="@+id/search_text_options">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal">
 
-				<CheckBox
-					android:layout_height="match_parent"
-					android:layout_width="wrap_content"
-					android:text="@string/label_ic"
-					android:id="@+id/cb_ic"
-					android:layout_weight="1.0"/>
+                <CheckBox
+                    android:id="@+id/cb_ic"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1.0"
+                    android:text="@string/label_ic" />
 
-				<CheckBox
-					android:layout_height="match_parent"
-					android:layout_width="wrap_content"
-					android:text="@string/label_re"
-					android:id="@+id/cb_re"
-					android:layout_marginLeft="10dp"
-					android:layout_weight="1.0"/>
+                <CheckBox
+                    android:id="@+id/cb_re"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="1.0"
+                    android:text="@string/label_re" />
 
-			</LinearLayout>
+            </LinearLayout>
 
-			<LinearLayout
-				android:layout_height="wrap_content"
-				android:layout_width="match_parent"
-				android:orientation="horizontal"
-				android:gravity="center_horizontal"
-				android:id="@+id/search_text_options">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal">
 
-				<CheckBox
-					android:layout_height="match_parent"
-					android:layout_width="wrap_content"
-					android:id="@+id/cb_mw"
-					android:text="@string/label_mw"
-					android:layout_marginLeft="10dp"
-					android:layout_weight="1.0"/>
+                <CheckBox
+                    android:id="@+id/cb_mw"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="1.0"
+                    android:text="@string/label_mw" />
 
-				<CheckBox
-					android:layout_height="match_parent"
-					android:layout_width="wrap_content"
-					android:id="@+id/cb_hidden"
-					android:text="@string/label_hidden"
-					android:layout_marginLeft="10dp"
-					android:layout_weight="1.0"/>
+                <CheckBox
+                    android:id="@+id/cb_hidden"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="1.0"
+                    android:text="@string/label_hidden" />
 
-			</LinearLayout>
+            </LinearLayout>
 
-		</LinearLayout>
+        </LinearLayout>
 
-	</android.support.v7.widget.CardView>
+    </android.support.v7.widget.CardView>
 
-	<ScrollView
-		android:layout_height="wrap_content"
-		android:layout_width="match_parent"
-		android:layout_weight="1.0">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1.0">
 
-		<LinearLayout
-			android:layout_height="match_parent"
-			android:layout_width="match_parent"
-			android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-			<android.support.v7.widget.CardView
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				card_view:cardUseCompatPadding="true"
-				card_view:cardElevation="2dp"
-				card_view:cardCornerRadius="4dp"
-				card_view:contentPadding="16dp"
-				card_view:cardBackgroundColor="@color/rowBackground">
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="?attr/attr_card_style"
+                card_view:cardUseCompatPadding="true"
+                card_view:contentPadding="16dp">
 
-				<LinearLayout
-					android:layout_height="match_parent"
-					android:layout_width="match_parent"
-					android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
 
-					<LinearLayout
-						android:layout_height="wrap_content"
-						android:layout_width="match_parent"
-						android:orientation="horizontal">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
 
-						<ImageButton
-							style="?android:attr/buttonBarButtonStyle"
-							android:layout_height="wrap_content"
-							android:layout_width="wrap_content"
-							android:src="@drawable/ic_clear_all_white_24dp"
-							android:id="@+id/btn_clear_dir"/>
+                        <ImageButton
+                            android:id="@+id/btn_clear_dir"
+                            style="?android:attr/buttonBarButtonStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_clear_all_white_24dp" />
 
-						<TextView
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
-							android:layout_gravity="left|center_vertical"
-							android:text="@string/label_dir"
-							android:textAppearance="?android:attr/textAppearanceMedium"
-							android:layout_marginTop="5dp"
-							android:layout_weight="1.0"
-							android:layout_marginLeft="5dp"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="left|center_vertical"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_weight="1.0"
+                            android:text="@string/label_dir"
+                            android:textAppearance="?android:attr/textAppearanceMedium" />
 
-					</LinearLayout>
+                    </LinearLayout>
 
-					<View
-						android:layout_width="fill_parent"
-						android:layout_height="1dp"
-						android:background="@color/colorAccent"
-						android:layout_marginBottom="10dp"
-						android:layout_marginTop="10dp"/>
+                    <View
+                        android:layout_width="fill_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginTop="10dp"
+                        android:background="@color/colorAccent" />
 
-					<LinearLayout
-						android:id="@+id/listdir"
-						android:paddingLeft="20dp"
-						android:layout_width="match_parent"
-						android:layout_height="wrap_content"
-						android:orientation="vertical"
-						android:layout_marginTop="5dp"
-						android:gravity="top|left"/>
+                    <LinearLayout
+                        android:id="@+id/listdir"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:gravity="top|left"
+                        android:orientation="vertical"
+                        android:paddingLeft="20dp" />
 
-				</LinearLayout>
+                </LinearLayout>
 
-			</android.support.v7.widget.CardView>
+            </android.support.v7.widget.CardView>
 
-			<android.support.v7.widget.CardView
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				card_view:cardUseCompatPadding="true"
-				card_view:cardElevation="2dp"
-				card_view:cardCornerRadius="4dp"
-				card_view:contentPadding="16dp"
-				card_view:cardBackgroundColor="@color/rowBackground">
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="?attr/attr_card_style"
+                card_view:cardUseCompatPadding="true"
+                card_view:contentPadding="16dp">
 
-				<LinearLayout
-					android:layout_height="match_parent"
-					android:layout_width="match_parent"
-					android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
 
-					<LinearLayout
-						android:layout_height="wrap_content"
-						android:layout_width="match_parent"
-						android:orientation="horizontal">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
 
-						<ImageButton
-							style="?android:attr/buttonBarButtonStyle"
-							android:layout_height="wrap_content"
-							android:layout_width="wrap_content"
-							android:src="@drawable/ic_clear_all_white_24dp"
-							android:id="@+id/btn_clear_ext"/>
+                        <ImageButton
+                            android:id="@+id/btn_clear_ext"
+                            style="?android:attr/buttonBarButtonStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_clear_all_white_24dp" />
 
-						<TextView
-							android:layout_width="match_parent"
-							android:layout_height="wrap_content"
-							android:layout_gravity="left|center_vertical"
-							android:text="@string/label_ext"
-							android:textAppearance="?android:attr/textAppearanceMedium"
-							android:layout_marginTop="10dp"/>
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="left|center_vertical"
+                            android:layout_marginTop="10dp"
+                            android:text="@string/label_ext"
+                            android:textAppearance="?android:attr/textAppearanceMedium" />
 
-					</LinearLayout>
+                    </LinearLayout>
 
-					<View
-						android:layout_width="fill_parent"
-						android:layout_height="1dp"
-						android:background="@color/colorAccent"/>
+                    <View
+                        android:layout_width="fill_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/colorAccent" />
 
-					<LinearLayout
-						android:id="@+id/listext"
-						android:paddingLeft="20dp"
-						android:layout_width="match_parent"
-						android:layout_height="wrap_content"
-						android:orientation="vertical"
-						android:layout_marginTop="5dp"
-						android:gravity="top|left"/>
+                    <LinearLayout
+                        android:id="@+id/listext"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:gravity="top|left"
+                        android:orientation="vertical"
+                        android:paddingLeft="20dp" />
 
-				</LinearLayout>
+                </LinearLayout>
 
-			</android.support.v7.widget.CardView>
+            </android.support.v7.widget.CardView>
 
-		</LinearLayout>
+        </LinearLayout>
 
-	</ScrollView>
+    </ScrollView>
 
 </LinearLayout>
 
