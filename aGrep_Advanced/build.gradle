@@ -3,31 +3,49 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 26
     buildToolsVersion "26.0.0"
-
     defaultConfig {
         applicationId "ua.tohateam.aGrep"
         minSdkVersion 15
         targetSdkVersion 26
-        versionCode 39
-        versionName "1.0.10"
+        versionCode 41
+        versionName '1.0.10'
         vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            versionNameSuffix '-release'
+        }
+        debug {
+            versionNameSuffix '-debug'
+        }
+        // http://www.vogella.com/tutorials/AndroidBuild/article.html
+        applicationVariants.all { variant ->
+            variant.outputs.each { output ->
+                def file = output.outputFile
+                def filename = file.name.replace("aGrep_Advanced", "aGrep-Advanced-" + defaultConfig.versionName)
+                output.outputFile = new File(file.parent, filename)
+
+            }
         }
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_7
         targetCompatibility JavaVersion.VERSION_1_7
     }
+    productFlavors {
+    }
 }
 
 dependencies {
     compile project(':LineNumber')
-    compile project(':ExFilePicker')
-    compile project(':colorpicker')
+    //compile project(':ExFilePicker')
+    //compile project(':colorpicker')
+    compile 'ru.bartwell:exfilepicker:1.8'
+    //compile 'ru.bartwell:exfilepicker:2.1'
+    compile 'com.rarepebble:colorpicker:2.1.0'
+
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.android.support:appcompat-v7:26.0.0-alpha1'
     compile 'com.android.support:recyclerview-v7:26.0.0-alpha1'

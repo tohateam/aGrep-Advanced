@@ -10,6 +10,7 @@
     <string name="action_delete">Удалить</string>
     <string name="action_edit_history">Редактор истории</string>
     <string name="action_expand_all">Развернуть все</string>
+    <string name="action_file">Файл</string>
     <string name="action_font_size">Размер шрифта</string>
     <string name="action_goto_line">Перейти к строке</string>
     <string name="action_information">Свойства</string>

@@ -1,5 +1,6 @@
 package me.mgottein;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -17,24 +18,25 @@ import android.widget.TextView;
  *
  * Adds line numbers to a {@see android.widget.TextView} inside the padding
  */
+@SuppressLint("AppCompatCustomView")
 public class LineNumberTextView extends TextView {
 
     /**
      * Delegate interface that controls display of line numbers
      */
-    public interface Controller {
+    interface Controller {
         /**
          * @param layoutOnLeft is the line number displayed in the left column
          * @param line line number
          * @return formatted line number string to be displayed
          */
-        public String getLineNumberText(boolean layoutOnLeft, int line);
+        String getLineNumberText(boolean layoutOnLeft, int line);
 
         /**
          * @param line line number
          * @return if this line number will be shown
          */
-        public boolean showLineNumber(int line);
+        boolean showLineNumber(int line);
     }
 
     private Paint mTextPaint;
@@ -147,7 +149,6 @@ public class LineNumberTextView extends TextView {
 
     /**
      * Change the controller used to display line numbers
-     * @param controller
      */
     public void setLineNumberController(Controller controller) {
         if(controller == null) {
@@ -173,7 +174,6 @@ public class LineNumberTextView extends TextView {
 
     /**
      * Set if line numbers hug the line or are in the left or right column
-     * @param hugLine
      */
     public void doLineNumbersHugLine(boolean hugLine) {
         boolean doInvalidate = hugLine != mHugLine;
@@ -185,7 +185,6 @@ public class LineNumberTextView extends TextView {
 
     /**
      * Change line number color
-     * @param color
      */
     public void setLineNumberColor(int color) {
         boolean doInvalidate = color != mTextPaint.getColor();
@@ -197,7 +196,6 @@ public class LineNumberTextView extends TextView {
 
     /**
      * Change line number typeface
-     * @param typeface
      */
     public void setLineNumberTypeface(Typeface typeface) {
         boolean doInvalidate = typeface != mTextPaint.getTypeface();
@@ -209,7 +207,6 @@ public class LineNumberTextView extends TextView {
 
     /**
      * Change line number size (in px, uses {@see android.graphics.Paint#setTextSize(int)})
-     * @param size
      */
     public void setLineNumberSize(int size) {
         boolean doInvalidate = size != mTextPaint.getTextSize();
@@ -238,7 +235,6 @@ public class LineNumberTextView extends TextView {
 
     /**
      * Setup a slightly modified version of the clipping bounds {@see android.widget.TextView} uses
-     * @param canvas
      */
     private void textViewClip(Canvas canvas) {
         int scrollX = getScrollX(), scrollY = getScrollY(),
